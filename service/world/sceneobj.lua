@@ -274,6 +274,6 @@ function CScene:NotifyLeaveWar(oPlayer)
 end
 
 function CScene:Forward(sCmd, iPid, mData)
-    interactive.Send(self.m_iRemoteAddr, "scene", sCmd, {pid = iPid, scene_id = self.m_iSceneId, data = mData})
+    interactive.Send(self.m_iRemoteAddr, "scene", "Forward", {pid = iPid, scene_id = self.m_iSceneId, cmd = sCmd, data = mData})
     return true
 end

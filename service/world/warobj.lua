@@ -262,6 +262,6 @@ function CWar:NotifyDisconnected(oPlayer)
 end
 
 function CWar:Forward(sCmd, iPid, mData)
-    interactive.Send(self.m_iRemoteAddr, "war", sCmd, {pid = iPid, war_id = self.m_iWarId, data = mData})
+    interactive.Send(self.m_iRemoteAddr, "war", "Forward", {pid = iPid, war_id = self.m_iWarId, cmd = sCmd, data = mData})
     return true
 end

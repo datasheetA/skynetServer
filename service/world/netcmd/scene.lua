@@ -7,6 +7,6 @@ local interactive = require "base.interactive"
 function C2GSSyncPos(oPlayer, mData)
     local oScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oScene:GetSceneId() == mData.scene_id then
-        oScene:Forward("SyncPos", oPlayer:GetPid(), mData)
+        oScene:Forward("C2GSSyncPos", oPlayer:GetPid(), mData)
     end
 end

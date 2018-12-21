@@ -298,6 +298,18 @@ call_array(pbc_decoder pd, void * ud, struct _field *f, uint8_t * buffer , int s
 	}
 }
 
+
+int
+pbc_fields(struct pbc_env * env, const char * typename, void (*func)(void *p, void *ud), void * ud) {
+	struct _message * msg = _pbcP_get_message(env, typename);
+	if (msg == NULL) {
+		env->lasterror = "Proto not found";
+		return -1;
+	}
+	_pbcM_sp_foreach_ud(msg -> name, func, ud);
+	return 0;
+}
+
 int
 pbc_decode(struct pbc_env * env, const char * typename , struct pbc_slice * slice, pbc_decoder pd, void *ud) {
 	struct _message * msg = _pbcP_get_message(env, typename);

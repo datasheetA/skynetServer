@@ -21,6 +21,7 @@ extern "C" {
 #include <stdint.h>
 
 #include "pbc.h"
+#include "proto.h"
 
 static inline void *
 checkuserdata(lua_State *L, int index) {
@@ -774,6 +775,23 @@ _decode(lua_State *L) {
 	return 1;
 }
 
+static void
+fields_cb(void * p, void * ud){
+	lua_State* L = (lua_State*)ud;
+	struct _field* fp = (struct _field*) p;
+	lua_pushstring(L, fp -> name);
+	lua_rawseti(L, -2, lua_rawlen(L, -2) + 1);
+}
+
+static int
+_fields(lua_State * L) {
+	struct pbc_env * env = (struct pbc_env *)checkuserdata(L,1);
+	const char * type = luaL_checkstring(L,2);
+	lua_newtable(L);
+	pbc_fields(env, type, fields_cb, (void *)L);
+	return 1;
+}
+
 struct gcobj {
 	struct pbc_env * env;
 	int size_pat;
@@ -879,6 +897,7 @@ luaopen_protobuf_c(lua_State *L) {
 		{"_pattern_pack", _pattern_pack },
 		{"_last_error", _last_error },
 		{"_decode", _decode },
+		{"_fields", _fields},
 		{"_gc", _gc },
 		{"_add_pattern", _add_pattern },
 		{"_add_rmessage", _add_rmessage },

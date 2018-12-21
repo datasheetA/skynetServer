@@ -15,4 +15,5 @@ function Invoke(sModule, sCmd, mRecord, mData)
             return f(mRecord, mData)
         end
     end
+    print(string.format("Invoke fail %s %s %s %s", MY_SERVICE_NAME, MY_ADDR, sModule, sCmd))
 end

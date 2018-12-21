@@ -452,6 +452,10 @@ function M.decode(typename, buffer, length)
 	end
 end
 
+function M.fields(typename)
+	return c._fields(P, typename)
+end
+
 local function expand(tbl)
 	local typename = rawget(tbl , 1)
 	local buffer = rawget(tbl , 2)

@@ -1,6 +1,96 @@
 --import module
 local global = require "global"
 local skynet = require "skynet"
+local protobuf = require "base.protobuf"
+
+ForwardNetcmds = {}
+
+function ForwardNetcmds.C2GSWarSkill(oPlayer, mData)
+        local l1 = mData.action_wlist
+        local l2 = mData.select_wlist
+        local iSkill = mData.skill_id
+
+        local iWid = l1[1]
+
+        local oWar = oPlayer:GetWar()
+        local oAction = oWar:GetWarrior(iWid)
+        if oAction then
+            oWar:AddBoutCmd(iWid, {
+                cmd = "skill",
+                data = {
+                    action_wlist = l1,
+                    select_wlist = l2,
+                    skill_id = iSkill,
+                }
+            })
+        end
+end
+
+function ForwardNetcmds.C2GSWarNormalAttack(oPlayer, mData)
+        local iActionWid = mData.action_wid
+        local iSelectWid = mData.select_wid
+
+        local oWar = oPlayer:GetWar()
+        local oAction = oWar:GetWarrior(iActionWid)
+        if oAction then
+            oWar:AddBoutCmd(iActionWid, {
+                cmd = "normal_attack",
+                data = {
+                    action_wid = iActionWid,
+                    select_wid = iSelectWid,
+                }
+            })
+        end
+end
+
+function ForwardNetcmds.C2GSWarEscape(oPlayer, mData)
+        local iActionWid = mData.action_wid
+
+        local oWar = oPlayer:GetWar()
+        local oAction = oWar:GetWarrior(iActionWid)
+        if oAction then
+            oWar:AddBoutCmd(iActionWid, {
+                cmd = "escape",
+                data = {
+                    action_wid = iActionWid,
+                }
+            })
+        end
+end
+
+function ForwardNetcmds.C2GSWarDefense(oPlayer, mData)
+        local iActionWid = mData.action_wid
+
+        local oWar = oPlayer:GetWar()
+        local oAction = oWar:GetWarrior(iActionWid)
+        if oAction then
+            oWar:AddBoutCmd(iActionWid, {
+                cmd = "defense",
+                data = {
+                    action_wid = iActionWid,
+                }
+            })
+        end
+end
+
+function ForwardNetcmds.C2GSWarProtect(oPlayer, mData)
+        local iActionWid = mData.action_wid
+        local iSelectWid = mData.select_wid
+
+        local oWar = oPlayer:GetWar()
+        local oAction = oWar:GetWarrior(iActionWid)
+        if oAction then
+            oWar:AddBoutCmd(iActionWid, {
+                cmd = "protect",
+                data = {
+                    action_wid = iActionWid,
+                    select_wid = iSelectWid,
+                }
+            })
+        end
+end
+
+
 
 function ConfirmRemote(mRecord, mData)
     local iWarId = mData.war_id
@@ -79,127 +169,21 @@ function WarPrepare(mRecord, mData)
     end
 end
 
-function WarSkill(mRecord, mData)
+function Forward(mRecord, mData)
     local iWarId = mData.war_id
     local iPid = mData.pid
-    local m = mData.data
+    local sCmd = mData.cmd
+    local m = protobuf.default(sCmd, mData.data)
 
     local oWarMgr = global.oWarMgr
     local oWar = oWarMgr:GetWar(iWarId)
     if oWar then
-        local l1 = m.action_wlist
-        local l2 = m.select_wlist
-        local iSkill = m.skill_id
-
-        local iWid = l1[1]
-
         local oPlayer = oWar:GetPlayerWarrior(iPid)
-        local oAction = oWar:GetWarrior(iWid)
-        if oPlayer and oAction then
-            oWar:AddBoutCmd(iWid, {
-                cmd = "skill",
-                data = {
-                    action_wlist = l1,
-                    select_wlist = l2,
-                    skill_id = iSkill,
-                }
-            })
-        end
-    end
-end
-
-function WarNormalAttack(mRecord, mData)
-    local iWarId = mData.war_id
-    local iPid = mData.pid
-    local m = mData.data
-
-    local oWarMgr = global.oWarMgr
-    local oWar = oWarMgr:GetWar(iWarId)
-    if oWar then
-        local iActionWid = m.action_wid
-        local iSelectWid = m.select_wid
-
-        local oPlayer = oWar:GetPlayerWarrior(iPid)
-        local oAction = oWar:GetWarrior(iActionWid)
-        if oPlayer and oAction then
-            oWar:AddBoutCmd(iActionWid, {
-                cmd = "normal_attack",
-                data = {
-                    action_wid = iActionWid,
-                    select_wid = iSelectWid,
-                }
-            })
-        end
-    end
-end
-
-function WarEscape(mRecord, mData)
-    local iWarId = mData.war_id
-    local iPid = mData.pid
-    local m = mData.data
-
-    local oWarMgr = global.oWarMgr
-    local oWar = oWarMgr:GetWar(iWarId)
-    if oWar then
-        local iActionWid = m.action_wid
-
-        local oPlayer = oWar:GetPlayerWarrior(iPid)
-        local oAction = oWar:GetWarrior(iActionWid)
-        if oPlayer and oAction then
-            oWar:AddBoutCmd(iActionWid, {
-                cmd = "escape",
-                data = {
-                    action_wid = iActionWid,
-                }
-            })
-        end
-    end
-end
-
-function WarDefense(mRecord, mData)
-    local iWarId = mData.war_id
-    local iPid = mData.pid
-    local m = mData.data
-
-    local oWarMgr = global.oWarMgr
-    local oWar = oWarMgr:GetWar(iWarId)
-    if oWar then
-        local iActionWid = m.action_wid
-
-        local oPlayer = oWar:GetPlayerWarrior(iPid)
-        local oAction = oWar:GetWarrior(iActionWid)
-        if oPlayer and oAction then
-            oWar:AddBoutCmd(iActionWid, {
-                cmd = "defense",
-                data = {
-                    action_wid = iActionWid,
-                }
-            })
-        end
-    end
-end
-
-function WarProtect(mRecord, mData)
-    local iWarId = mData.war_id
-    local iPid = mData.pid
-    local m = mData.data
-
-    local oWarMgr = global.oWarMgr
-    local oWar = oWarMgr:GetWar(iWarId)
-    if oWar then
-        local iActionWid = m.action_wid
-        local iSelectWid = m.select_wid
-
-        local oPlayer = oWar:GetPlayerWarrior(iPid)
-        local oAction = oWar:GetWarrior(iActionWid)
-        if oPlayer and oAction then
-            oWar:AddBoutCmd(iActionWid, {
-                cmd = "protect",
-                data = {
-                    action_wid = iActionWid,
-                    select_wid = iSelectWid,
-                }
-            })
+        if oPlayer then
+            local func = ForwardNetcmds[sCmd]
+            if func then
+                func(oPlayer, m)
+            end
         end
     end
 end

@@ -2,6 +2,30 @@
 local global = require "global"
 local skynet = require "skynet"
 local geometry = require "base.geometry"
+local protobuf = require "base.protobuf"
+
+ForwardNetcmds = {}
+
+function ForwardNetcmds.C2GSSyncPos(oPlayer, mData)
+    local iScene = mData.scene_id
+    local iEid = mData.eid
+    local mPosInfo = mData.pos_info
+
+    if oPlayer:GetEid() ~= iEid then
+        return
+    end
+
+    local mPos = {
+        v = geometry.Recover(mPosInfo.v),
+        x = geometry.Recover(mPosInfo.x),
+        y = geometry.Recover(mPosInfo.y),
+        z = geometry.Recover(mPosInfo.z),
+        face_x = geometry.Recover(mPosInfo.face_x),
+        face_y = geometry.Recover(mPosInfo.face_y),
+        face_z = geometry.Recover(mPosInfo.face_z),
+    }
+    oPlayer:SyncPos(mPos)
+end
 
 function ConfirmRemote(mRecord, mData)
     local iScene = mData.scene_id
@@ -86,34 +110,21 @@ function NotifyLeaveWar(mRecord, mData)
     end
 end
 
-function SyncPos(mRecord, mData)
+function Forward(mRecord, mData)
     local iPid = mData.pid
     local iRouteScene = mData.scene_id
-    local m = mData.data
+    local sCmd = mData.cmd
+    local m = protobuf.default(sCmd, mData.data)
 
-    local iScene = m.scene_id
-    local iEid = m.eid
-    local mPosInfo = m.pos_info
-
-    if iRouteScene ~= iScene then
-        return
-    end
     local oSceneMgr = global.oSceneMgr
-    local oScene = oSceneMgr:GetScene(iScene)
+    local oScene = oSceneMgr:GetScene(iRouteScene)
     if oScene then
         local oPlayerEntity = oScene:GetPlayerEntity(iPid)
-        if not oPlayerEntity or oPlayerEntity:GetEid() ~= iEid then
-            return
+        if oPlayerEntity then
+            local func = ForwardNetcmds[sCmd]
+            if func then
+                func(oPlayerEntity, m)
+            end
         end
-        local mPos = {
-            v = geometry.Recover(mPosInfo.v),
-            x = geometry.Recover(mPosInfo.x),
-            y = geometry.Recover(mPosInfo.y),
-            z = geometry.Recover(mPosInfo.z),
-            face_x = geometry.Recover(mPosInfo.face_x),
-            face_y = geometry.Recover(mPosInfo.face_y),
-            face_z = geometry.Recover(mPosInfo.face_z),
-        }
-        oPlayerEntity:SyncPos(mPos)
     end
 end

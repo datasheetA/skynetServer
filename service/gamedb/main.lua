@@ -1,5 +1,6 @@
 local global = require "global"
 local skynet = require "skynet"
+local net = require "base.net"
 local interactive = require "base.interactive"
 local mongoop = require "base.mongoop"
 
@@ -9,6 +10,7 @@ local logiccmd = import(service_path("logiccmd.init"))
 
 skynet.start(function()
     interactive.Init(logiccmd)
+    net.Init()
 
     local m = read_file(skynet.getenv("db_file"))
     global.oGameDb = mongoop.NewMongoObj()
