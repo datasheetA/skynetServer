@@ -40,6 +40,19 @@ function ReEnterPlayer(mRecord, mData)
     oScene:ReEnterPlayer(iPid, mMail)
 end
 
+function NotifyDisconnected(mRecord, mData)
+    local iScene = mData.scene_id
+    local iPid = mData.pid
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:GetScene(iScene)
+    if oScene then
+        local oPlayerEntity = oScene:GetPlayerEntity(iPid)
+        if oPlayerEntity then
+            oPlayerEntity:Disconnected()
+        end
+    end
+end
+
 function SyncPlayerPos(mRecord, mData)
     local iScene = mData.scene_id
     local iPid = mData.pid

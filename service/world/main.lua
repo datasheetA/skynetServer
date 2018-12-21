@@ -2,6 +2,7 @@ local global = require "global"
 local skynet = require "skynet"
 local net = require "base.net"
 local interactive = require "base.interactive"
+local servicetimer = require "base.servicetimer"
 
 require "skynet.manager"
 require "base.skynet_text"
@@ -17,6 +18,8 @@ skynet.start(function()
 
     skynet.dispatch("text", function (session, address, message)
     end)
+
+    global.oGlobalTimer = servicetimer.NewTimer()
 
     global.oWorldMgr = worldobj.NewWorldMgr()
 

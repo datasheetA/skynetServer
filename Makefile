@@ -86,7 +86,7 @@ SHARED = -fPIC --shared
 
 CLIB=rc4 pbc
 CSERVICE=zinc_gate
-CLUALIB=protobuf laoi
+CLUALIB=protobuf laoi ltimer
 
 CLIB_TARGET=$(patsubst %, $(BUILD_CLIB_DIR)/lib%.so, $(CLIB))
 CSERVICE_TARGET=$(patsubst %, $(BUILD_CSERVICE_DIR)/%.so, $(CSERVICE))
@@ -132,6 +132,10 @@ $(BUILD_CLUALIB_DIR)/protobuf.so : clib/lua-protobuf/pbc-lua53.c $(BUILD_CLIB_DI
 
 $(BUILD_CLUALIB_DIR)/laoi.so : clib/aoi/aoi.c clib/aoi/lua-aoi.c
 	cp clib/aoi/aoi.h $(INCLUDE_DIR)
+	gcc $(CFLAGS) $(SHARED) $^ -o $@ $(LDFLAGS)
+
+$(BUILD_CLUALIB_DIR)/ltimer.so : clib/timingwheel/twheel.c clib/timingwheel/lua-twheel.c
+	cp clib/timingwheel/twheel.h $(INCLUDE_DIR)
 	gcc $(CFLAGS) $(SHARED) $^ -o $@ $(LDFLAGS)
 
 #build zinc end

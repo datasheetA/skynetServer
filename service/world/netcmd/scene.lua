@@ -11,13 +11,13 @@ function C2GSSyncPos(oPlayer, mData)
     local mPosInfo = mData.pos_info
 
     local mPos = {
-        v = geometry.recover(mPosInfo.v),
-        x = geometry.recover(mPosInfo.x),
-        y = geometry.recover(mPosInfo.y),
-        z = geometry.recover(mPosInfo.z),
-        face_x = geometry.recover(mPosInfo.face_x),
-        face_y = geometry.recover(mPosInfo.face_y),
-        face_z = geometry.recover(mPosInfo.face_z),
+        v = geometry.Recover(mPosInfo.v),
+        x = geometry.Recover(mPosInfo.x),
+        y = geometry.Recover(mPosInfo.y),
+        z = geometry.Recover(mPosInfo.z),
+        face_x = geometry.Recover(mPosInfo.face_x),
+        face_y = geometry.Recover(mPosInfo.face_y),
+        face_z = geometry.Recover(mPosInfo.face_z),
     }
 
     local oScene = oPlayer:GetNowScene()

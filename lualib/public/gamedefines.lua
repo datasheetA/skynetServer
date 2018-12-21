@@ -10,6 +10,11 @@ ERRCODE = {
     in_logout = 1002,
 }
 
+BASEOBJ_STATUS = {
+    is_alive = 1,
+    is_release = 2,
+}
+
 LOGIN_CONNECTION_STATUS = {
     no_account = 1,
     in_login_account = 2,

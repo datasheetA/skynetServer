@@ -11,9 +11,10 @@ end
 
 CPlayer = {}
 CPlayer.__index = CPlayer
+inherit(CPlayer, logic_base_cls())
 
 function CPlayer:New(mConn, mRole)
-    local o = setmetatable({}, self)
+    local o = super(CPlayer).New(self)
 
     o.m_iNetHandle = mConn.handle
     o.m_iPid = mRole.pid
@@ -24,9 +25,6 @@ function CPlayer:New(mConn, mRole)
     o.m_iDisconnectedTime = nil
 
     return o
-end
-
-function CPlayer:Release()
 end
 
 function CPlayer:GetAccount()
@@ -69,6 +67,7 @@ function CPlayer:SetNetHandle(iNetHandle)
         self.m_iDisconnectedTime = nil
     else
         self.m_iDisconnectedTime = get_msecond()
+        self:OnDisconnected()
     end
 end
 
@@ -90,4 +89,9 @@ function CPlayer:OnLogin(bReEnter)
     self:Send("GS2CLoginRole", {role = {account = self:GetAccount(), pid = self:GetPid()}})
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnLogin(self, bReEnter)
+end
+
+function CPlayer:OnDisconnected()
+    local oSceneMgr = global.oSceneMgr
+    oSceneMgr:OnDisconnected(self)
 end

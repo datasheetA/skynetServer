@@ -16,9 +16,10 @@ end
 
 CScene = {}
 CScene.__index = CScene
+inherit(CScene, logic_base_cls())
 
 function CScene:New(id)
-    local o = setmetatable({}, self)
+    local o = super(CScene).New(self)
     o.m_iScene = id
     o.m_oAoi = laoi.laoi_create(gamedefines.SCENE_AOI_DIS)
 
@@ -27,11 +28,14 @@ function CScene:New(id)
     return o
 end
 
-function CScene:Release()
-end
-
 function CScene:Init(mInit)
-    self:CheckAoiSchedule()
+    local f1
+    f1 = function ()
+        self:DelTimeCb("CheckAoiSchedule")
+        self:AddTimeCb("CheckAoiSchedule", 1*100, f1)
+        self:CheckAoiSchedule()
+    end
+    f1()
 end
 
 function CScene:GetSceneId()
@@ -51,25 +55,15 @@ end
 
 --lxldebug
 function CScene:CheckAoiSchedule()
-    local iScene = self:GetSceneId()
-    local f
-    f = function ()
-        local oSceneMgr = global.oSceneMgr
-        local oScene = oSceneMgr:GetScene(iScene)
-        if oScene then
-            local l = oScene.m_oAoi:laoi_message()
-            for _, v in ipairs(l) do
-                local iWatcher, iMarker = v[1], v[2]
-                local oWatcher = oScene:GetEntity(iWatcher)
-                local oMarker = oScene:GetEntity(iMarker)
-                if oWatcher and oMarker then
-                    oWatcher:EnterAoi(oMarker)
-                end
-            end
+    local l = self.m_oAoi:laoi_message()
+    for _, v in ipairs(l) do
+        local iWatcher, iMarker = v[1], v[2]
+        local oWatcher = self:GetEntity(iWatcher)
+        local oMarker = self:GetEntity(iMarker)
+        if oWatcher and oMarker then
+            oWatcher:EnterAoi(oMarker)
         end
-        skynet.timeout(1*10, f)
     end
-    f()
 end
 
 function CScene:UpdateEntityToAoi(iEid, sMode)
@@ -115,13 +109,13 @@ function CScene:EnterPlayer(iPid, iEid, mMail, mPos)
         scene_id = self:GetSceneId(),
         eid = obj:GetEid(),
         pos_info = {
-            v = geometry.cover(obj:GetSpeed()),
-            x = geometry.cover(mPos.x),
-            y = geometry.cover(mPos.y),
-            z = geometry.cover(mPos.z),
-            face_x = geometry.cover(mPos.face_x),
-            face_y = geometry.cover(mPos.face_y),
-            face_z = geometry.cover(mPos.face_z),
+            v = geometry.Cover(obj:GetSpeed()),
+            x = geometry.Cover(mPos.x),
+            y = geometry.Cover(mPos.y),
+            z = geometry.Cover(mPos.z),
+            face_x = geometry.Cover(mPos.face_x),
+            face_y = geometry.Cover(mPos.face_y),
+            face_z = geometry.Cover(mPos.face_z),
         }
     })
 

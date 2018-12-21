@@ -14,14 +14,12 @@ end
 
 CSceneMgr = {}
 CSceneMgr.__index = CSceneMgr
+inherit(CSceneMgr, logic_base_cls())
 
 function CSceneMgr:New()
-    local o = setmetatable({}, self)
+    local o = super(CSceneMgr).New(self)
     o.m_mScenes = {}
     return o
-end
-
-function CSceneMgr:Release()
 end
 
 function CSceneMgr:ConfirmRemote(iScene)

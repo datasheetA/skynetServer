@@ -11,9 +11,10 @@ local gamedefines = import(lualib_path("public.gamedefines"))
 
 CEntity = {}
 CEntity.__index = CEntity
+inherit(CEntity, logic_base_cls())
 
 function CEntity:New(iEid)
-    local o = setmetatable({}, self)
+    local o = super(CEntity).New(self)
     o.m_iType = gamedefines.SCENE_ENTITY_TYPE.ENTITY_TYPE
     o.m_iEid = iEid
     o.m_iScene = nil
@@ -23,9 +24,6 @@ function CEntity:New(iEid)
     o.m_mWatcher = {}
     o.m_mMarker = {}
     return o
-end
-
-function CEntity:Release()
 end
 
 function CEntity:Type()
@@ -48,7 +46,13 @@ function CEntity:Init(mInit)
 
     self.m_fSpeed = mInit.speed
 
-    self:CheckAoi()
+    local f1
+    f1 = function ()
+        self:DelTimeCb("CheckAoi")
+        self:AddTimeCb("CheckAoi", 3*1000, f1)
+        self:CheckAoi()
+    end
+    f1()
 end
 
 function CEntity:GetEid()
@@ -91,27 +95,13 @@ end
 
 --lxldebug
 function CEntity:CheckAoi()
-    local iEid = self:GetEid()
-    local iScene = self:GetSceneId()
-    local f
-    f = function ()
-        local oSceneMgr = global.oSceneMgr
-        local oScene = oSceneMgr:GetScene(iScene)
-        if oScene then
-            local oEntity = oScene:GetEntity(iEid)
-            if oEntity then
-                local mMarker = oEntity:GetMarkerMap()
-                for k, _ in pairs(mMarker) do
-                    local oMarker = oEntity:GetEntity(k)
-                    if oMarker and self:IsOutOfAoi(oMarker) then
-                        oEntity:LeaveAoi(oMarker)
-                    end
-                end
-            end
+    local mMarker = self:GetMarkerMap()
+    for k, _ in pairs(mMarker) do
+        local oMarker = self:GetEntity(k)
+        if oMarker and self:IsOutOfAoi(oMarker) then
+            self:LeaveAoi(oMarker)
         end
-        skynet.timeout(3 * 100, f)
     end
-    f()
 end
 
 function CEntity:GetScene()

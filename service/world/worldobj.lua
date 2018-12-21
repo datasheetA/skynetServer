@@ -15,18 +15,16 @@ end
 
 CWorldMgr = {}
 CWorldMgr.__index = CWorldMgr
+inherit(CWorldMgr, logic_base_cls())
 
 function CWorldMgr:New()
-    local o = setmetatable({}, self)
+    local o = super(CWorldMgr).New(self)
     o.m_mOnlinePlayers = {}
     o.m_mLoginPlayers = {}
     o.m_mLogoutPlayers = {}
 
     o.m_mConnections = {}
     return o
-end
-
-function CWorldMgr:Release()
 end
 
 function CWorldMgr:GetConnection(iHandle)

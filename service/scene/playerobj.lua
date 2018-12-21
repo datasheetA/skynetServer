@@ -25,19 +25,24 @@ function CPlayerEntity:New(iEid, iPid, mMail)
     return o
 end
 
-function CPlayerEntity:Release()
-end
-
 function CPlayerEntity:GetPid()
     return self.m_iPid
 end
 
 function CPlayerEntity:Send(sMessage, mData)
-    net.Send(self.m_mMail, sMessage, mData)
+    if self.m_mMail then
+        net.Send(self.m_mMail, sMessage, mData)
+    end
+end
+
+function CPlayerEntity:Disconnected()
+    self.m_mMail = nil
 end
 
 function CPlayerEntity:SendRaw(sData)
-    net.SendRaw(self.m_mMail, sData)
+    if self.m_mMail then
+        net.SendRaw(self.m_mMail, sData)
+    end
 end
 
 function CPlayerEntity:ReEnter(mMail)
@@ -48,13 +53,13 @@ function CPlayerEntity:ReEnter(mMail)
         scene_id = self:GetSceneId(),
         eid = self:GetEid(),
         pos_info = {
-            v = geometry.cover(self:GetSpeed()),
-            x = geometry.cover(mPos.x),
-            y = geometry.cover(mPos.y),
-            z = geometry.cover(mPos.z),
-            face_x = geometry.cover(mPos.face_x),
-            face_y = geometry.cover(mPos.face_y),
-            face_z = geometry.cover(mPos.face_z),
+            v = geometry.Cover(self:GetSpeed()),
+            x = geometry.Cover(mPos.x),
+            y = geometry.Cover(mPos.y),
+            z = geometry.Cover(mPos.z),
+            face_x = geometry.Cover(mPos.face_x),
+            face_y = geometry.Cover(mPos.face_y),
+            face_z = geometry.Cover(mPos.face_z),
         }
     })
 
@@ -77,13 +82,13 @@ function CPlayerEntity:GetAoiInfo()
     local m = {
         pid = self:GetPid(),
         pos_info = {
-            v = geometry.cover(self:GetSpeed()),
-            x = geometry.cover(mPos.x),
-            y = geometry.cover(mPos.y),
-            z = geometry.cover(mPos.z),
-            face_x = geometry.cover(mPos.face_x),
-            face_y = geometry.cover(mPos.face_y),
-            face_z = geometry.cover(mPos.face_z),
+            v = geometry.Cover(self:GetSpeed()),
+            x = geometry.Cover(mPos.x),
+            y = geometry.Cover(mPos.y),
+            z = geometry.Cover(mPos.z),
+            face_x = geometry.Cover(mPos.face_x),
+            face_y = geometry.Cover(mPos.face_y),
+            face_z = geometry.Cover(mPos.face_z),
         }
     }
     return m
@@ -111,13 +116,13 @@ function CPlayerEntity:SyncPos(mPosInfo)
         scene_id = self:GetSceneId(),
         eid = self:GetEid(),
         pos_info = {
-            v = geometry.cover(mPosInfo.v),
-            x = geometry.cover(mPosInfo.x),
-            y = geometry.cover(mPosInfo.y),
-            z = geometry.cover(mPosInfo.z),
-            face_x = geometry.cover(mPosInfo.face_x),
-            face_y = geometry.cover(mPosInfo.face_y),
-            face_z = geometry.cover(mPosInfo.face_z),
+            v = geometry.Cover(mPosInfo.v),
+            x = geometry.Cover(mPosInfo.x),
+            y = geometry.Cover(mPosInfo.y),
+            z = geometry.Cover(mPosInfo.z),
+            face_x = geometry.Cover(mPosInfo.face_x),
+            face_y = geometry.Cover(mPosInfo.face_y),
+            face_z = geometry.Cover(mPosInfo.face_z),
         }
     })
 

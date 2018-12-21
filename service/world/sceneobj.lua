@@ -19,18 +19,16 @@ end
 
 CSceneMgr = {}
 CSceneMgr.__index = CSceneMgr
+inherit(CSceneMgr, logic_base_cls())
 
 function CSceneMgr:New(lSceneRemote)
-    local o = setmetatable({}, self)
+    local o = super(CSceneMgr).New(self)
     o.m_iDispatchId = 0
     o.m_lSceneRemote = lSceneRemote
     o.m_mScenes = {}
 
     o.m_mDurableScenes = {}
     return o
-end
-
-function CSceneMgr:Release()
 end
 
 function CSceneMgr:DispatchSceneId()
@@ -83,6 +81,13 @@ function CSceneMgr:RemoveScene(id)
     if oScene then
         oScene:Release()
         self.m_mScenes[id] = nil
+    end
+end
+
+function CSceneMgr:OnDisconnected(oPlayer)
+    local oNowScene = oPlayer:GetNowScene()
+    if oNowScene then
+        oNowScene:NotifyDisconnected(oPlayer)
     end
 end
 
@@ -143,9 +148,10 @@ end
 
 CScene = {}
 CScene.__index = CScene
+inherit(CScene, logic_base_cls())
 
 function CScene:New(id, mInfo)
-    local o = setmetatable({}, self)
+    local o = super(CScene).New(self)
     o.m_iSceneId = id
     o.m_iDispatchId = 0
     o.m_iMapId = mInfo.map_id
@@ -154,9 +160,6 @@ function CScene:New(id, mInfo)
     o.m_mPlayers = {}
 
     return o
-end
-
-function CScene:Release()
 end
 
 function CScene:GetSceneId()
@@ -212,6 +215,11 @@ end
 function CScene:ReEnterPlayer(oPlayer)
     oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, map_id = self:MapId()})
     interactive.Send(self.m_iRemoteAddr, "scene", "ReEnterPlayer", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid(), mail = oPlayer:MailAddr()})
+    return true
+end
+
+function CScene:NotifyDisconnected(oPlayer)
+    interactive.Send(self.m_iRemoteAddr, "scene", "NotifyDisconnected", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid()})
     return true
 end
 

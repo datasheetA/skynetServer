@@ -26,9 +26,10 @@ end
 
 CConnection = {}
 CConnection.__index = CConnection
+inherit(CConnection, logic_base_cls())
 
 function CConnection:New(source, handle, ip, port)
-    local o = setmetatable({}, self)
+    local o = super(CConnection).New(self)
     o.m_iGateAddr = source
     o.m_iHandle = handle
     o.m_sIP = ip
@@ -38,9 +39,6 @@ function CConnection:New(source, handle, ip, port)
     self.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.no_account)
 
     return o
-end
-
-function CConnection:Release()
 end
 
 function CConnection:Send(sMessage, mData)
@@ -110,17 +108,15 @@ end
 
 CGate = {}
 CGate.__index = CGate
+inherit(CGate, logic_base_cls())
 
 function CGate:New(iPort)
-    local o = setmetatable({}, self)
+    local o = super(CGate).New(self)
     local iAddr = skynet.launch("zinc_gate", "S", skynet.address(MY_ADDR), iPort, zinctype.ZINC_CLIENT, 10000)
     o.m_iAddr = iAddr
     o.m_iPort = iPort
     o.m_mConnections = {}
     return o
-end
-
-function CGate:Release()
 end
 
 function CGate:GetConnection(fd)
@@ -145,15 +141,13 @@ end
 
 CGateMgr = {}
 CGateMgr.__index = CGateMgr
+inherit(CGateMgr, logic_base_cls())
 
 function CGateMgr:New()
-    local o = setmetatable({}, self)
+    local o = super(CGateMgr).New(self)
     o.m_mGates = {}
     o.m_mNoteConnections = {}
     return o
-end
-
-function CGateMgr:Release()
 end
 
 function CGateMgr:AddGate(oGate)

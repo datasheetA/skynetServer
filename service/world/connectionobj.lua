@@ -12,9 +12,10 @@ end
 
 CConnection = {}
 CConnection.__index = CConnection
+inherit(CConnection, logic_base_cls())
 
 function CConnection:New(mConn, pid)
-    local o = setmetatable({}, self)
+    local o = super(CConnection).New(self)
 
     o.m_iHandle = mConn.handle
     o.m_iGateAddr = mConn.gate
@@ -23,9 +24,6 @@ function CConnection:New(mConn, pid)
     o.m_iOwnerPid = pid
 
     return o
-end
-
-function CConnection:Release()
 end
 
 function CConnection:FindPlayerAnyway()
