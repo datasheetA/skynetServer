@@ -232,6 +232,7 @@ function CScene:VaildEnter(oPlayer)
 end
 
 function CScene:LeavePlayer(oPlayer)
+    oPlayer.m_oActiveCtrl:ClearNowSceneInfo()
     self.m_mPlayers[oPlayer:GetPid()] = nil
     interactive.Send(self.m_iRemoteAddr, "scene", "LeavePlayer", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid()})
     return true

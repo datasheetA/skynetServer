@@ -216,6 +216,7 @@ function CWar:RemoteLeavePlayer(oPlayer)
 end
 
 function CWar:LeavePlayer(oPlayer)
+    oPlayer.m_oActiveCtrl:ClearNowWarInfo()
     if self.m_mPlayers[oPlayer:GetPid()] then
         self.m_mPlayers[oPlayer:GetPid()] = nil
         interactive.Send(self.m_iRemoteAddr, "war", "LeavePlayer", {war_id = self.m_iWarId, pid = oPlayer:GetPid()})
@@ -263,5 +264,10 @@ end
 
 function CWar:Forward(sCmd, iPid, mData)
     interactive.Send(self.m_iRemoteAddr, "war", "Forward", {pid = iPid, war_id = self.m_iWarId, cmd = sCmd, data = mData})
+    return true
+end
+
+function CWar:TestCmd(sCmd, iPid, mData)
+    interactive.Send(self.m_iRemoteAddr, "war", "TestCmd", {pid = iPid, war_id = self.m_iWarId, cmd = sCmd, data = mData})
     return true
 end

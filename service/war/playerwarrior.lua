@@ -47,6 +47,19 @@ function CPlayerWarrior:ReEnter(mMail)
     self.m_mMail = mMail
 
     local oWar = self:GetWar()
+    local iStatus, iStatusTime = oWar.m_oBoutStatus:Get()
+    if iStatus == gamedefines.WAR_BOUT_STATUS.OPERATE then
+        self:Send("GS2CWarBoutStart", {
+            war_id = oWar:GetWarId(),
+            bout_id = oWar.m_iBout,
+            left_time = math.max(0, math.floor((iStatusTime + oWar:GetOperateTime() - get_msecond())/1000)),
+        })
+    elseif iStatus == gamedefines.WAR_BOUT_STATUS.ANIMATION then
+        self:Send("GS2CWarBoutEnd", {
+            war_id = oWar:GetWarId(),
+        })
+    end
+
     local mWarriorMap = oWar:GetWarriorMap()
     for k, _ in pairs(mWarriorMap) do
         local o = self:GetWarrior(k)

@@ -133,12 +133,29 @@ function CWar:EnterPlayer(iPid, iWid, iCamp, mMail)
     })
     self:Enter(obj, iCamp)
     self:AddWatcher(obj)
+
     self:SendAll("GS2CWarAddWarrior", {
         war_id = obj:GetWarId(),
         camp_id = obj:GetCampId(),
         type = obj:Type(),
         warrior = obj:GetSimpleWarriorInfo(),
     })
+
+    local mWarriorMap = self:GetWarriorMap()
+    for k, _ in pairs(mWarriorMap) do
+        if k ~= obj:GetWid() then
+            local o = self:GetWarrior(k)
+            if o then
+                obj:Send("GS2CWarAddWarrior", {
+                    war_id = o:GetWarId(),
+                    camp_id = o:GetCampId(),
+                    type = o:Type(),
+                    warrior = o:GetSimpleWarriorInfo(),
+                })
+            end
+        end
+    end
+
     return obj
 end
 
@@ -228,14 +245,15 @@ function CWar:BoutStart()
     self.m_mBoutCmds = {}
     self.m_oBoutStatus:Set(gamedefines.WAR_BOUT_STATUS.OPERATE)
 
+    self:AddOperateTime(30*1000)
     self:SendAll("GS2CWarBoutStart", {
         war_id = self:GetWarId(),
         bout_id = self.m_iBout,
+        left_time = math.floor(self:GetOperateTime()/1000),
     })
 
     safe_call(self.OnBoutStart, self)
 
-    self:AddOperateTime(30*1000)
     self:AddTimeCb("BoutProcess", self:GetOperateTime(), function ()
         self:BoutProcess()
     end)

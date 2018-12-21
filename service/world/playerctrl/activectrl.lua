@@ -93,6 +93,10 @@ function CPlayerActiveCtrl:SetNowSceneInfo(mInfo)
     end
 end
 
+function CPlayerActiveCtrl:ClearNowSceneInfo()
+    self.m_mNowSceneInfo = {}
+end
+
 function CPlayerActiveCtrl:SetNowWarInfo(mInfo)
     local m = self.m_mNowWarInfo
     if not m then
@@ -102,4 +106,8 @@ function CPlayerActiveCtrl:SetNowWarInfo(mInfo)
     if mInfo.now_war then
         m.now_war = mInfo.now_war
     end
+end
+
+function CPlayerActiveCtrl:ClearNowWarInfo()
+    self.m_mNowWarInfo = {}
 end

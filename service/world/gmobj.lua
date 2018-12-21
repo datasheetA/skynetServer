@@ -33,6 +33,13 @@ function Commands.testwar(oMaster, iTargetPid)
     end
 end
 
+function Commands.wartimeover(oMaster)
+    local oWar = oMaster.m_oActiveCtrl:GetNowWar()
+    if oWar then
+        oWar:TestCmd("wartimeover", oMaster:GetPid(), {})
+    end
+end
+
 function Commands.clone(oMaster,sid,iAmount)
     local itemobj = loaditem.GetItem(sid)
     if not itemobj then

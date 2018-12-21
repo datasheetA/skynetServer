@@ -23,13 +23,14 @@ end
 function CActionMgr:WarSkill(oAction, lVictim, iSkill)
     local oWar = oAction:GetWar()
 
-    oAction:SendAll("GS2CWarMagic", {
+    oAction:SendAll("GS2CWarSkill", {
         war_id = oAction:GetWarId(),
         action_wlist = {oAction:GetWid(),},
         select_wlist = list_generate(lVictim, function (v)
             return v:GetWid()
         end),
-        magic_id = iSkill,
+        skill_id = iSkill,
+        magic_id = 1,
     })
     oWar:AddAnimationTime(4 * 1000)
 

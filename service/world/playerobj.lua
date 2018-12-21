@@ -103,10 +103,15 @@ function CPlayer:OnLogin(bReEnter)
     self:Send("GS2CLoginRole", {role = {account = self:GetAccount(), pid = self:GetPid()}})
     self.m_fHeartBeatTime = get_time()
 
-    local oWarMgr = global.oWarMgr
-    oWarMgr:OnLogin(self, bReEnter)
-    local oSceneMgr = global.oSceneMgr
-    oSceneMgr:OnLogin(self, bReEnter)
+
+    local oWar = self.m_oActiveCtrl:GetNowWar()
+    if oWar then
+        local oWarMgr = global.oWarMgr
+        oWarMgr:OnLogin(self, bReEnter)
+    else
+        local oSceneMgr = global.oSceneMgr
+        oSceneMgr:OnLogin(self, bReEnter)
+    end
     
     self:GS2CPropLogin()
     self.m_oItemCtrl:OnLogin()

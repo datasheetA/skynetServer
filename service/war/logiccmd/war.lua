@@ -169,6 +169,21 @@ function WarPrepare(mRecord, mData)
     end
 end
 
+function TestCmd(mRecord, mData)
+    local iWarId = mData.war_id
+    local iPid = mData.pid
+    local sCmd = mData.cmd
+    local m = mData.data
+
+    local oWarMgr = global.oWarMgr
+    local oWar = oWarMgr:GetWar(iWarId)
+    if oWar then
+        if sCmd == "wartimeover" then
+            oWar:BoutProcess()
+        end
+    end
+end
+
 function Forward(mRecord, mData)
     local iWarId = mData.war_id
     local iPid = mData.pid

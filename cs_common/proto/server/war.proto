@@ -12,6 +12,7 @@ message GS2CWarResult {
 message GS2CWarBoutStart {
     optional uint32 war_id = 1;
     optional uint32 bout_id = 2;
+    optional uint32 left_time = 3;
 }
 
 message GS2CWarBoutEnd {
@@ -37,11 +38,12 @@ message GS2CWarNormalAttack {
     optional uint32 select_wid = 3;
 }
 
-message GS2CWarMagic {
+message GS2CWarSkill {
     optional uint32 war_id = 1;
     repeated uint32 action_wlist = 2;
     repeated uint32 select_wlist = 3;
-    optional uint32 magic_id = 4;
+    optional uint32 skill_id = 4;
+    optional uint32 magic_id = 5;
 }
 
 message GS2CWarProtect {

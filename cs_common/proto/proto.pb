@@ -147,16 +147,17 @@ aoi_player (2.base.PlayerAoi"-
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-Å
+¶
 server/war.protobase/war.proto"
 GS2CShowWar
 war_id ("0
 GS2CWarResult
 war_id (
-bout_id ("3
+bout_id ("F
 GS2CWarBoutStart
 war_id (
-bout_id (" 
+bout_id (
+	left_time (" 
 GS2CWarBoutEnd
 war_id ("h
 GS2CWarAddWarrior
@@ -172,12 +173,13 @@ aoi_player (2.base.PlayerAoi"-
 
 action_wid (
 
-select_wid ("\
-GS2CWarMagic
+select_wid ("n
+GS2CWarSkill
 war_id (
 action_wlist (
 select_wlist (
-magic_id ("H
+skill_id (
+magic_id ("H
 GS2CWarProtect
 war_id (
 
