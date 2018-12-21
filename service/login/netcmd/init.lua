@@ -14,7 +14,13 @@ function Invoke(sModule, sCmd, fd, mData)
         if f then
             local oGateMgr = global.oGateMgr
             local oConnection = oGateMgr:GetConnection(fd)
-            return f(oConnection, mData)
+            if oConnection then
+                return f(oConnection, mData)
+            end
+        else
+            print(string.format("Invoke fail %s %s %s %s", MY_SERVICE_NAME, MY_ADDR, sModule, sCmd))
         end
+    else
+        print(string.format("Invoke fail %s %s %s %s", MY_SERVICE_NAME, MY_ADDR, sModule, sCmd))
     end
 end

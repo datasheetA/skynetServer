@@ -22,3 +22,8 @@ message C2GSWarEscape {
     optional uint32 war_id = 1;
     optional uint32 action_wid = 2;
 }
+
+message C2GSWarDefense {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+}

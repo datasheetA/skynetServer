@@ -12,6 +12,7 @@ local netcmd = import(service_path("netcmd.init"))
 local logiccmd = import(service_path("logiccmd.init"))
 local worldobj = import(service_path("worldobj"))
 local sceneobj = import(service_path("sceneobj"))
+local warobj = import(service_path("warobj"))
 local gmobj = import(service_path("gmobj"))
 
 skynet.start(function()
@@ -20,17 +21,26 @@ skynet.start(function()
     texthandle.Init()
 
     global.oGlobalTimer = servicetimer.NewTimer()
-
-    global.oWorldMgr = worldobj.NewWorldMgr()
     global.oGMMgr = gmobj.NewGMMgr()
 
-    local iCount = skynet.getenv("SCENE_SERVICE_COUNT")
+    global.oWorldMgr = worldobj.NewWorldMgr()
+
+    local iCount
+    iCount = skynet.getenv("SCENE_SERVICE_COUNT")
     local lSceneRemote = {}
     for i = 1, iCount do
         local iAddr = skynet.newservice("scene")
         table.insert(lSceneRemote, iAddr)
     end
     global.oSceneMgr = sceneobj.NewSceneMgr(lSceneRemote)
+
+    iCount = skynet.getenv("WAR_SERVICE_COUNT")
+    local lWarRemote = {}
+    for i = 1, iCount do
+        local iAddr = skynet.newservice("war")
+        table.insert(lWarRemote, iAddr)
+    end
+    global.oWarMgr = warobj.NewWarMgr(lWarRemote)
 
     --lxldebug add some temp scene
     local mTestScenes = {

@@ -13,6 +13,7 @@ res_file = "lualib/public/resfile.lua"
 -- 决定log输出到哪个文件
 APPNAME = "n1_server"
 SCENE_SERVICE_COUNT = 5
+WAR_SERVICE_COUNT = 5
 
 -- 端口配置
 GM_CONSOLE_PORT = 7001

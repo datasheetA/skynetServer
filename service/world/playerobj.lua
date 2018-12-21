@@ -76,6 +76,8 @@ function CPlayer:MailAddr()
 end
 
 function CPlayer:OnLogout()
+    local oWarMgr = global.oWarMgr
+    oWarMgr:OnLogout(self)
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnLogout(self)
     --disconnect
@@ -92,6 +94,8 @@ function CPlayer:OnLogin(bReEnter)
     self:Send("GS2CLoginRole", {role = {account = self:GetAccount(), pid = self:GetPid()}})
     self.m_fHeartBeatTime = get_time()
 
+    local oWarMgr = global.oWarMgr
+    oWarMgr:OnLogin(self, bReEnter)
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnLogin(self, bReEnter)
     
@@ -115,6 +119,8 @@ function CPlayer:OnLogin(bReEnter)
 end
 
 function CPlayer:OnDisconnected()
+    local oWarMgr = global.oWarMgr
+    oWarMgr:OnDisconnected(self)
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnDisconnected(self)
 end

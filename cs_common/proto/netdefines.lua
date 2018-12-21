@@ -34,6 +34,7 @@ C2GS_DEFINES.war = {
     C2GSWarNormalAttack = 4002,
     C2GSWarProtect = 4003,
     C2GSWarEscape = 4004,
+    C2GSWarDefense = 4005,
 }
 
 C2GS_DEFINES.item = {
@@ -71,23 +72,19 @@ GS2C_DEFINES.other = {
 }
 
 GS2C_DEFINES.war = {
-    GS2CWarStart = 4001,
-    GS2CWarEnd = 4002,
+    GS2CShowWar = 4001,
+    GS2CWarResult = 4002,
     GS2CWarBoutStart = 4003,
     GS2CWarBoutEnd = 4004,
     GS2CWarAddWarrior = 4005,
-    GS2CWarSkillStart = 4006,
-    GS2CWarSkillEnd = 4007,
-    GS2CWarNormalAttackStart = 4008,
-    GS2CWarNormalAttackEnd = 4009,
-    GS2CWarMagicStart = 4010,
-    GS2CWarMagicEnd = 4011,
-    GS2CWarProtectStart = 4012,
-    GS2CWarProtectEnd = 4013,
-    GS2CWarEscapeStart = 4014,
-    GS2CWarEscapeEnd = 4015,
-    GS2CWarDamage = 4016,
-    GS2CWarWarriorStatus = 4017,
+    GS2CWarDelWarrior = 4006,
+    GS2CWarNormalAttack = 4007,
+    GS2CWarMagic = 4008,
+    GS2CWarProtect = 4009,
+    GS2CWarEscape = 4010,
+    GS2CWarDamage = 4011,
+    GS2CWarWarriorStatus = 4012,
+    GS2CWarGoback = 4013,
 }
 
 GS2C_DEFINES.item = {

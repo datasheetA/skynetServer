@@ -39,6 +39,13 @@ function CPlayerEntity:Disconnected()
     self.m_mMail = nil
 end
 
+function CPlayerEntity:EnterWar()
+    self.m_mMail = nil
+end
+
+function CPlayerEntity:LeaveWar()
+end
+
 function CPlayerEntity:SendRaw(sData)
     if self.m_mMail then
         net.SendRaw(self.m_mMail, sData)

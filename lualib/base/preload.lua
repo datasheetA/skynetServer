@@ -3,6 +3,7 @@ require "base.reload"
 require "base.timeop"
 require "base.fileop"
 require "base.stringop"
+require "base.tableop"
 
 local skynet = require "skynet"
 local servicetimer = require "base.servicetimer"
@@ -41,4 +42,12 @@ end
 logic_base_cls = function ()
     local baseobj = import(lualib_path("base.baseobj"))
     return baseobj.CBaseObject
+end
+
+local function Trace(sMsg)
+    print(debug.traceback(sMsg))
+end
+
+safe_call = function (func, ...)
+    return xpcall(func, Trace, ...)
 end

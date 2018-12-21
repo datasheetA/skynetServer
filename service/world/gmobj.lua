@@ -20,6 +20,18 @@ function Commands.setgrade(oMaster, i)
     oMaster.m_oBaseCtrl:SetData("grade", i)
 end
 
+function Commands.testwar(oMaster, iTargetPid)
+    local oWarMgr = global.oWarMgr
+    local oWorldMgr = global.oWorldMgr
+    local oTarget = oWorldMgr:GetOnlinePlayerByPid(iTargetPid)
+    if oTarget then
+        local oWar = oWarMgr:CreateWar({})
+        oWarMgr:EnterWar(oMaster, oWar:GetWarId(), {camp_id = 1}, true)
+        oWarMgr:EnterWar(oTarget, oWar:GetWarId(), {camp_id = 2}, true)
+        oWarMgr:StartWar(oWar:GetWarId())
+    end
+end
+
 function Commands.clone(oMaster,itemid)
     local itemobj = loaditem.Create(itemid)
     if itemobj then
@@ -33,8 +45,6 @@ function Commands.clearall(oMaster)
     end
 end
 
-function Commands.C2GSGMCmd(oMaster,iCmd)
-end
 
 CGMMgr = {}
 CGMMgr.__index = CGMMgr

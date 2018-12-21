@@ -22,7 +22,9 @@ local function main()
     if not ip then
         error("host to ip fail")
     end
-    local client = Robot.Robot:new(ip, args.port)
+    local client = Robot.Robot:new(ip, args.port, {
+        shield = {["GS2CHeartBeat"] = true, ["C2GSHeartBeat"] = true},
+    })
     if args.script then
         client:fork(client.run_script, client, args.script)
     end

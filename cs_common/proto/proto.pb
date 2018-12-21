@@ -15,17 +15,20 @@
 pid ("
 PlayerAoiBlock
 mask (
-·
-base/war.protobase"-
+é
+base/war.protobase"M
 PlayerWarriorStatus
 
 hp (
 
-mp ("T
+mp (
+max_hp (
+max_mp ("a
 PlayerWarrior
 wid (
-pos ()
-status (2.base.PlayerWarriorStatus"D
+pid (
+pos ()
+status (2.base.PlayerWarriorStatus"D
 WarCamp
 camp_id ((
 player_list (2.base.PlayerWarrior
@@ -50,7 +53,7 @@ u
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-æ
+Ù
 client/war.proto"\
 C2GSWarSkill
 war_id (
@@ -70,6 +73,10 @@ action_wid (
 
 select_wid ("3
 C2GSWarEscape
+war_id (
+
+action_wid ("4
+C2GSWarDefense
 war_id (
 
 action_wid (
@@ -138,66 +145,44 @@ aoi_player (2.base.PlayerAoi"-
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-œ	
-server/war.protobase/war.proto"@
-GS2CWarStart
-war_id ( 
-	camp_list (2.base.WarCamp"
-
-GS2CWarEnd
-war_id ("3
+Å
+server/war.protobase/war.proto"
+GS2CShowWar
+war_id ("0
+GS2CWarResult
+war_id (
+bout_id ("3
 GS2CWarBoutStart
 war_id (
-bout_id ("1
+bout_id (" 
 GS2CWarBoutEnd
-war_id (
-bout_id ("W
+war_id ("h
 GS2CWarAddWarrior
-war_id (
-type ($
-warrior (2.base.PlayerWarrior"K
-GS2CWarSkillStart
-war_id (
-action_wlist (
-skill_id ("I
-GS2CWarSkillEnd
-war_id (
-action_wlist (
-skill_id ("R
-GS2CWarNormalAttackStart
+war_id (
+camp_id (
+type ($
+warrior (2.base.PlayerWarrior"0
+GS2CWarDelWarrior
+war_id (
+wid ("M
+GS2CWarNormalAttack
 war_id (
 
 action_wid (
 
-select_wid ("<
-GS2CWarNormalAttackEnd
-war_id (
-
-action_wid ("a
-GS2CWarMagicStart
+select_wid ("\
+GS2CWarMagic
 war_id (
 action_wlist (
 select_wlist (
-magic_id ("I
-GS2CWarMagicEnd
-war_id (
-action_wlist (
-magic_id ("M
-GS2CWarProtectStart
+magic_id ("H
+GS2CWarProtect
 war_id (
 
 action_wid (
 
-select_wid ("7
-GS2CWarProtectEnd
-war_id (
-
-action_wid ("8
-GS2CWarEscapeStart
-war_id (
-
-action_wid ("6
-GS2CWarEscapeEnd
+select_wid ("3
+GS2CWarEscape
 war_id (
 
 action_wid ("J
@@ -210,7 +195,11 @@ action_wid ("J
 war_id (
 wid (
 type ()
-status (2.base.PlayerWarriorStatus
+status (2.base.PlayerWarriorStatus"3
+GS2CWarGoback
+war_id (
+
+action_wid (
 3
 server/other.proto"
 GS2CHeartBeat

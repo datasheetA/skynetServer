@@ -92,6 +92,20 @@ function CSceneMgr:RemoveScene(id)
     end
 end
 
+function CSceneMgr:OnEnterWar(oPlayer)
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
+    if oNowScene then
+        oNowScene:NotifyEnterWar(oPlayer)
+    end
+end
+
+function CSceneMgr:OnLeaveWar(oPlayer)
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
+    if oNowScene then
+        oNowScene:NotifyLeaveWar(oPlayer)
+    end
+end
+
 function CSceneMgr:OnDisconnected(oPlayer)
     local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oNowScene then
@@ -158,6 +172,10 @@ function CSceneMgr:EnterScene(oPlayer, iScene, mInfo, bForce)
     return {errcode = gamedefines.ERRCODE.ok}
 end
 
+function CSceneMgr:RemoteEvent(sEvent, mData)
+    return true
+end
+
 
 CScene = {}
 CScene.__index = CScene
@@ -166,6 +184,7 @@ inherit(CScene, logic_base_cls())
 function CScene:New(id, mInfo)
     local o = super(CScene).New(self)
     o.m_iSceneId = id
+    o.m_iRemoteAddr = nil
     o.m_iDispatchId = 0
     o.m_iMapId = mInfo.map_id
     o.m_bIsDurable = mInfo.is_durable
@@ -244,8 +263,17 @@ function CScene:NotifyDisconnected(oPlayer)
     return true
 end
 
-function CScene:SyncPos(iEid, iPid, mPos)
-    if self.m_mPlayers[iPid] == iEid then
-        interactive.Send(self.m_iRemoteAddr, "scene", "SyncPlayerPos", {scene_id = self.m_iSceneId, pid = iPid, pos_info = mPos})
-    end
+function CScene:NotifyEnterWar(oPlayer)
+    interactive.Send(self.m_iRemoteAddr, "scene", "NotifyEnterWar", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid()})
+    return true
+end
+
+function CScene:NotifyLeaveWar(oPlayer)
+    interactive.Send(self.m_iRemoteAddr, "scene", "NotifyLeaveWar", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid()})
+    return true
+end
+
+function CScene:Forward(sCmd, iPid, mData)
+    interactive.Send(self.m_iRemoteAddr, "scene", sCmd, {pid = iPid, scene_id = self.m_iSceneId, data = mData})
+    return true
 end

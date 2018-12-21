@@ -178,7 +178,7 @@ function CEntity:SendAoi(sMessage, mData, bInclude, mExclude)
     end
 
     for k, _ in pairs(self.m_mWatcher) do
-        if not mExclude[self:GetEid()] then
+        if not mExclude[k] then
             local o = self:GetEntity(k)
             if o then
                 o:SendRaw(sData)

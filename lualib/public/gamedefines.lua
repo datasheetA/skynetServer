@@ -23,3 +23,27 @@ SCENE_ENTITY_TYPE = {
     ENTITY_TYPE = 0,
     PLAYER_TYPE = 1,
 }
+
+WAR_WARRIOR_TYPE = {
+    WARRIOR_TYPE = 0,
+    PLAYER_TYPE = 1,
+}
+
+WAR_WARRIOR_STATUS = {
+    NULL = 0,
+    ALIVE = 1,
+    DEAD = 2,
+}
+
+WAR_BOUT_STATUS = {
+    NULL = 0,
+    OPERATE = 1,
+    ANIMATION = 2,
+}
+
+WAR_RECV_DAMAGE_FLAG = {
+    NULL = 0,
+    MISS = 1,
+    DEFENSE = 2,
+    CRIT = 3,
+}

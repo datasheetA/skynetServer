@@ -5,5 +5,6 @@ M.oWorldMgr = nil
 M.oSceneMgr = nil
 M.oGlobalTimer = nil
 M.oGMMgr = nil
+M.oWarMgr = nil
 
 return M

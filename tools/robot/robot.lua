@@ -75,6 +75,7 @@ function Robot:new(host, port, opts)
         fd = assert(socket.connect(host, port)),
         last = "",
         slient = opts.slient,
+        shield = opts.shield or {},
         coroutines = {},
         timers = {},
         callers = {},
@@ -112,7 +113,7 @@ function Robot:sleep(n)
 end
 
 function Robot:send_client_request(name, args, session)
-    if not self.slient then
+    if not self.slient and not self.shield[name] then
         print("[REQUEST]", name, session)
         if args then
             tprint(args)
@@ -124,7 +125,7 @@ function Robot:send_client_request(name, args, session)
 end
 
 function Robot:handle_server_request(name, args)
-    if not self.slient then
+    if not self.slient and not self.shield[name] then
         print("[NOTIFY]", name)
         if args then
             tprint(args)
@@ -220,7 +221,7 @@ function Robot:parse_cmd(s)
 end
 
 function Robot:run_cmd(cmd, args)
-    if not self.slient then
+    if not self.slient and not self.shield[cmd] then
         print('[COMMAND]', cmd, args)
     end
     local session = new_session()

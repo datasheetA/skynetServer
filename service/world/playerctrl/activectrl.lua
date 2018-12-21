@@ -11,6 +11,7 @@ inherit(CPlayerActiveCtrl, datactrl.CDataCtrl)
 function CPlayerActiveCtrl:New(pid)
     local o = super(CPlayerActiveCtrl).New(self, {pid = pid})
     o.m_mNowSceneInfo = nil
+    o.m_mNowWarInfo = nil
     return o
 end
 
@@ -52,6 +53,15 @@ function CPlayerActiveCtrl:GetDurableSceneInfo()
     return self:GetData("scene_info")
 end
 
+function CPlayerActiveCtrl:GetNowWar()
+    local m = self.m_mNowWarInfo
+    if not m then
+        return
+    end
+    local oWarMgr = global.oWarMgr
+    return oWarMgr:GetWar(m.now_war)
+end
+
 function CPlayerActiveCtrl:GetNowScene()
     local m = self.m_mNowSceneInfo
     if not m then
@@ -80,5 +90,16 @@ function CPlayerActiveCtrl:SetNowSceneInfo(mInfo)
     end
     if mInfo.now_pos then
         m.now_pos = mInfo.now_pos
+    end
+end
+
+function CPlayerActiveCtrl:SetNowWarInfo(mInfo)
+    local m = self.m_mNowWarInfo
+    if not m then
+        self.m_mNowWarInfo = {}
+        m = self.m_mNowWarInfo
+    end
+    if mInfo.now_war then
+        m.now_war = mInfo.now_war
     end
 end

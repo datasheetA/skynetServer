@@ -13,7 +13,7 @@ function GS2CPropLogin(oPlayer,mNet)
     oPlayer:Send("GS2CPropLogin",mNet)
 end
 
-function GS2CPropChange(pid,,key,value)
+function GS2CPropChange(pid,key,value)
     local mNet = {}
     mNet[key] = value
     local oWorldMgr = global.oWorldMgr
