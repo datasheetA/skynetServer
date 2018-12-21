@@ -20,5 +20,5 @@ end
 function CItem:TrueUse(who,target)
     local iCostAmount = self:GetUseCostAmount()
     self:AddAmount(-iCostAmount,"itemuse")
-    who:RewardSilver(3000,"使用银币袋")
+    who:RewardExp(3000,"人物经验书")
 end

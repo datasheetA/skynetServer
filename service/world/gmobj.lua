@@ -76,7 +76,7 @@ function Commands.rewardgold(oMaster,iVal)
 end
 
 function Commands.rewardsilver(oMaster,iVal)
-    oMaster:RewardSilver(oMaster,iVal)
+    oMaster:RewardSilver(iVal,"gm")
 end
 
 function Commands.clearall(oMaster)

@@ -1,5 +1,6 @@
 local global = require "global"
 local skynet = require "skynet"
+local interactive =  require "base.interactive"
 
 local itembase = import(service_path("item/other/otherbase"))
 
@@ -20,5 +21,5 @@ end
 function CItem:TrueUse(who,target)
     local iCostAmount = self:GetUseCostAmount()
     self:AddAmount(-iCostAmount,"itemuse")
-    who:RewardSilver(3000,"使用银币袋")
+    who:RewardGold(3000,"使用金币袋")
 end

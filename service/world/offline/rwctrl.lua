@@ -22,7 +22,7 @@ function CRWCtrl:Init(pid)
     self.m_ID = pid
     self.m_FuncList = {}
     self.m_GoldCoin = 0                                                                                             --金元宝
-    self.m_RplGoldCoin = 0                                                                                        
+    self.m_RplGoldCoin = 0                                                                                        --代金
 
     self.m_LastTime = timeop.get_time()
     self.m_bLoading = true
@@ -48,6 +48,11 @@ end
 function CRWCtrl:IsActive()
     local iNowTime = timeop.get_time()
     if iNowTime - self.m_LastTime >= 10 * 60 then
+        return true
+    end
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    if oPlayer then
         return true
     end
     return false
@@ -79,7 +84,6 @@ end
 
 function CRWCtrl:AddFunc(sFunc,...)
     local mArgs = {...}
-    extend.Table.print(defines)
     local iFuncNo = defines.GetFuncNo(sFunc)
     assert(iFuncNo>0,string.format("%d AddFuncList err:%s",self.m_ID,sFunc))
     table.insert(self.m_FuncList,{iFuncNo,mArgs})
@@ -99,6 +103,53 @@ function CRWCtrl:OnLogin()
             oPlayer[sFunc](oPlayer,table.unpack(mArgs))
         end
     end
+end
+
+function CRWCtrl:AddGoldCoin(iGoldCoin,sReason)
+    self:Dirty()
+    local iOldGoldCoin = self.m_GoldCoin
+    assert(iGoldCoin>0,string.format("%d AddGoldCoin err %d %d",self.m_ID,self.m_GoldCoin,iGoldCoin))
+    self.m_GoldCoin  = self.m_GoldCoin + iGoldCoin
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    if oPlayer then
+        oPlayer:GS2CPropChange({goldcoin=self:GoldCoin()})
+        oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
+    end
+end
+
+function  CRWCtrl:AddRplGoldCoin(iRplGold,sReason)
+    self:Dirty()
+    local iOldRplGoldCoin = self.m_RplGoldCoin
+    assert(iRplGold>0,string.format("%d AddRplGoldCoin err %d %d",self.m_ID,self.m_RplGoldCoin,iRplGold))
+    self.m_RplGoldCoin = self.m_RplGoldCoin + iRplGold
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    if oPlayer then
+        oPlayer:GS2CPropChange({goldcoin=self:GoldCoin()})
+        oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
+    end
+end
+
+function CRWCtrl:GoldCoin()
+    local iGold = self.m_GoldCoin + self.m_RplGoldCoin
+    return iGold
+end
+
+function CRWCtrl:ValidGoldCoin(iGold)
+    local iSumGold = self:GoldCoin()
+    if iSumGold < iGold then
+        return false
+    end
+    return true
+end
+
+-- 优先绑定
+function CRWCtrl:PayGoldCoin(iVal)
+    if not self:ValidGoldCoin(iVal) then
+        return
+    end
+    self:Dirty()
 end
 
 function CRWCtrl:Schedule()

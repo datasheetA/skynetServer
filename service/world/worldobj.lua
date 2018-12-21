@@ -9,6 +9,7 @@ local playerobj = import(service_path("playerobj"))
 local connectionobj = import(service_path("connectionobj"))
 local offline = import(service_path("offline.init"))
 local timeop = import(lualib_path("base.timeop"))
+local tableop = import(lualib_path("base.tableop"))
 
 function NewWorldMgr(...)
     local o = CWorldMgr:New(...)
@@ -248,7 +249,24 @@ function CWorldMgr:_LoginRole5(mRecord,mData)
     self.m_mLoginPlayers[pid] = nil
     self.m_mOnlinePlayers[pid] = oPlayer
 
-    oPlayer:OnLogin(false)
+    local mFunc = {"LoadRO","LoadRW"}
+    local mLoad = {}
+    for _,sFunc in pairs(mFunc) do
+        if self[sFunc] then
+            self[sFunc](self,pid,function(oRO)
+                mLoad[sFunc] = 1
+                if tableop.table_count(mLoad) >=2 then
+                    self:LoadEnd(pid)
+                end
+            end)
+        end
+    end
+end
+
+function CWorldMgr:LoadEnd(pid)
+    local oPlayer = self.m_mOnlinePlayers[pid]
+    assert(oPlayer,string.format("LoadEnd err %d",pid))
+     oPlayer:OnLogin(false)
     local oConn = oPlayer:GetConn()
     if oConn then
         interactive.Send(".login", "login", "LoginResult", {pid = pid, handle = oConn.m_iHandle, errcode = gamedefines.ERRCODE.ok})
@@ -258,16 +276,20 @@ end
 function CWorldMgr:LoadRO(pid,func)
     local oRO = self.m_mOfflineROs[pid]
     if oRO then
-        if oRO:IsLoading() then
-            oRO:AddWaitFunc(func)
-        else
-            func(oRO)
-            oRO.m_LastTime = timeop.get_time()
+        if func then
+            if oRO:IsLoading() then
+                oRO:AddWaitFunc(func)
+            else
+                func(oRO)
+                oRO.m_LastTime = timeop.get_time()
+            end
         end
     else
         local oRO = offline.NewROCtrl(pid)
         self.m_mOfflineROs[pid] = oRO
-        oRO:AddWaitFunc(func)
+        if func then
+          oRO:AddWaitFunc(func)
+        end
         interactive.Request(".gamedb","offlinedb","LoadOfflineRO",{pid=pid},function (mRecord,mData)
             local oRO = self.m_mOfflineROs[pid]
             if not oRO then
@@ -284,16 +306,20 @@ end
 function CWorldMgr:LoadRW(pid,func)
     local oRW = self.m_mOfflineRWs[pid]
     if oRW then
-        if oRW:IsLoading() then
-            oRW:AddWaitFunc(func)
-        else
-            func(oRW)
-            oRW.m_LastTime = timeop.get_time()
+        if func then
+            if oRW:IsLoading() then
+                oRW:AddWaitFunc(func)
+            else
+                func(oRW)
+                oRW.m_LastTime = timeop.get_time()
+            end
         end
     else
         local oRW = offline.NewRWCtrl(pid)
         self.m_mOfflineRWs[pid] = oRW
-        oRW:AddWaitFunc(func)
+        if func then
+         oRW:AddWaitFunc(func)
+        end
         interactive.Request(".gamedb","offlinedb","LoadOfflineRW",{pid=pid},function (mRecord,mData)
             local oRW = self.m_mOfflineRWs[pid]
             if not oRW then

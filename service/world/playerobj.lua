@@ -110,7 +110,11 @@ function CPlayer:OnLogout()
 end
 
 function CPlayer:OnLogin(bReEnter)
-    self:GS2CLoginRole()
+    local oWorldMgr = global.oWorldMgr
+    oWorldMgr:LoadRW(self.m_iPid,function (oRW)
+        self.m_oBaseCtrl:SetData("goldcoin",oRW:GoldCoin())
+        self:GS2CLoginRole()
+    end)
     self.m_fHeartBeatTime = get_time()
 
 
@@ -266,7 +270,7 @@ function CPlayer:GS2CLoginRole()
         grade = self.m_oBaseCtrl:GetData("grade",0),
         name = self.m_oBaseCtrl:GetData("name",""),
         shape = 0,
-        goldcoin = 0,
+        goldcoin = self.m_oBaseCtrl:GetData("goldcoin",0),
         gold = self.m_oBaseCtrl:GetData("gold",0),
         silver = self.m_oBaseCtrl:GetData("silver",0),
         exp = self.m_oBaseCtrl:GetData("exp",0)

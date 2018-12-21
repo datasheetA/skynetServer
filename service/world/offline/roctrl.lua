@@ -48,6 +48,11 @@ function CROCtrl:IsActive()
     if iNowTime - self.m_LastTime < 10 * 60 then
         return true
     end
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    if oPlayer then
+        return true
+    end
     return false
 end
 
