@@ -255,8 +255,14 @@ function CPlayer:RewardSilver(iVal,sReason,mArgs)
     self.m_oBaseCtrl:RewardSilver(iVal,sReason,mArgs)
 end
 
+function CPlayer:RewardExp(iVal,sReason,mArgs)
+    self.m_oBaseCtrl:RewardExp(iVal,sReason,mArgs)
+end
+
 function CPlayer:GS2CLoginRole()
     local role = {
+        account = self:GetAccount(),
+        pid = self.m_iPid,
         grade = self.m_oBaseCtrl:GetData("grade",0),
         name = self.m_oBaseCtrl:GetData("name",""),
         shape = 0,
