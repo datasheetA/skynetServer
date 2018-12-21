@@ -3,6 +3,7 @@
 local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
+local extend = require "base/extend"
 
 local loaditem = import(service_path("item/loaditem"))
 local itemnet = import(service_path("netcmd/item"))

@@ -6,6 +6,7 @@ local skynet = require "skynet"
 Cmds = {}
 
 Cmds.playerdb = import(service_path("logiccmd.playerdb"))
+Cmds.offlinedb = import(service_path("logiccmd.offlinedb"))
 
 function Invoke(sModule, sCmd, mRecord, mData)
     local m = Cmds[sModule]

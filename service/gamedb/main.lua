@@ -20,6 +20,9 @@ skynet.start(function()
     local sPlayerTableName = "player"
     oGameDb:CreateIndex(sPlayerTableName, {pid = 1}, {unique = true, name = "player_pid_index"})
     oGameDb:CreateIndex(sPlayerTableName, {account = 1}, {name = "player_account_index"})
+    
+    local sOfflineTableName = "offline"
+    oGameDb:CreateIndex(sOfflineTableName,{pid = 1},{unique=true,name="offline_pid_index"})
 
     skynet.register ".gamedb"
     print("gamedb service booted")

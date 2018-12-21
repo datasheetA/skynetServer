@@ -99,6 +99,17 @@ function CPlayer:OnLogin(bReEnter)
     if not bReEnter then
         self:Schedule()
     end
+    local mArgs = {
+        sName = self.m_oBaseCtrl:GetData("name"),
+        iGrade = self.m_oBaseCtrl:GetData("grade")
+    }
+    local oWorldMgr = global.oWorldMgr
+    oWorldMgr:LoadRO(self.m_iPid,function (oRO)
+        oRO:OnLogin(mArgs)
+    end)
+    oWorldMgr:LoadRW(self.m_iPid,function(oRW)
+        oRW:OnLogin()
+    end)
 end
 
 function CPlayer:OnDisconnected()

@@ -7,6 +7,8 @@ local interactive = require "base.interactive"
 local gamedefines = import(lualib_path("public.gamedefines"))
 local playerobj = import(service_path("playerobj"))
 local connectionobj = import(service_path("connectionobj"))
+local offline = import(service_path("offline.init"))
+local timeop = import(lualib_path("base.timeop"))
 
 function NewWorldMgr(...)
     local o = CWorldMgr:New(...)
@@ -22,6 +24,9 @@ function CWorldMgr:New()
     o.m_mOnlinePlayers = {}
     o.m_mLoginPlayers = {}
     o.m_mLogoutPlayers = {}
+
+    o.m_mOfflineROs = {}
+    o.m_mOfflineRWs = {}
 
     o.m_mConnections = {}
     return o
@@ -40,6 +45,8 @@ function CWorldMgr:Release()
     self.m_mLoginPlayers = {}
     self.m_mLogoutPlayers = {}
     self.m_mConnections = {}
+    self.m_mOfflineROs = {}
+    self.m_mOfflineRWs = {}
     super(CWorldMgr).Release(self)
 end
 
@@ -232,3 +239,64 @@ function CWorldMgr:_LoginRole4(mRecord,mData)
         interactive.Send(".login", "login", "LoginResult", {pid = pid, handle = oConn.m_iHandle, errcode = gamedefines.ERRCODE.ok})
     end
 end
+
+function CWorldMgr:LoadRO(pid,func)
+    local oRO = self.m_mOfflineROs[pid]
+    if oRO then
+        if oRO:IsLoading() then
+            oRO:AddWaitFunc(func)
+        else
+            func(oRO)
+            oRO.m_LastTime = timeop.get_time()
+        end
+    else
+        local oRO = offline.NewROCtrl(pid)
+        self.m_mOfflineROs[pid] = oRO
+        oRO:AddWaitFunc(func)
+        interactive.Request(".gamedb","offlinedb","LoadOfflineRO",{pid=pid},function (mRecord,mData)
+            local oRO = self.m_mOfflineROs[pid]
+            if not oRO then
+                oRO = offline.NewROCtrl(pid)
+                self.m_mOfflineROs[pid] = oRO
+            end
+            oRO:Load(mData)
+            oRO.m_bLoading = false
+            oRO:WakeUpFunc()
+        end)
+    end
+end
+
+function CWorldMgr:LoadRW(pid,func)
+    local oRW = self.m_mOfflineRWs[pid]
+    if oRW then
+        if oRW:IsLoad() then
+            oRW:AddWaitFunc(func)
+        else
+            func(oRW)
+            oRW.m_LastTime = timeop.get_time()
+        end
+    else
+        local oRW = offline.NewRWCtrl(pid)
+        self.m_mOfflineRWs[pid] = oRW
+        oRW:AddWaitFunc(func)
+        interactive.Request(".gamedb","offlinedb","LoadOfflineRW",{pid=pid},function (mRecord,mData)
+            local oRW = self.m_mOfflineRWs[pid]
+            if not oRW then
+                oRW = offline.NewRWCtrl(pid)
+                self.m_mOfflineRWs[pid] = oRW
+            end
+            oRW:Load(mData)
+            oRW.m_bLoading = false
+            oRW:WakeUpFunc()
+        end)
+    end
+end
+
+function CWorldMgr:CleanRO(pid)
+    self.m_mOfflineROs[pid] = nil
+end
+
+function CWorldMgr:CleanRW(pid)
+    self.m_mOfflineRWs[pid] = nil
+end
+
