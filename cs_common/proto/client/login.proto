@@ -1,0 +1,12 @@
+
+message C2GSLoginAccount {
+    optional string account = 1;
+}
+
+message C2GSLoginRole {
+    optional string account = 1;
+    optional uint32 pid = 2;
+}
+
+message C2GSTestDo {
+}

@@ -1,0 +1,6 @@
+package base;
+
+message Role {
+    optional string account = 1;
+    optional uint32 pid = 2;
+}

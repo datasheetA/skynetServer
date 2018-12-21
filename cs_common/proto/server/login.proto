@@ -1,0 +1,20 @@
+import "base/role.proto";
+
+message GS2CHello {
+}
+
+message GS2CLoginError {
+    optional uint32 pid = 1;
+    optional uint32 errcode = 2; /* 1001  in_login 1002 in_logout */
+}
+
+message GS2CLoginAccount {
+    optional string account = 1;
+}
+
+message GS2CLoginRole {
+    optional base.Role role = 1;
+}
+
+message GS2CTestDo {
+}

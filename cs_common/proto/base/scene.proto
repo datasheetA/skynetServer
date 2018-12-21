@@ -1,0 +1,21 @@
+package base;
+
+message PosInfo {
+    optional uint32 v = 1;
+    optional uint32 x = 2;
+    optional uint32 y = 3;
+    optional uint32 z = 4;
+    optional int32 face_x = 5;
+    optional int32 face_y = 6;
+    optional int32 face_z = 7;
+}
+
+message PlayerAoi {
+    optional PlayerAoiBlock block = 1;
+    optional PosInfo pos_info = 2;
+    optional uint32 pid = 3;
+}
+
+message PlayerAoiBlock {
+    optional uint32 mask = 1; /* */
+}

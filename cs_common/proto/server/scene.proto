@@ -1,0 +1,38 @@
+import "base/scene.proto";
+
+message GS2CShowScene {
+    optional uint32 scene_id = 1;
+    optional uint32 map_id = 2;
+}
+
+message GS2CEnterScene {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+    optional base.PosInfo pos_info = 3;
+}
+
+message GS2CEnterAoi {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+    optional uint32 type = 3; /*1 player*/
+
+    optional base.PlayerAoi aoi_player = 4;
+}
+
+message GS2CLeaveAoi {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+}
+
+message GS2CSyncAoi {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+
+    optional base.PlayerAoiBlock block_player = 3;
+}
+
+message GS2CSyncPos {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+    optional base.PosInfo pos_info = 3;
+}
