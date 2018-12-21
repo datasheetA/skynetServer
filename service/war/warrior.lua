@@ -26,10 +26,6 @@ function CWarrior:New(iWid)
 
     o.m_oStatus = status.NewStatus()
     o.m_oStatus:Set(gamedefines.WAR_WARRIOR_STATUS.ALIVE)
-    o.m_iHp = nil
-    o.m_iMp = nil
-    o.m_iMaxHp = nil
-    o.m_iMaxMp = nil
 
     return o
 end
@@ -41,10 +37,7 @@ end
 function CWarrior:Init(mInit)
     self.m_iWarId = mInit.war_id
     self.m_iCamp = mInit.camp_id
-    self.m_iHp = mInit.hp
-    self.m_iMp = mInit.mp
-    self.m_iMaxHp = mInit.max_hp
-    self.m_iMaxMp = mInit.max_mp
+    self.m_mData = mInit.data
 end
 
 function CWarrior:IsDead()
@@ -75,43 +68,53 @@ function CWarrior:GetPos()
     return self.m_iPos
 end
 
+function CWarrior:GetData(k, rDefault)
+    return self.m_mData[k] or rDefault
+end
+
+function CWarrior:SetData(k, v)
+    self.m_mData[k] = v
+end
+
+function CWarrior:StatusChange(...)
+end
+
 function CWarrior:GetMaxHp()
-    return self.m_iMaxHp
+    return self:GetData("max_hp")
+end
+
+function CWarrior:GetModelInfo()
+    return self:GetData("model_info")
 end
 
 function CWarrior:GetMaxMp()
-    return self.m_iMaxMp
+    return self:GetData("max_mp")
 end
 
 function CWarrior:GetHp()
-    return self.m_iHp
+    return self:GetData("hp")
 end
 
 function CWarrior:GetMp()
-    return self.m_iMp
+    return self:GetData("mp")
 end
 
 function CWarrior:SubHp(i)
-    self.m_iHp = self.m_iHp - i
-    self.m_iHp = math.max(0, math.min(self:GetMaxHp(), self.m_iHp))
+    self:SetData("hp", self:GetHp("hp") - i)
+    self:SetData("hp", math.max(0, math.min(self:GetMaxHp(), self:GetData("hp"))))
 
-    if self:IsAlive() and self.m_iHp <= 0 then
+    if self:IsAlive() and self:GetData("hp") <= 0 then
         self.m_oStatus:Set(gamedefines.WAR_WARRIOR_STATUS.DEAD)
     end
 
-    self:SendAll("GS2CWarWarriorStatus", {
-        war_id = self:GetWarId(),
-        wid = self:GetWid(),
-        type = self:Type(),
-        status = self:GetSimpleStatus(),
-    })
+    self:StatusChange("hp")
 end
 
 function CWarrior:AddHp(i)
-    self.m_iHp = self.m_iHp + i
-    self.m_iHp = math.max(0, math.min(self:GetMaxHp(), self.m_iHp))
+    self:SetData("hp", self:GetData("hp") + i)
+    self:SetData("hp", math.max(0, math.min(self:GetMaxHp(), self:GetData("hp"))))
 
-    if self:IsDead() and self.m_iHp > 0 then
+    if self:IsDead() and self:GetData("hp") > 0 then
         self.m_oStatus:Set(gamedefines.WAR_WARRIOR_STATUS.ALIVE)
     end
 
@@ -121,6 +124,8 @@ function CWarrior:AddHp(i)
         type = self:Type(),
         status = self:GetSimpleStatus(),
     })
+
+    self:StatusChange("hp")
 end
 
 function CWarrior:GetSimpleWarriorInfo()

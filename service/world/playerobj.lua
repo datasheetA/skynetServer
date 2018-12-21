@@ -145,6 +145,16 @@ function CPlayer:Release()
     super(CPlayer).Release(self)
 end
 
+function CPlayer:PackWarInfo()
+    local mRet = {}
+    mRet.hp = self:GetHp()
+    mRet.mp = self:GetMp()
+    mRet.max_hp = self:GetMaxHp()
+    mRet.max_mp = self:GetMaxMp()
+    mRet.model_info = self:GetModelInfo()
+    return mRet
+end
+
 function CPlayer:PackSceneInfo()
     local mRet = {}
     mRet.name = self:GetName()

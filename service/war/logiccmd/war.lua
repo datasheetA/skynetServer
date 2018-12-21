@@ -110,10 +110,11 @@ function EnterPlayer(mRecord, mData)
     local iWid = mData.wid
     local iCamp = mData.camp_id
     local mMail = mData.mail
+    local mInfo = mData.data
     local oWarMgr = global.oWarMgr
     local oWar = oWarMgr:GetWar(iWarId)
     assert(oWar, string.format("EnterPlayer error war: %d %d %d", iWarId, iPid, iWid))
-    oWar:EnterPlayer(iPid, iWid, iCamp, mMail)
+    oWar:EnterPlayer(iPid, iWid, iCamp, mMail, mInfo)
 end
 
 function LeavePlayer(mRecord, mData)

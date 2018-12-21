@@ -235,9 +235,10 @@ function CWar:EnterPlayer(oPlayer, mInfo)
         now_war = self.m_iWarId,
     })
     local iWid = self:DispatchWarriorId()
+    local mData = oPlayer:PackWarInfo()
     self.m_mPlayers[oPlayer:GetPid()] = iWid
     oPlayer:Send("GS2CShowWar", {war_id = self.m_iWarId})
-    interactive.Send(self.m_iRemoteAddr, "war", "EnterPlayer", {war_id = self.m_iWarId, wid = iWid, pid = oPlayer:GetPid(), camp_id = mInfo.camp_id, mail = oPlayer:MailAddr()})
+    interactive.Send(self.m_iRemoteAddr, "war", "EnterPlayer", {war_id = self.m_iWarId, wid = iWid, pid = oPlayer:GetPid(), data = mData, camp_id = mInfo.camp_id, mail = oPlayer:MailAddr()})
     return true
 end
 

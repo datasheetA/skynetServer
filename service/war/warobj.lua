@@ -137,17 +137,14 @@ function CWar:Leave(obj)
     obj:Release()
 end
 
-function CWar:EnterPlayer(iPid, iWid, iCamp, mMail)
+function CWar:EnterPlayer(iPid, iWid, iCamp, mMail, mInfo)
     assert(not self.m_mPlayers[iPid], string.format("EnterPlayer error %d %d", iPid, iWid))
     local obj = playerwarrior.NewPlayerWarrior(iWid, iPid, mMail)
     self.m_mPlayers[iPid] = iWid
     obj:Init({
         camp_id = iCamp,
         war_id = self:GetWarId(),
-        hp = 100,
-        mp = 100,
-        max_hp = 100,
-        max_mp = 100,
+        data = mInfo,
     })
     self:Enter(obj, iCamp)
     self:AddWatcher(obj)

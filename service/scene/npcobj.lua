@@ -79,7 +79,7 @@ function CNpcEntity:BlockChange(...)
         m[v] = true
     end
     local mBlock = self:BlockInfo(m)
-    self:Send("GS2CSyncAoi", {
+    self:SendAoi("GS2CSyncAoi", {
         scene_id = self:GetSceneId(),
         eid = self:GetEid(),
         type = self:Type(),

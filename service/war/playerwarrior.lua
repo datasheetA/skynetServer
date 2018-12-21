@@ -11,6 +11,35 @@ function NewPlayerWarrior(...)
     return CPlayerWarrior:New(...)
 end
 
+StatusHelperFunc = {}
+StatusHelperDef = {}
+
+StatusHelperDef.hp = 2
+function StatusHelperFunc.hp(o)
+    return o:GetHp()
+end
+
+StatusHelperDef.mp = 3
+function StatusHelperFunc.mp(o)
+    return o:GetMp()
+end
+
+StatusHelperDef.max_hp = 4
+function StatusHelperFunc.max_hp(o)
+    return o:GetMaxHp()
+end
+
+StatusHelperDef.max_mp = 5
+function StatusHelperFunc.max_mp(o)
+    return o:GetMaxMp()
+end
+
+StatusHelperDef.model_info = 6
+function StatusHelperFunc.model_info(o)
+    return o:GetModelInfo()
+end
+
+
 CPlayerWarrior = {}
 CPlayerWarrior.__index = CPlayerWarrior
 inherit(CPlayerWarrior, CWarrior)
@@ -91,11 +120,33 @@ function CPlayerWarrior:GetSimpleWarriorInfo()
     }
 end
 
-function CPlayerWarrior:GetSimpleStatus()
-    return {
-        hp = self:GetHp(),
-        mp = self:GetMp(),
-        max_hp = self:GetMaxHp(),
-        max_mp = self:GetMaxMp(),
-    }
+function CPlayerWarrior:GetSimpleStatus(m)
+    local mRet = {}
+    if not m then
+        m = StatusHelperDef
+    end
+    local iMask = 0
+    for k, _ in pairs(m) do
+        local i = assert(StatusHelperDef[k], string.format("GetSimpleStatus fail i get %s", k))
+        local f = assert(StatusHelperFunc[k], string.format("GetSimpleStatus fail f get %s", k))
+        mRet[k] = f(self)
+        iMask = iMask | (2^(i-1))
+    end
+    mRet.mask = iMask
+    return mRet
+end
+
+function CPlayerWarrior:StatusChange(...)
+    local l = table.pack(...)
+    local m = {}
+    for _, v in ipairs(l) do
+        m[v] = true
+    end
+    local mStatus = self:GetSimpleStatus(m)
+    self:SendAll("GS2CWarWarriorStatus", {
+        war_id = self:GetWarId(),
+        wid = self:GetWid(),
+        type = self:Type(),
+        player_status = mStatus,
+    })
 end

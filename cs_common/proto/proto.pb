@@ -1,5 +1,5 @@
 
-«	
+™	
 base/common.protobase"e
 PosInfo	
 v (	
@@ -62,22 +62,22 @@ model_info (2.base.ModelInfo"k
 mask (
 name (	#
 
-model_info (2.base.ModelInfo"M
-PlayerWarriorStatus
+model_info (2.base.ModelInfo"€
+PlayerWarriorStatus
+mask (
 
-hp (
+hp (
 
-mp (
-max_hp (
-max_mp ("a
+mp (
+max_hp (
+max_mp (#
+
+model_info (2.base.ModelInfo"a
 PlayerWarrior
 wid (
 pid (
 pos ()
-status (2.base.PlayerWarriorStatus"D
-WarCamp
-camp_id ((
-player_list (2.base.PlayerWarrior
+status (2.base.PlayerWarriorStatus
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -226,7 +226,7 @@ GS2CNpcSay
 shape (
 name (	
 text (	
-º
+Á
 server/war.protobase/common.proto"
 GS2CShowWar
 war_id ("0
@@ -274,12 +274,12 @@ action_wid (
 war_id (
 wid (
 type (
-damage ("l
+damage ("s
 GS2CWarWarriorStatus
 war_id (
 wid (
-type ()
-status (2.base.PlayerWarriorStatus"3
+type (0
+player_status (2.base.PlayerWarriorStatus"3
 GS2CWarGoback
 war_id (
 

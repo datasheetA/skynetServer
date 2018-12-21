@@ -70,7 +70,7 @@ message GS2CWarWarriorStatus {
     optional uint32 wid = 2;
     optional uint32 type = 3;
 
-    optional base.PlayerWarriorStatus status = 4;
+    optional base.PlayerWarriorStatus player_status = 4;
 }
 
 message GS2CWarGoback {
