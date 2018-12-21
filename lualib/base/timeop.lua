@@ -30,34 +30,44 @@ function get_msecond()
     return get_current()*10
 end
 
-function GetDayNo()
+function get_dayno()
     local iTime = get_time()
     local iDayNo = floor(iTime // (3600*24))
     return iDayNo
 end
 
 --5点算天
-function GetDayMorningNo()
+function get_morningdayno()
     local iTime = get_time()
     local iDayMorningNo = floor((iTime-5*3600) // 3600*24)
     return iDayMorningNo
 end
 
-function GetWeekNo()
+function get_weekno()
     local iTime = get_time()
     local iWeekNo = floor(iTime//(7*3600*24))
     return iWeekNo
 end
 
 --5点算星期
-function GetWeekMorningNo()
+function get_morningweekno()
     local iTime = get_time()
     local iWeekNo = floor((iTime-5*3600)//(7*3600*24))
     return iWeekNo
 end
 
-function GetHourNo()
+function get_hourno()
     local iTime = get_time()
     local iHourNo = floor(iTime//3600)
     return iHourNo
+end
+
+function chinadate()
+    local iTime = get_time()
+    local mDate = os.date("*t",iTime)
+    local iWeekDay = mDate.wday
+    if mDate.wday == 0 then
+        iWeekDay = 7
+    end
+    return iWeekDay,mDate.hour
 end

@@ -64,7 +64,7 @@ function CToday:Validate(key)
 end
 
 function CToday:GetTimeNo()
-    return timeop.GetDayNo()
+    return timeop.get_dayno()
 end
 
 CTodayMorning = {}
@@ -77,7 +77,7 @@ function CTodayMorning:New(pid)
 end
 
 function CTodayMorning:GetTimeNo()
-    return timeop.GetDayMorningNo()
+    return timeop.get_morningdayno()
 end
 
 CThisWeek = {}
@@ -90,7 +90,7 @@ function CThisWeek:New(pid)
 end
 
 function CThisWeek:GetTimeNo()
-    return timeop.GetWeekNo()
+    return timeop.get_weekno()
 end
 
 CThisWeekMorning = {}
@@ -100,6 +100,10 @@ inherit(CThisWeekMorning,CToday)
 function CThisWeekMorning:New(pid)
     local o = super(CThisWeekMorning).New(self,{pid=pid})
     return o
+end
+
+function CThisWeekMorning:GetTimeNo()
+    return timeop.get_morningweekno()
 end
 
 CThisTemp = {}
@@ -301,7 +305,7 @@ function CSeveralDay:Validate(key)
 end
 
 function CSeveralDay:GetTimeNo()
-    return timeop.GetDayNo()
+    return timeop.get_dayno()
 end
 
 CTimeCtrl = {}
