@@ -109,6 +109,72 @@ function PropHelperFunc.agility(oPlayer)
     return oPlayer.m_oBaseCtrl:GetData("agility")
 end
 
+PropHelperDef.phy_attack = 20
+function PropHelperFunc.phy_attack(oPlayer)
+    return oPlayer:GetPhyAttack()
+end
+
+PropHelperDef.phy_defense = 21
+function PropHelperFunc.phy_defense(oPlayer)
+    return oPlayer:GetPhyDefense()
+end
+
+PropHelperDef.mag_attack = 22
+function PropHelperFunc.mag_attack(oPlayer)
+    return oPlayer:GetMagAttack()
+end
+
+PropHelperDef.mag_defense = 23
+function PropHelperFunc.mag_defense(oPlayer)
+    return oPlayer:GetMagDefense()
+end
+
+PropHelperDef.cure_power = 24
+function PropHelperFunc.cure_power(oPlayer)
+    return oPlayer:GetCurePower()
+end
+
+PropHelperDef.speed = 25
+function PropHelperFunc.speed(oPlayer)
+    return oPlayer:GetSpeed()
+end
+
+PropHelperDef.seal_ratio = 26
+function PropHelperFunc.seal_ratio(oPlayer)
+    return oPlayer:GetSealRatio()
+end
+
+PropHelperDef.res_seal_ratio = 27
+function PropHelperFunc.res_seal_ratio(oPlayer)
+    return oPlayer:GetResSealRatio()
+end
+
+PropHelperDef.phy_critical_ratio = 28
+function PropHelperFunc.phy_critical_ratio(oPlayer)
+    return oPlayer:GetPhyCriticalRatio()
+end
+
+PropHelperDef.res_phy_critical_ratio = 29
+function PropHelperFunc.res_phy_critical_ratio(oPlayer)
+    return oPlayer:GetResPhyCriticalRatio()
+end
+
+PropHelperDef.mag_critical_ratio = 30
+function PropHelperFunc.mag_critical_ratio(oPlayer)
+    return oPlayer:GetMagCriticalRatio()
+end
+
+PropHelperDef.res_mag_critical_ratio = 31
+function PropHelperFunc.res_mag_critical_ratio(oPlayer)
+    return oPlayer:GetResMagCriticalRatio()
+end
+
+PropHelperDef.model_info = 32
+function PropHelperFunc.model_info(oPlayer)
+    return oPlayer:GetModelInfo()
+end
+
+
 
 CPlayer = {}
 CPlayer.__index = CPlayer
@@ -551,24 +617,24 @@ function CPlayer:GetPhyCriticalRatio()
     return self.m_oBaseCtrl:GetData("phy_critical_ratio")
 end
 
-function CPlayer:GetPhyResCriticalRatio()
-    return self.m_oBaseCtrl:GetData("phy_res_critical_ratio")
+function CPlayer:GetResPhyCriticalRatio()
+    return self.m_oBaseCtrl:GetData("res_phy_critical_ratio")
 end
 
 function CPlayer:GetMagCriticalRatio()
     return self.m_oBaseCtrl:GetData("mag_critical_ratio")
 end
 
-function CPlayer:GetMagResCriticalRatio()
-    return self.m_oBaseCtrl:GetData("mag_res_critical_ratio")
+function CPlayer:GetResMagCriticalRatio()
+    return self.m_oBaseCtrl:GetData("res_mag_critical_ratio")
 end
 
 function CPlayer:GetSealRatio()
     return self.m_oBaseCtrl:GetData("seal_ratio")
 end
 
-function CPlayer:GetSealResRatio()
-    return self.m_oBaseCtrl:GetData("seal_res_ratio")
+function CPlayer:GetResSealRatio()
+    return self.m_oBaseCtrl:GetData("res_seal_ratio")
 end
 
 function CPlayer:GetHitRatio()

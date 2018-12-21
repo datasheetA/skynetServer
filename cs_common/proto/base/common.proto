@@ -24,7 +24,7 @@ message SimpleRole {
 }
 
 message Role {
-    optional uint32 mask = 1;
+    optional uint64 mask = 1;
     optional uint32 grade = 2;
     optional string name = 3;
     repeated string title_list = 4;
@@ -43,6 +43,19 @@ message Role {
     optional uint32 magic = 17;
     optional uint32 endurance = 18;
     optional uint32 agility = 19;
+    optional uint32 phy_attack = 20;
+    optional uint32 phy_defense = 21;
+    optional uint32 mag_attack = 22;
+    optional uint32 mag_defense = 23;
+    optional uint32 cure_power = 24;
+    optional uint32 speed = 25;
+    optional uint32 seal_ratio = 26;
+    optional uint32 res_seal_ratio = 27;
+    optional uint32 phy_critical_ratio = 28;
+    optional uint32 res_phy_critical_ratio = 29;
+    optional uint32 mag_critical_ratio = 30;
+    optional uint32 res_mag_critical_ratio = 31;
+    optional ModelInfo model_info = 32;
 }
 
 message PlayerAoi {

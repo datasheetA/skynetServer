@@ -1,5 +1,5 @@
 
-™	
+×
 base/common.protobase"e
 PosInfo	
 v (	
@@ -18,9 +18,9 @@
 adorn ("
 
 SimpleRole
-pid ("´
+pid ("ò
 Role
-mask (
+mask (
 grade (
 name (	
 
@@ -43,7 +43,25 @@ chubei_exp	 (
 strength (
 magic (
 	endurance (
-agility ("^
+agility (
+
+phy_attack (
+phy_defense (
+
+mag_attack (
+mag_defense (
+
+cure_power (
+speed (
+
+seal_ratio (
+res_seal_ratio (
+phy_critical_ratio (
+res_phy_critical_ratio (
+mag_critical_ratio (
+res_mag_critical_ratio (#
+
+model_info  (2.base.ModelInfo"^
 	PlayerAoi#
 block (2.base.PlayerAoiBlock
 pos_info (2.base.PosInfo
