@@ -32,14 +32,21 @@
 WarCamp
 camp_id ((
 player_list (2.base.PlayerWarrior
-X
+¬
 base/role.protobase"
 
 SimpleRole
-pid ("$
+pid ("ç
 Role
 account (	
-pid (
+pid (
+grade (
+name (	
+shape (
+goldcoin (
+gold (
+silver (
+exp	 (
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -250,20 +257,13 @@ apply_info	 (2
 id ("&
 GS2CItemExtendSize
 iExtSize (
-ã
-server/player.proto"q
-GS2CPropLogin
-iGrade (
-sName (	
-iShape (
-	iGoldCoin (
-iGold (
-iSilver ("Ä
+ë
+server/player.proto"z
 GS2CPropChange
-mask (
-iGrade (
-sName (	
-iShape (
-	iGoldCoin (
-iGold (
-iSilver (
+mask (
+grade (
+name (	
+shape (
+goldcoin (
+gold (
+silver (

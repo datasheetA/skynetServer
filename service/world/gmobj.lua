@@ -56,6 +56,14 @@ function Commands.clone(oMaster,sid,iAmount)
     end
 end
 
+function Commands.rewardgold(oMaster,iVal)
+    oMaster:RewardGold(iVal,"gm")
+end
+
+function Commands.rewardsilver(oMaster,iVal)
+    oMaster:RewardSilver(oMaster,iVal)
+end
+
 function Commands.clearall(oMaster)
     for _,itemobj in pairs(oMaster.m_oItemCtrl.m_Item) do
         oMaster.m_oItemCtrl:RemoveItem(itemobj)

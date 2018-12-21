@@ -50,7 +50,11 @@ function CPlayerBaseCtrl:RewardGold(iVal,sReason)
     
     iGold = iGold + iVal
     self:SetData("gold",iGold)
-    playernet.GS2CPropChange(self.m_ID,"iGold",iGold)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:GS2CPropChange({gold=iGold})
+    end
 end
 
 function CPlayerBaseCtrl:ResumeGold(iVal,sReason,mArgs)
@@ -62,7 +66,11 @@ function CPlayerBaseCtrl:ResumeGold(iVal,sReason,mArgs)
     end
     iGold = iGold - iVal
     self:SetData("gold",iGold)
-    playernet.GS2CPropChange(self.m_ID,"iGold",iGold)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:GS2CPropChange({gold=iGold})
+    end
 end
 
 function CPlayerBaseCtrl:ValidSilver(iVal,mArgs)
@@ -84,7 +92,11 @@ function CPlayerBaseCtrl:RewardSilver(iVal,sReason,mArgs)
     
     iSilver = iSilver + iVal
     self:SetData("silver",iSilver)
-    playernet.GS2CPropChange(self.m_ID,"iSilver",iSilver)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:GS2CPropChange({silver=iSilver})
+    end
 end
 
 function CPlayerBaseCtrl:ResumeSilver(iVal,sReason,mArgs)
@@ -96,5 +108,9 @@ function CPlayerBaseCtrl:ResumeSilver(iVal,sReason,mArgs)
     end
     iSilver = iSilver - iVal
     self:SetData("silver",iSilver)
-    playernet.GS2CPropChange(self.m_ID,"iSilver",iSilver)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:GS2CPropChange({silver=iSilver})
+    end
 end

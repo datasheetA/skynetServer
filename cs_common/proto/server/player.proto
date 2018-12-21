@@ -1,22 +1,12 @@
 
-//登录属性
-message GS2CPropLogin{
-    optional uint32 iGrade                      = 1;
-    optional string sName                       = 2;
-    optional uint32 iShape                      = 3;
-    optional uint32 iGoldCoin                 = 4;                          //元宝
-    optional uint32 iGold                         = 5;                          //金币
-    optional uint32 iSilver                        = 6;                          //银币
-}
-
 //改变刷新
-//iGrade:1,sName:2,iShape=3,iGoldCoin:4,iGold:5,iSliver:6
+//grade:1,name:2,shape:3,goldcoin:4,gold:5,silver:6
 message GS2CPropChange{
     optional uint32 mask                        = 1;
-    optional uint32 iGrade                      = 2;
-    optional string sName                       = 3;
-    optional uint32 iShape                      = 4;
-    optional uint32 iGoldCoin                 = 5;                          //元宝
-    optional uint32 iGold                         = 6;                          //金币
-    optional uint32 iSilver                        = 7;                          //银币
+    optional uint32 grade                        = 2;
+    optional string  name                        = 3;
+    optional uint32 shape                       = 4;
+    optional uint32 goldcoin                   = 5;                          //元宝
+    optional uint32 gold                         = 6;                          //金币
+    optional uint32 silver                        = 7;                          //银币
 }

@@ -182,6 +182,7 @@ function CItemCtrl:AddItem(itemobj)
 end
 
 function CItemCtrl:ValidAddToPos(srcobj)
+    self:Dirty()
      local iLast = srcobj:GetAmount()
      local iMaxAmount = srcobj:GetMaxAmount()
      for _,itemobj in pairs(self.m_Item) do
@@ -230,6 +231,7 @@ function CItemCtrl:RemoveItem(itemobj)
 end
 
 function CItemCtrl:ItemChange(srcobj,destobj)
+    self:Dirty()
     self:GS2CDelItem(destobj)
     local srcpos = srcobj.m_Pos
     local destpos = destobj.m_Pos
@@ -242,6 +244,7 @@ function CItemCtrl:ItemChange(srcobj,destobj)
 end
 
 function CItemCtrl:ChangeToPos(srcobj,iPos)
+    self:Dirty()
     local srcpos = srcobj.m_Pos
     self.m_Item[srcpos] = nil
     self.m_Item[iPos] = srcobj
@@ -328,7 +331,7 @@ function CItemCtrl:GiveItem(ItemList,sReason)
         while(iAmount > 0) do
             local itemobj = loaditem.Create(sid)
             local iAddAmount = max(itemobj:GetMaxAmount(),iAmount)
-             iAmount = iAmount - iAddAmount
+            iAmount = iAmount - iAddAmount
             itemobj:SetAmount(iAddAmount)
             self:AddItem(itemobj)
             if iAmount <= 0 then

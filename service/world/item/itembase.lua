@@ -31,16 +31,16 @@ function CItem:Init(sid)
     self.m_ID = self:DispitchItemID()
     self.m_SID = sid
     local mData = self:GetItemData()
-    self.m_Amount = 1
-    self.m_MaxAmount = mData["maxOverlay"] or 1
-    self.m_Name = mData["name"] or ""
-    self.m_CanStore = mData["canStore"] or 1
-     self.m_ItemLevel = mData["quality"] or 1
-     self.m_SortId  = mData["sort"] or 100
-     self.m_QuickUse = mData["quickable"] or 1
-     self.m_IsStore = mData["stallable"] or 1
-     self.m_IsGive = mData["giftable"] or 0
-     self.m_CreateTime = timeop.get_time()
+    self.m_iAmount = 1
+    self.m_iMaxAmount = mData["maxOverlay"] or 1
+    self.m_sName = mData["name"] or ""
+    self.m_iCanStore = mData["canStore"] or 1
+    self.m_iItemLevel = mData["quality"] or 1
+    self.m_iSortId  = mData["sort"] or 100
+    self.m_iQuickUse = mData["quickable"] or 1
+    self.m_iIsStore = mData["stallable"] or 1
+    self.m_iIsGive = mData["giftable"] or 0
+    self.m_iCreateTime = timeop.get_time()
 end
 
 function CItem:Release()
@@ -98,8 +98,8 @@ function CItem:Load(mData)
     self.m_Amount = mData["Amount"]
     self.m_SID = mData["SID"]
     self.m_Data = mData["Data"]
-    self.m_ItemLevel = mData["ItemLevel"]
-    self.m_CreateTime = mData["CreateTime"]
+    self.m_iItemLevel = mData["ItemLevel"]
+    self.m_iCreateTime = mData["CreateTime"]
 end
 
 function CItem:Save()
@@ -107,8 +107,8 @@ function CItem:Save()
     mData["Amount"] = self.m_Amount
     mData["SID"] = self.m_SID
     mData["Data"] = self.m_Data
-    mData["ItemLevel"] = self.m_ItemLevel
-    mData["CreateTime"] = self.m_CreateTime
+    mData["ItemLevel"] = self.m_iItemLevel
+    mData["CreateTime"] = self.m_iCreateTime
     return mData
 end
 
@@ -125,11 +125,11 @@ function CItem:Shape()
 end
 
 function CItem:Name()
-    return self.m_Name
+    return self.m_sName
 end
 
 function CItem:GetMaxAmount()
-    return self.m_MaxAmount
+    return self.m_iMaxAmount
 end
 
 function CItem:GetAmount()
@@ -227,7 +227,7 @@ end
 
 --品质
 function CItem:ItemLevel()
-    return self.m_ItemLevel or 1
+    return self.m_iItemLevel or 1
 end
 
 --是否回收
@@ -236,11 +236,11 @@ function CItem:ValidRecycle()
 end
 
 function CItem:SortNo()
-    local iNo = self.m_SortId
+    local iNo = self.m_iSortId
     if not iNo then
         local mData = self:GetItemData()
         iNo = mData["sort_id"]
-        self.m_SortId = iNo or 100
+        self.m_iSortId = iNo or 100
     end
     return iNo
 end
@@ -273,7 +273,7 @@ end
 
 --快捷使用
 function CItem:IsQuickUse( ... )
-    if self.m_QuickUse == 1 then
+    if self.m_iQuickUse == 1 then
         return true
     end
     return false
@@ -281,7 +281,7 @@ end
 
 --能否给予
 function CItem:IsGive()
-    if self.m_IsGive == 1 then
+    if self.m_iIsGive == 1 then
         return true
     end
     return false
@@ -289,14 +289,14 @@ end
 
 --能否摆摊
 function CItem:IsStore()
-    if self.m_IsStore == 1 then
+    if self.m_iIsStore == 1 then
         return true
     end
     return false
 end
 
 function CItem:ValidMoveWH()
-    if self.m_CanStore == 1 then
+    if self.m_iCanStore == 1 then
         return true
     end
     return false

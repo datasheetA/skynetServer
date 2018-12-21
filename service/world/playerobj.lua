@@ -7,6 +7,16 @@ local playernet = import(service_path("netcmd/player"))
 
 local playerctrl = import(service_path("playerctrl.init"))
 
+local mPropKey = {
+        ["grade"]                 = 1,
+        ["name"]                 = 2,
+        ["shape"]                = 3,
+        ["goldcoin"]            = 4,
+        ["gold"]                   = 5,
+        ["silver"]                 = 6,
+        ["exp"]                    =7, 
+}
+
 function NewPlayer(...)
     local o = CPlayer:New(...)
     return o
@@ -100,7 +110,7 @@ function CPlayer:OnLogout()
 end
 
 function CPlayer:OnLogin(bReEnter)
-    self:Send("GS2CLoginRole", {role = {account = self:GetAccount(), pid = self:GetPid()}})
+    self:GS2CLoginRole()
     self.m_fHeartBeatTime = get_time()
 
 
@@ -113,7 +123,6 @@ function CPlayer:OnLogin(bReEnter)
         oSceneMgr:OnLogin(self, bReEnter)
     end
     
-    self:GS2CPropLogin()
     self.m_oItemCtrl:OnLogin()
 
     if not bReEnter then
@@ -246,10 +255,37 @@ function CPlayer:RewardSilver(iVal,sReason,mArgs)
     self.m_oBaseCtrl:RewardSilver(iVal,sReason,mArgs)
 end
 
-function CPlayer:GS2CPropLogin()
-    playernet.GS2CPropLogin(self)
+function CPlayer:GS2CLoginRole()
+    local role = {
+        grade = self.m_oBaseCtrl:GetData("grade",0),
+        name = self.m_oBaseCtrl:GetData("name",""),
+        shape = 0,
+        goldcoin = 0,
+        gold = self.m_oBaseCtrl:GetData("gold",0),
+        silver = self.m_oBaseCtrl:GetData("silver",0),
+        exp = self.m_oBaseCtrl:GetData("exp",0)
+    }
+    local mNet = {
+        role = role,
+    }
+     self:Send("GS2CLoginRole", mNet)
 end
 
-function CPlayer:GS2CPropChange(key,value)
-    playernet.GS2CPropChange(self,key,value)
+function CPlayer:GS2CPropChange(mData)
+    local iMask = 0
+    for key,value in pairs(mData) do
+        local mask = mPropKey[key]
+        if mask then
+           iMask = iMask + 1 << mPropKey[key]
+        end
+    end
+    if iMask == 0 then
+        return
+    end
+    local mNet = {}
+    mNet["mask"] = iMask
+    for key,value in pairs(mData) do
+        mNet[key] = value
+    end
+    self:Send("GS2CPropChange",mNet)
 end
