@@ -140,6 +140,10 @@ GS2C_DEFINES.openui = {
     GS2CLoadUI = 9001,
 }
 
+GS2C_DEFINES.notify = {
+    GS2CNotify = 10001,
+}
+
 --GS2C END
 
 for k, v in pairs(C2GS_DEFINES) do

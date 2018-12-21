@@ -290,6 +290,11 @@ Q
 time ("
 GS2CGMMessage
 msg (	
+0
+server/notify.proto"
+
+GS2CNotify
+cmd (	
 ‘
 server/item.proto"'
 	applyinfo
