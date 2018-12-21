@@ -2,3 +2,7 @@
 message GS2CHeartBeat {
     optional uint32 time = 1;
 }
+
+message GS2CGMMessage {
+    optional string msg = 1;
+}

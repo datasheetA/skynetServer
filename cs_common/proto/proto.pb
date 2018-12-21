@@ -250,10 +250,12 @@ action_wid (
 war_id (
 
 action_wid (
-3
+Q
 server/other.proto"
 GS2CHeartBeat
-time (
+time ("
+GS2CGMMessage
+msg (	
 œ
 server/item.proto")
 	applyinfo

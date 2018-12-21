@@ -16,11 +16,22 @@ function NewGMMgr(...)
 end
 
 Commands = {}
+Helpers = {}
 
+Helpers.setgrade = {
+    "设置等级",
+    "setgrade 等级",
+    "示例: setgrade 20",
+}
 function Commands.setgrade(oMaster, i)
     oMaster.m_oBaseCtrl:SetData("grade", i)
 end
 
+Helpers.testwar = {
+    "测试多人PVP",
+    "testwar 其他玩家列表",
+    "testwar {999, 234,}",
+}
 function Commands.testwar(oMaster, lTargets)
     local oWarMgr = global.oWarMgr
     local oWorldMgr = global.oWorldMgr
@@ -52,6 +63,11 @@ function Commands.testwar(oMaster, lTargets)
     oWarMgr:StartWar(oWar:GetWarId())
 end
 
+Helpers.wartimeover = {
+    "结束战斗本轮操作阶段",
+    "wartimeover",
+    "wartimeover",
+}
 function Commands.wartimeover(oMaster)
     local oWar = oMaster.m_oActiveCtrl:GetNowWar()
     if oWar then
@@ -59,6 +75,11 @@ function Commands.wartimeover(oMaster)
     end
 end
 
+Helpers.clone = {
+    "克隆道具",
+    "clone 物品类型 物品数量",
+    "clone 1001 200",
+}
 function Commands.clone(oMaster,sid,iAmount)
     local itemobj = loaditem.GetItem(sid)
     if not itemobj then
@@ -75,19 +96,64 @@ function Commands.clone(oMaster,sid,iAmount)
     end
 end
 
+Helpers.rewardgold = {
+    "奖励金币",
+    "rewardgold 金币数量",
+    "rewardgold 200",
+}
 function Commands.rewardgold(oMaster,iVal)
     oMaster:RewardGold(iVal,"gm")
 end
 
+Helpers.rewardsilver = {
+    "奖励银币",
+    "rewardsilver 银币数量",
+    "rewardsilver 200",
+}
 function Commands.rewardsilver(oMaster,iVal)
     oMaster:RewardSilver(iVal,"gm")
 end
 
+Helpers.clearall = {
+    "清空背包",
+    "clearall",
+    "clearall",
+}
 function Commands.clearall(oMaster)
     for _,itemobj in pairs(oMaster.m_oItemCtrl.m_Item) do
         oMaster.m_oItemCtrl:RemoveItem(itemobj)
     end
 end
+
+Helpers.help = {
+    "GM指令帮助",
+    "help 指令名",
+    "help 'clearall'",
+}
+function Commands.help(oMaster, sCmd)
+    if sCmd then
+        local o = Helpers[sCmd]
+        if o then
+            local sMsg = string.format("%s:\n指令说明:%s\n参数说明:%s\n示例:%s\n", sCmd, o[1], o[2], o[3])
+            oMaster:Send("GS2CGMMessage", {
+                msg = sMsg,
+            })
+        else
+            oMaster:Send("GS2CGMMessage", {
+                msg = "没查到这个指令"
+            })
+        end
+    else
+        local sMsg = "所有指令简介:\n"
+        for k, v in pairs(Helpers) do
+            sMsg = sMsg .. string.format("%s: %s\n", k, v[1])
+        end
+        oMaster:Send("GS2CGMMessage", {
+            msg = sMsg,
+        })
+    end
+end
+
 
 CGMMgr = {}
 CGMMgr.__index = CGMMgr

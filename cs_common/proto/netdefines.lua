@@ -74,6 +74,7 @@ GS2C_DEFINES.scene = {
 
 GS2C_DEFINES.other = {
     GS2CHeartBeat = 3001,
+    GS2CGMMessage = 3002,
 }
 
 GS2C_DEFINES.war = {
