@@ -46,10 +46,25 @@ function EnterPlayer(mRecord, mData)
     local iPid = mData.pid
     local iEid = mData.eid
     local mMail = mData.mail
+    local mInfo = mData.data
     local oSceneMgr = global.oSceneMgr
     local oScene = oSceneMgr:GetScene(iScene)
     assert(oScene, string.format("EnterPlayer error scene: %d %d %d", iScene, iPid, iEid))
-    oScene:EnterPlayer(iPid, iEid, mMail, mPos)
+    oScene:EnterPlayer(iPid, iEid, mMail, mPos, mInfo)
+end
+
+function SyncPlayerInfo(mRecord,mData)
+    local iScene = mData.scene_id
+    local mArgs = mData.args
+    local iEid = mData.eid
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:GetScene(iScene)
+    assert(oScene,string.format("SyncPlayerInfo err scene,%d",iScene))
+    local oPlayerEntity = oScene:GetEntity(iEid)
+    assert(oPlayerEntity,string.format("SyncPlayerInfo err %d",iEid))
+    if oPlayerEntity:IsPlayer() then
+        oPlayerEntity:SyncInfo(mArgs)
+    end
 end
 
 function LeavePlayer(mRecord, mData)
@@ -158,18 +173,6 @@ function Query(mRecord, mData)
     end
 end
 
-function EnterPlayer(mRecord, mData)
-    local iScene = mData.scene_id
-    local mPos = mData.pos
-    local iPid = mData.pid
-    local iEid = mData.eid
-    local mMail = mData.mail
-    local oSceneMgr = global.oSceneMgr
-    local oScene = oSceneMgr:GetScene(iScene)
-    assert(oScene, string.format("EnterPlayer error scene: %d %d %d", iScene, iPid, iEid))
-    oScene:EnterPlayer(iPid, iEid, mMail, mPos)
-end
-
 function EnterNpc(mRecord,mData)
    local iScene = mData.scene_id
    local mPos = mData.pos
@@ -183,14 +186,16 @@ end
 
 function SyncNpcInfo(mRecord,mData)
     local iScene = mData.scene_id
-    local mArgs = mData.mArgs
+    local mArgs = mData.args
     local iEid = mData.eid
     local oSceneMgr = global.oSceneMgr
     local oScene = oSceneMgr:GetScene(iScene)
     assert(oScene,string.format("SyncNpcInfo err scene,%d",iScene))
     local oNpcEntity = oScene:GetEntity(iEid)
     assert(oNpcEntity,string.format("SyncNpcInfo err %d",iEid))
-    oNpcEntity:SyncInfo(mArgs)
+    if oNpcEntity:IsNpc() then
+        oNpcEntity:SyncInfo(mArgs)
+    end
 end
 
 function RemoveSceneNpc(mRecord,mData)

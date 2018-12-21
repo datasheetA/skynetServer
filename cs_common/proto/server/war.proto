@@ -1,4 +1,4 @@
-import "base/war.proto";
+import "base/common.proto";
 
 message GS2CShowWar {
     optional uint32 war_id = 1;

@@ -1,4 +1,4 @@
-import "base/role.proto";
+import "base/common.proto";
 
 message GS2CHello {
     optional uint32 time = 1;
@@ -15,5 +15,7 @@ message GS2CLoginAccount {
 }
 
 message GS2CLoginRole {
-    optional base.Role role = 1;
+    optional string account = 1;
+    optional uint32 pid = 2;
+    optional base.Role role = 3;
 }

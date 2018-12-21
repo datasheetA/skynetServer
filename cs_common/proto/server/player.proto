@@ -1,12 +1,6 @@
+import "base/common.proto";
 
 //改变刷新
-//grade:1,name:2,shape:3,goldcoin:4,gold:5,silver:6
 message GS2CPropChange{
-    optional uint32 mask                        = 1;
-    optional uint32 grade                        = 2;
-    optional string  name                        = 3;
-    optional uint32 shape                       = 4;
-    optional uint32 goldcoin                   = 5;                          //元宝
-    optional uint32 gold                         = 6;                          //金币
-    optional uint32 silver                        = 7;                          //银币
+    optional base.Role role = 1;
 }

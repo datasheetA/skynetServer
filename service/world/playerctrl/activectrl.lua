@@ -18,28 +18,137 @@ end
 function CPlayerActiveCtrl:Load(mData)
     local mData = mData or {}
 
-    local mSceneInfo = mData.scene_info
-    if not mSceneInfo then
-        mSceneInfo = {
-            map_id = 10001,
-            pos = {
-                x = 100,
-                y = 100,
-                z = 0,
-                face_x = 0,
-                face_y = 0,
-                face_z = 0,
-            },
-        }
-    end
-    self:SetData("scene_info", mSceneInfo)
+    self:SetData("scene_info", mData.scene_info)
+    self:SetData("hp", mData.hp)
+    self:SetData("mp", mData.mp)
+    self:SetData("sp", mData.sp)
+    self:SetData("gold",mData.gold or 0)
+    self:SetData("silver",mData.silver or 0)
+    self:SetData("exp",mData.exp or 0)
+    self:SetData("chubeiexp",mData.chubeiexp or 0)
+    self:SetData("enegy", mData.enegy or 0)
 end
 
 function CPlayerActiveCtrl:Save()
     local mData = {}
+
     mData.scene_info = self:GetData("scene_info")
+    mData.hp = self:GetData("hp")
+    mData.mp = self:GetData("mp")
+    mData.sp = self:GetData("sp")
+    mData.gold = self:GetData("gold")
+    mData.silver = self:GetData("silver")
+    mData.exp = self:GetData("exp")
+    mData.chubeiexp = self:GetData("chubeiexp")
+    mData.enegy = self:GetData("enegy")
     return mData
 end
+
+function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
+    local iGold = self:GetData("gold",0)
+    assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
+    assert(iVal>0)
+    if iGold< iVal then
+        local sTip = mArgs.tip
+        if not sTip then
+            sTip = ""
+        end
+        return false
+    end
+    return true
+end
+
+function CPlayerActiveCtrl:RewardGold(iVal,sReason)
+    local iGold = self:GetData("gold",0)
+    
+    iGold = iGold + iVal
+    self:SetData("gold",iGold)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:PropChange("gold")
+    end
+end
+
+function CPlayerActiveCtrl:ResumeGold(iVal,sReason,mArgs)
+    local iGold = self:GetData("gold",0)
+    assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
+    assert(iVal>0)
+    if not self:ValidGold(iVal,mArgs) then
+        return
+    end
+    iGold = iGold - iVal
+    self:SetData("gold",iGold)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:PropChange("gold")
+    end
+end
+
+function CPlayerActiveCtrl:ValidSilver(iVal,mArgs)
+    local iSilver = self:GetData("silver",0)
+    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
+    assert(iVal>0)
+    if iSilver < iVal then
+        local sTip = mArgs.tip
+        if not sTip then
+            sTip = ""
+        end
+        return false
+    end
+    return true
+end
+
+function CPlayerActiveCtrl:RewardSilver(iVal,sReason,mArgs)
+    local iSilver = self:GetData("silver",0)
+    
+    iSilver = iSilver + iVal
+    self:SetData("silver",iSilver)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:PropChange("silver")
+    end
+end
+
+function CPlayerActiveCtrl:ResumeSilver(iVal,sReason,mArgs)
+    local iSilver = self:GetData("silver",0)
+    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
+    assert(iVal>0)
+    if not self:ValidSilver(iVal,mArgs) then
+        return
+    end
+    iSilver = iSilver - iVal
+    self:SetData("silver",iSilver)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:PropChange("silver")
+    end
+end
+
+function CPlayerActiveCtrl:RewardExp(iVal,sReason,mArgs)
+    local iExp = self:GetData("exp",0)
+    assert(iExp>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
+
+    iExp = iExp + iVal
+    self:SetData("exp",iExp)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    if oPlayer then
+        oPlayer:PropChange("exp")
+    end
+end
+
+function CPlayerActiveCtrl:AddChubeiExp(iVal,sReason)
+    local iChubeiExp = self:GetData("chubeiexp",0)
+    assert(iChubeiExp,string.format("%d exp err %d %d",self:GetInfo("pid"),iChubeiExp,iVal))
+
+    local iChubeiExp = iChubeiExp + iVal
+    self:SetData("chubeiexp",iChubeiExp)
+end
+
 
 function CPlayerActiveCtrl:SetDurableSceneInfo(iMapId, mPos)
     local m = {

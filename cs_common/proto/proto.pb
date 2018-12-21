@@ -1,6 +1,6 @@
 
-¨
-base/scene.protobase"e
+´	
+base/common.protobase"e
 PosInfo	
 v (	
 x (	
@@ -8,33 +8,61 @@
 z (
 face_x (
 face_y (
-face_z ("^
+face_z ("o
+	ModelInfo
+shape (
+scale (
+color (
+mutate_texture (
+weapon (
+adorn ("
+
+SimpleRole
+pid ("¥
+Role
+mask (
+grade (
+name (	
+
+title_list (	
+goldcoin (
+gold (
+silver (
+exp (
+
+chubei_exp	 (
+max_hp
+ (
+max_mp (
+
+hp (
+
+mp (
+enegy (
+physique (
+strength (
+magic (
+	endurance (
+agility ("^
 	PlayerAoi#
 block (2.base.PlayerAoiBlock
 pos_info (2.base.PosInfo
-pid ("
+pid ("Q
 PlayerAoiBlock
-mask ("Z
-Desc
-scale (
-color (
-mutateTexture (
-weapon (
-adorn ("±
+mask (
+name (	#
+
+model_info (2.base.ModelInfo"k
 NpcAoi 
 block (2.base.NpcAoiBlock
 pos_info (2.base.PosInfo
 npctype (
-npcid (
-name (	
-title (	
-model (
-desc (2
-.base.Desc"
+npcid ("N
 NpcAoiBlock
-mask (
-é
-base/war.protobase"M
+mask (
+name (	#
+
+model_info (2.base.ModelInfo"M
 PlayerWarriorStatus
 
 hp (
@@ -50,21 +78,6 @@
 WarCamp
 camp_id ((
 player_list (2.base.PlayerWarrior
-¬
-base/role.protobase"
-
-SimpleRole
-pid ("ç
-Role
-account (	
-pid (
-grade (
-name (	
-shape (
-goldcoin (
-gold (
-silver (
-exp	 (
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -72,8 +85,8 @@ h
 C2GSLoginRole
 account (	
 pid (
-π
-client/scene.protobase/scene.proto"M
+∫
+client/scene.protobase/common.proto"M
 C2GSSyncPos
 scene_id (
 eid (
@@ -154,8 +167,8 @@ d
 npcid (
 
 client/player.proto
-Â
-server/login.protobase/role.proto"
+Ö
+server/login.protobase/common.proto"
 	GS2CHello
 time (".
 GS2CLoginError
@@ -163,12 +176,14 @@ d
 errcode ("H
 GS2CLoginAccount
 account (	#
-	role_list (2.base.SimpleRole")
-GS2CLoginRole
-role (2
+	role_list (2.base.SimpleRole"G
+GS2CLoginRole
+account (	
+pid (
+role (2
 .base.Role
-ò
-server/scene.protobase/scene.proto"E
+÷
+server/scene.protobase/common.proto"E
 GS2CShowScene
 scene_id (
 map_id (
@@ -187,11 +202,13 @@ aoi_player (2.base.PlayerAoi
 aoi_npc (2.base.NpcAoi"-
 GS2CLeaveAoi
 scene_id (
-eid ("X
+eid ("î
 GS2CSyncAoi
 scene_id (
-eid (*
-block_player (2.base.PlayerAoiBlock"M
+eid (
+type (.
+aoi_player_block (2.base.PlayerAoiBlock(
+aoi_npc_block (2.base.NpcAoiBlock"M
 GS2CSyncPos
 scene_id (
 eid (
@@ -201,11 +218,11 @@ Z
 
 GS2CNpcSay
 npcid (
-model (
+shape (
 name (	
 text (	
-∑
-server/war.protobase/war.proto"
+∫
+server/war.protobase/common.proto"
 GS2CShowWar
 war_id ("0
 GS2CWarResult
@@ -309,24 +326,23 @@ apply_info	 (2
 id ("%
 GS2CItemExtendSize
 extsize (
-¥
-server/task.protobase/scene.proto"*
+±
+server/task.protobase/common.proto"*
 NeedItem
 itemid (
 amount ("(
 NeedSum
 sumid (
-amount ("¢
+amount ("û
 	ClientNpc
 npctype (
 npcid (
 name (	
-title (	
-model (
-map_id (
-pos_info (2.base.PosInfo
-desc (2
-.base.Desc"é
+title (	
+map_id (
+pos_info (2.base.PosInfo#
+
+model_info (2.base.ModelInfo"é
 TaskInfo
 taskid (
 tasktype (
@@ -363,13 +379,8 @@ GS2CDialog
 
 sessionidx (
 dialog (2.DialogInfo
-ë
-server/player.proto"z
-GS2CPropChange
-mask (
-grade (
-name (	
-shape (
-goldcoin (
-gold (
-silver (
+T
+server/player.protobase/common.proto"*
+GS2CPropChange
+role (2
+.base.Role

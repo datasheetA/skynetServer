@@ -13,6 +13,21 @@ function NewPlayerEntity(...)
     return CPlayerEntity:New(...)
 end
 
+
+BlockHelperFunc = {}
+BlockHelperDef = {}
+
+BlockHelperDef.name = 2
+function BlockHelperFunc.name(oEntity)
+    return oEntity:GetName()
+end
+
+BlockHelperDef.model_info = 3
+function BlockHelperFunc.model_info(oEntity)
+    return oEntity:GetModelInfo()
+end
+
+
 CPlayerEntity = {}
 CPlayerEntity.__index = CPlayerEntity
 inherit(CPlayerEntity, CEntity)
@@ -74,12 +89,21 @@ function CPlayerEntity:ReEnter(mMail)
     for k, _ in pairs(mMarker) do
         local oMarker = self:GetEntity(k)
         if oMarker then
-            self:Send("GS2CEnterAoi", {
-                scene_id = oMarker:GetSceneId(),
-                eid = oMarker:GetEid(),
-                type = oMarker:Type(),
-                aoi_player = oMarker:GetAoiInfo(),
-            })
+            if oMarker:IsPlayer() then
+                self:Send("GS2CEnterAoi", {
+                    scene_id = oMarker:GetSceneId(),
+                    eid = oMarker:GetEid(),
+                    type = oMarker:Type(),
+                    aoi_player = oMarker:GetAoiInfo(),
+                })
+            elseif oMarker:IsNpc() then
+                self:Send("GS2CEnterAoi", {
+                    scene_id = oMarker:GetSceneId(),
+                    eid = oMarker:GetEid(),
+                    type = oMarker:Type(),
+                    aoi_npc = oMarker:GetAoiInfo(),
+                })
+            end
         end
     end
 end
@@ -96,9 +120,41 @@ function CPlayerEntity:GetAoiInfo()
             face_x = geometry.Cover(mPos.face_x),
             face_y = geometry.Cover(mPos.face_y),
             face_z = geometry.Cover(mPos.face_z),
-        }
+        },
+        block = self:BlockInfo(),
     }
     return m
+end
+
+function CPlayerEntity:BlockInfo(m)
+    local mRet = {}
+    if not m then
+        m = BlockHelperDef
+    end
+    local iMask = 0
+    for k, _ in pairs(m) do
+        local i = assert(BlockHelperDef[k], string.format("BlockInfo fail i get %s", k))
+        local f = assert(BlockHelperFunc[k], string.format("BlockInfo fail f get %s", k))
+        mRet[k] = f(self)
+        iMask = iMask | (2^(i-1))
+    end
+    mRet.mask = iMask
+    return mRet
+end
+
+function CPlayerEntity:BlockChange(...)
+    local l = table.pack(...)
+    local m = {}
+    for _, v in ipairs(l) do
+        m[v] = true
+    end
+    local mBlock = self:BlockInfo(m)
+    self:Send("GS2CSyncAoi", {
+        scene_id = self:GetSceneId(),
+        eid = self:GetEid(),
+        type = self:Type(),
+        aoi_player_block = mBlock,
+    })
 end
 
 function CPlayerEntity:OnEnterAoi(oMarker)
@@ -115,7 +171,7 @@ function CPlayerEntity:OnEnterAoi(oMarker)
             scene_id = oMarker:GetSceneId(),
             eid = oMarker:GetEid(),
             type = oMarker:Type(),
-            aoi_player = oMarker:GetAoiInfo(),
+            aoi_npc = oMarker:GetAoiInfo(),
         }
     end
     if not mNet then
@@ -156,4 +212,15 @@ function CPlayerEntity:SyncPos(mPosInfo)
         face_z = mPosInfo.face_z,
     })
     self:SetSpeed(mPosInfo.v)
+end
+
+function CPlayerEntity:SyncInfo(mArgs)
+    if mArgs.name then
+        self:SetData("name", mArgs.name)
+        self:BlockChange("name")
+    end
+    if mArgs.model_info then
+        self:SetData("model_info", mArgs.model_info)
+        self:BlockChange("model_info")
+    end
 end

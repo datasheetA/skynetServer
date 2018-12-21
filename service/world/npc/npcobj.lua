@@ -79,16 +79,18 @@ function CNpc:Dialog()
     return sDialog
 end
 
-function CNpc:PackInfo()
+function CNpc:PackSceneInfo()
     local mInfo = {
         npctype  = self.m_NpcType,
         npcid = self.m_ID,
-        model = self.m_iModel,
-        name = self.m_Name,
-        color = self.m_mColor,
-        mutateTexture = self.m_imutateTexture,
-        weapon = self.m_iWeapon,
-        adorn = self.m_iAdorn,
+        model_info = {
+            shape = self.m_iModel,
+            name = self.m_Name,
+            color = self.m_mColor,
+            mutate_texture = self.m_imutateTexture,
+            weapon = self.m_iWeapon,
+            adorn = self.m_iAdorn,
+        },
     }
     return mInfo
 end
@@ -98,7 +100,7 @@ function CNpc:PosInfo()
 end
 
 --同步信息去场景
-function CNpc:SyncInfo(mInfo)
+function CNpc:SyncSceneInfo(mInfo)
     local iScene = self.m_Scene
     local oSceneMgr = global.oSceneMgr
     local oScene = oSceneMgr:GetScene(iScene)

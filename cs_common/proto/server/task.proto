@@ -1,4 +1,4 @@
-import "base/scene.proto";
+import "base/common.proto";
 
 message NeedItem {
     optional uint32 itemid          = 1;                                    //物品id
@@ -11,14 +11,13 @@ message NeedSum {
 }
 
 message ClientNpc {
-    optional uint32 npctype                                = 1;
-    optional uint32 npcid                                     = 2;
-    optional string name                                      = 3;
-    optional string title                                         = 4;
-    optional uint32 model                                    = 5;
-    optional uint32 map_id                                  = 6;
-    optional base.PosInfo pos_info                     = 7;
-    optional base.Desc desc                                 = 8;
+    optional uint32 npctype = 1;
+    optional uint32 npcid = 2;
+    optional string name = 3;
+    optional string title = 4;
+    optional uint32 map_id = 5;
+    optional base.PosInfo pos_info = 6;
+    optional base.ModelInfo model_info = 7;
 }
 
 message TaskInfo {

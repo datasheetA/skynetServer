@@ -37,6 +37,7 @@ end
 
 function CItemCtrl:Save()
     local mData = {}
+
     local itemdata = {}
     for iPos,itemobj in pairs(self.m_Item) do
         itemdata[iPos] = itemobj:Save()
@@ -49,6 +50,7 @@ end
 
 function CItemCtrl:Load(mData)
     mData = mData or {}
+
     local itemdata = mData["itemdata"] or {}
     for iPos,data in pairs(itemdata) do
         local itemobj = loaditem.LoadItem(data["SID"],data)

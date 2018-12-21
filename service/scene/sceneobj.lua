@@ -104,15 +104,17 @@ function CScene:Leave(obj)
     self:UpdateEntityToAoi(iEid, "d")
 end
 
-function CScene:EnterPlayer(iPid, iEid, mMail, mPos)
+function CScene:EnterPlayer(iPid, iEid, mMail, mPos, mInfo)
     assert(not self.m_mPlayers[iPid], string.format("EnterPlayer error %d %d", iPid, iEid))
     local obj = playerobj.NewPlayerEntity(iEid, iPid, mMail)
     self.m_mPlayers[iPid] = iEid
     obj:Init({
         aoi_mode = "wm",
+        check_aoi = true,
         scene_id = self:GetSceneId(),
         pos = mPos,
         speed = 0,
+        data = mInfo,
     })
 
     obj:Send("GS2CEnterScene", {
@@ -150,7 +152,8 @@ end
 function CScene:EnterNpc(iEid,mPos,mInfo)
     local obj = npcobj.NewNpcEntity(iEid)
     obj:Init({
-        aoi_mode = "wm",
+        aoi_mode = "m",
+        check_aoi = false,
         scene_id = self:GetSceneId(),
         pos = mPos,
         speed = 0,

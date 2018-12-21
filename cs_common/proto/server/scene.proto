@@ -1,4 +1,4 @@
-import "base/scene.proto";
+import "base/common.proto";
 
 message GS2CShowScene {
     optional uint32 scene_id = 1;
@@ -29,8 +29,10 @@ message GS2CLeaveAoi {
 message GS2CSyncAoi {
     optional uint32 scene_id = 1;
     optional uint32 eid = 2;
+    optional uint32 type = 3; /*1 player,2 npc*/
 
-    optional base.PlayerAoiBlock block_player = 3;
+    optional base.PlayerAoiBlock aoi_player_block = 4;
+    optional base.NpcAoiBlock aoi_npc_block    = 5;
 }
 
 message GS2CSyncPos {

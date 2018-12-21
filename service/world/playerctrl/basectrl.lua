@@ -16,126 +16,45 @@ end
 
 function CPlayerBaseCtrl:Load(mData)
     local mData = mData or {}
+
     self:SetData("grade", mData.grade or 0)
+    self:SetData("point", mData.point or 0)
     self:SetData("name", mData.name or string.format("DEBUG%d", self:GetInfo("pid")))
-    self:SetData("gold",mData.gold or 0)
-    self:SetData("silver",mData.silver or 0)
-    self:SetData("exp",mData.exp or 0)
-    self:SetData("chubeiexp",mData.chubeiexp or 0)
+    self:SetData("phy_critical_ratio", mData.phy_critical_ratio or 5)
+    self:SetData("phy_res_critical_ratio", mData.phy_res_critical_ratio or 0)
+    self:SetData("mag_critical_ratio", mData.mag_critical_ratio or 0)
+    self:SetData("mag_res_critical_ratio", mData.mag_res_critical_ratio or 0)
+    self:SetData("seal_ratio", mData.seal_ratio or 0)
+    self:SetData("seal_res_ratio", mData.seal_res_ratio or 0)
+    self:SetData("hit_ratio", mData.hit_ratio or 100)
+    self:SetData("hit_res_ratio", mData.hit_res_ratio or 5)
+    self:SetData("physique", mData.physique or 10)
+    self:SetData("strength", mData.strength or 10)
+    self:SetData("magic", mData.magic or 10)
+    self:SetData("endurance", mData.endurance or 10)
+    self:SetData("agility", mData.agility or 10)
+    self:SetData("model_info", mData.model_info)
 end
 
 function CPlayerBaseCtrl:Save()
     local mData = {}
-    mData.grade = self:GetData("grade", 0)
+
+    mData.grade = self:GetData("grade")
+    mData.point = self:GetData("point")
     mData.name = self:GetData("name")
-    mData.gold = self:GetData("gold",0)
-    mData.silver = self:GetData("silver",0)
-    mData.exp = self:GetData("exp",0)
-    mData.chubeiexp = self:GetData("chubeiexp",0)
+    mData.phy_critical_ratio = self:GetData("phy_critical_ratio")
+    mData.phy_res_critical_ratio = self:GetData("phy_res_critical_ratio")
+    mData.mag_critical_ratio = self:GetData("mag_critical_ratio")
+    mData.mag_res_critical_ratio = self:GetData("mag_res_critical_ratio")
+    mData.seal_ratio = self:GetData("seal_ratio")
+    mData.seal_res_ratio = self:GetData("seal_res_ratio")
+    mData.hit_ratio = self:GetData("hit_ratio")
+    mData.hit_res_ratio = self:GetData("hit_res_ratio")
+    mData.physique = self:GetData("physique")
+    mData.strength = self:GetData("strength")
+    mData.magic = self:GetData("magic")
+    mData.endurance = self:GetData("endurance")
+    mData.agility = self:GetData("agility")
+    mData.model_info = self:GetData("model_info")
     return mData
-end
-
-function CPlayerBaseCtrl:ValidGold(iVal,mArgs)
-    local iGold = self:GetData("gold",0)
-    assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0)
-    if iGold< iVal then
-        local sTip = mArgs.tip
-        if not sTip then
-            sTip = ""
-        end
-        return false
-    end
-    return true
-end
-
-function CPlayerBaseCtrl:RewardGold(iVal,sReason)
-    local iGold = self:GetData("gold",0)
-    
-    iGold = iGold + iVal
-    self:SetData("gold",iGold)
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:GS2CPropChange({gold=iGold})
-    end
-end
-
-function CPlayerBaseCtrl:ResumeGold(iVal,sReason,mArgs)
-    local iGold = self:GetData("gold",0)
-    assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0)
-    if not self:ValidGold(iVal,mArgs) then
-        return
-    end
-    iGold = iGold - iVal
-    self:SetData("gold",iGold)
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:GS2CPropChange({gold=iGold})
-    end
-end
-
-function CPlayerBaseCtrl:ValidSilver(iVal,mArgs)
-    local iSilver = self:GetData("silver",0)
-    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
-    assert(iVal>0)
-    if iSilver < iVal then
-        local sTip = mArgs.tip
-        if not sTip then
-            sTip = ""
-        end
-        return false
-    end
-    return true
-end
-
-function CPlayerBaseCtrl:RewardSilver(iVal,sReason,mArgs)
-    local iSilver = self:GetData("silver",0)
-    
-    iSilver = iSilver + iVal
-    self:SetData("silver",iSilver)
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:GS2CPropChange({silver=iSilver})
-    end
-end
-
-function CPlayerBaseCtrl:ResumeSilver(iVal,sReason,mArgs)
-    local iSilver = self:GetData("silver",0)
-    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
-    assert(iVal>0)
-    if not self:ValidSilver(iVal,mArgs) then
-        return
-    end
-    iSilver = iSilver - iVal
-    self:SetData("silver",iSilver)
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:GS2CPropChange({silver=iSilver})
-    end
-end
-
-function CPlayerBaseCtrl:RewardExp(iVal,sReason,mArgs)
-    local iExp = self:GetData("exp",0)
-    assert(iExp>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
-
-    iExp = iExp + iVal
-    self:SetData("exp",iExp)
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:GS2CPropChange({exp=iExp})
-    end
-end
-
-function CPlayerBaseCtrl:AddChubeiExp(iVal,sReason)
-    local iChubeiExp = self:GetData("chubeiexp",0)
-    assert(iChubeiExp,string.format("%d exp err %d %d",self:GetInfo("pid"),iChubeiExp,iVal))
-
-    local iChubeiExp = iChubeiExp + iVal
-    self:SetData("chubeiexp",iChubeiExp)
 end

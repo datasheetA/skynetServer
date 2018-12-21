@@ -25,7 +25,7 @@ function GS2CNpcObjSay(pid,oNpc,sText)
     handlenpc.ClearRespond(pid)
     local mNet = {}
     mNet["npcid"] = oNpc.m_ID
-    mNet["model"] = oNpc.m_Model
+    mNet["shape"] = oNpc.m_Model
     mNet["name"] = oNpc:Name()
     mNet["text"] = sText
     local oWorldMgr = global.oWorldMgr
@@ -39,7 +39,7 @@ function GS2CNpcSay(pid,npcid,iModel,sName,sText)
     handlenpc.ClearRespond(pid)
     local mNet = {}
     mNet["npcid"] = npcid
-    mNet["model"] = iModel
+    mNet["shape"] = iModel
     mNet["name"] = sName
     mNet["text"] = sText
     local oWorldMgr = global.oWorldMgr

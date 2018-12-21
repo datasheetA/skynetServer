@@ -1,4 +1,4 @@
-import "base/scene.proto";
+import "base/common.proto";
 
 message C2GSSyncPos {
     optional uint32 scene_id = 1;

@@ -113,7 +113,7 @@ function CRWCtrl:AddGoldCoin(iGoldCoin,sReason)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
     if oPlayer then
-        oPlayer:GS2CPropChange({goldcoin=self:GoldCoin()})
+        oPlayer:PropChange("goldcoin")
         oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
     end
 end
@@ -126,7 +126,7 @@ function  CRWCtrl:AddRplGoldCoin(iRplGold,sReason)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
     if oPlayer then
-        oPlayer:GS2CPropChange({goldcoin=self:GoldCoin()})
+        oPlayer:PropChange("goldcoin")
         oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
     end
 end

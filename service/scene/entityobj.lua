@@ -20,6 +20,7 @@ function CEntity:New(iEid)
     o.m_iScene = nil
     o.m_sAoiMode = nil
     o.m_mPos = nil
+    o.m_mData = nil
     o.m_fSpeed = 0
     o.m_mWatcher = {}
     o.m_mMarker = {}
@@ -28,6 +29,14 @@ end
 
 function CEntity:Type()
     return self.m_iType
+end
+
+function CEntity:IsPlayer()
+    return self:Type() == gamedefines.SCENE_ENTITY_TYPE.PLAYER_TYPE
+end
+
+function CEntity:IsNpc()
+    return self:Type() == gamedefines.SCENE_ENTITY_TYPE.NPC_TYPE
 end
 
 function CEntity:Init(mInit)
@@ -45,14 +54,26 @@ function CEntity:Init(mInit)
     self.m_mPos = mPos
 
     self.m_fSpeed = mInit.speed
+    self.m_bOpenCheckAoi = mInit.check_aoi
+    self.m_mData = mInit.data or {}
 
-    local f1
-    f1 = function ()
-        self:DelTimeCb("_CheckAoi")
-        self:AddTimeCb("_CheckAoi", 3*1000, f1)
-        self:_CheckAoi()
+    if self.m_bOpenCheckAoi then
+        local f1
+        f1 = function ()
+            self:DelTimeCb("_CheckAoi")
+            self:AddTimeCb("_CheckAoi", 3*1000, f1)
+            self:_CheckAoi()
+        end
+        f1()
     end
-    f1()
+end
+
+function CEntity:SetData(k, v)
+    self.m_mData[k] = v
+end
+
+function CEntity:GetData(k, rDefault)
+    return self.m_mData[k] or rDefault
 end
 
 function CEntity:GetEid()
@@ -103,6 +124,14 @@ function CEntity:_CheckAoi()
             self:LeaveAoi(oMarker)
         end
     end
+end
+
+function CEntity:GetName()
+    return self:GetData("name")
+end
+
+function CEntity:GetModelInfo()
+    return self:GetData("model_info")
 end
 
 function CEntity:GetScene()
@@ -185,4 +214,10 @@ function CEntity:SendAoi(sMessage, mData, bInclude, mExclude)
             end
         end
     end
+end
+
+function CEntity:BlockInfo(m)
+end
+
+function CEntity:BlockChange(...)
 end

@@ -1,0 +1,90 @@
+package base;
+
+message PosInfo {
+    optional uint32 v = 1;
+    optional uint32 x = 2;
+    optional uint32 y = 3;
+    optional uint32 z = 4;
+    optional int32 face_x = 5;
+    optional int32 face_y = 6;
+    optional int32 face_z = 7;
+}
+
+message ModelInfo {
+    optional uint32 shape = 1;
+    optional uint32 scale = 2;           /*缩放比例*/
+    repeated uint32 color = 3;            /*染色*/
+    optional uint32 mutate_texture = 4;            /*变色贴图*/
+    optional uint32 weapon = 5;           /*关联武器id*/
+    optional uint32 adorn = 6;           /*装饰*/
+}
+
+message SimpleRole {
+    optional uint32 pid = 1;
+}
+
+message Role {
+    optional uint32 mask = 1;
+    optional uint32 grade = 2;
+    optional string name = 3;
+    repeated string title_list = 4;
+    optional uint32 goldcoin = 5;
+    optional uint32 gold    = 6;
+    optional uint32 silver= 7;
+    optional uint32 exp = 8;
+    optional uint32 chubei_exp = 9;
+    optional uint32 max_hp = 10;
+    optional uint32 max_mp = 11;
+    optional uint32 hp = 12;
+    optional uint32 mp = 13;
+    optional uint32 enegy = 14;
+    optional uint32 physique = 15;
+    optional uint32 strength = 16;
+    optional uint32 magic = 17;
+    optional uint32 endurance = 18;
+    optional uint32 agility = 19;
+}
+
+message PlayerAoi {
+    optional PlayerAoiBlock block = 1;
+    optional PosInfo pos_info = 2;
+    optional uint32 pid = 3;
+}
+
+message PlayerAoiBlock {
+    optional uint32 mask = 1;
+    optional string name = 2;
+    optional ModelInfo model_info = 3;
+}
+
+message NpcAoi {
+    optional NpcAoiBlock block = 1;
+    optional PosInfo pos_info = 2;
+    optional uint32 npctype = 3;
+    optional uint32 npcid = 4;
+}
+
+message NpcAoiBlock{
+    optional uint32 mask = 1;
+    optional string name = 2;
+    optional ModelInfo model_info = 3;
+}
+
+message PlayerWarriorStatus {
+    optional uint32 hp = 1;
+    optional uint32 mp = 2;
+    optional uint32 max_hp = 3;
+    optional uint32 max_mp = 4;
+}
+
+message PlayerWarrior {
+    optional uint32 wid = 1;
+    optional uint32 pid = 2;
+    optional uint32 pos = 3;
+    optional PlayerWarriorStatus status = 4;
+}
+
+message WarCamp {
+    optional uint32  camp_id = 1; /* 1 2 3 */
+    repeated PlayerWarrior player_list = 2;
+}
