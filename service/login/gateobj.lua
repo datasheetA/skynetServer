@@ -36,8 +36,8 @@ function CConnection:New(source, handle, ip, port)
     o.m_iPort = port
     o.m_sAccount = nil
 
-    self.m_oStatus = status.NewStatus()
-    self.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.no_account)
+    o.m_oStatus = status.NewStatus()
+    o.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.no_account)
 
     return o
 end
@@ -243,7 +243,6 @@ function CGateMgr:KickConnection(iHandle)
             oGate:DelConnection(iHandle)
         end
         local iStatus = oConnection.m_oStatus:Get()
-        print(string.format("KickConnection %s %s %s", iHandle, iStatus, debug.traceback()))
         skynet.send(oConnection.m_iGateAddr, "text", "kick", oConnection.m_iHandle)
     end
 end
