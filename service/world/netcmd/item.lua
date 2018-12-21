@@ -15,16 +15,16 @@ local function PackItemInfo(itemobj)
     local mNet = {}
     mNet["id"] = itemobj.m_ID
     mNet["sid"] = itemobj:SID()
-    mNet["iPos"] = itemobj.m_Pos
-    mNet["sName"] = itemobj:Name()
-    mNet["iItemLevel"] = itemobj:ItemLevel()
-    mNet["iAmount"] = itemobj:GetAmount()
-    mNet["iKey"] = itemobj:Key()
+    mNet["pos"] = itemobj.m_Pos
+    mNet["name"] = itemobj:Name()
+    mNet["itemlevel"] = itemobj:ItemLevel()
+    mNet["amount"] = itemobj:GetAmount()
+    mNet["key"] = itemobj:Key()
     if itemobj:IsTimeItem() then
-        mNet["iTime"] = itemobj:Query("Time") - timeop.get_second()
+        mNet["time"] = itemobj:Query("Time") - timeop.get_second()
     end
     mNet["apply_info"] = itemobj:ApplyInfo()
-    mNet["sDesc"] = itemobj:Desc()
+    mNet["desc"] = itemobj:Desc()
     return mNet
 end
 
@@ -35,7 +35,7 @@ function GS2CLoginItem(iOwner,oContainer)
         table.insert(itemdata,PackItemInfo(itemobj))
     end
     mNet["itemdata"] = itemdata
-    mNet["iExtSize"] = oContainer:GetExtendSize()
+    mNet["extsize"] = oContainer:GetExtendSize()
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
     if oPlayer then
@@ -98,7 +98,7 @@ end
 
 function GS2CItemExtendSize(iOwner,iExtSize)
     local mNet = {}
-    mNet["iExtSize"] = iExtSize
+    mNet["extsize"] = iExtSize
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
     if oPlayer then

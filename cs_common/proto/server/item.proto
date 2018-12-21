@@ -1,26 +1,26 @@
 
 message applyinfo {
-    optional string sKey            = 1;
-    optional uint32 iValue         = 2;
+    optional string key            = 1;
+    optional uint32 value         = 2;
 }
 
 message iteminfo {
     optional uint32 id                  = 1;                                  //服务的道具id
     optional uint32 sid                = 2;                                 //shape
-    optional string sName          = 3;
-    optional uint32 iPos              = 4;                                 //位置
-    optional uint32 iItemLevel   = 5;                                 //品质
-    optional uint32 iAmount      = 6;                                 //数目
-    optional uint32 iTime            = 7;                                 //过期剩余时间
-    optional uint32 iKey             = 8;                                  //key值,1.绑定,2.时效道具
+    optional string  name         = 3;
+    optional uint32 pos              = 4;                                 //位置
+    optional uint32 itemlevel   = 5;                                 //品质
+    optional uint32 amount      = 6;                                 //数目
+    optional uint32 time            = 7;                                 //过期剩余时间
+    optional uint32 key             = 8;                                  //key值,1.绑定,2.时效道具
     repeated applyinfo apply_info = 9;                              //应用信息
-    optional string sDesc           = 10;                                //描述信息
+    optional string desc           = 10;                                //描述信息
 }
 
 //登录发送背包道具信息
 message GS2CLoginItem{
     repeated iteminfo itemdata  = 1;                                //背包道具信息
-    optional uint32 iExtSize    = 2;                                    //扩展格子数目
+    optional uint32 extsize    = 2;                                    //扩展格子数目
 }
 
 message GS2CAddItem {
@@ -50,5 +50,5 @@ message GS2CItemQuickUse{
 
 //背包扩展数目
 message GS2CItemExtendSize{
-    optional uint32 iExtSize        = 1;                                //扩展格子数目
+    optional uint32 extsize        = 1;                                //扩展格子数目
 }

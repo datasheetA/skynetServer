@@ -116,32 +116,42 @@ action_wid ("4
 war_id (
 
 action_wid (
-?
+c
 client/other.proto"
 C2GSHeartBeat"
 	C2GSGMCmd
-cmd (	
-¬
+cmd (	""
+C2GSCallback
+
+sessionidx (
+¨
 client/item.proto"-
 C2GSItemUse
 itemid (
 target ("
 C2GSItemInfo
-itemid (",
+itemid ("+
 C2GSItemMove
-itemid (
-iPos ("
-C2GSItemArrage"&
-C2GSAddItemExtendSize
-iSize ("0
+itemid (
+pos ("
+C2GSItemArrage"%
+C2GSAddItemExtendSize
+size ("/
 C2GSDeComposeItem
 
-id (
-iAmount (".
+id (
+amount ("-
 C2GSComposeItem
 
-id (
-iAmount (
+id (
+amount (
+d
+client/task.proto"
+C2GSClickTask
+taskid (".
+C2GSTaskEvent
+taskid (
+npcid (
 
 client/player.proto
 å
@@ -258,30 +268,29 @@ Q
 time ("
 GS2CGMMessage
 msg (	
-œ
-server/item.proto")
-	applyinfo
-sKey (	
-iValue ("±
+‘
+server/item.proto"'
+	applyinfo
+key (	
+value ("ª
 iteminfo
 
 id (
-sid (
-sName (	
-iPos (
-
-iItemLevel (
-iAmount (
-iTime (
-iKey (
+sid (
+name (	
+pos (
+	itemlevel (
+amount (
+time (
+key (
 
 apply_info	 (2
-.applyinfo
-sDesc
- (	">
+.applyinfo
+desc
+ (	"=
 GS2CLoginItem
-itemdata (2	.iteminfo
-iExtSize ("*
+itemdata (2	.iteminfo
+extsize ("*
 GS2CAddItem
 itemdata (2	.iteminfo"
 GS2CDelItem
@@ -297,9 +306,63 @@ apply_info	 (2
 amount ("
 GS2CItemQuickUse
 
-id ("&
-GS2CItemExtendSize
-iExtSize (
+id ("%
+GS2CItemExtendSize
+extsize (
+´
+server/task.protobase/scene.proto"*
+NeedItem
+itemid (
+amount ("(
+NeedSum
+sumid (
+amount ("¢
+	ClientNpc
+npctype (
+npcid (
+name (	
+title (	
+model (
+map_id (
+pos_info (2.base.PosInfo
+desc (2
+.base.Desc"Ž
+TaskInfo
+taskid (
+tasktype (
+name (	
+
+targetdesc (	
+
+detaildesc (	
+	submitnpc (
+target (
+needitem (2	.NeedItem
+needsum	 (2.NeedSum
+	clientnpc
+ (2
+.ClientNpc
+isdone (
+time (
+
+rewardinfo (",
+GS2CLoginTask
+taskdata (2	.TaskInfo"*
+GS2CAddTask
+taskdata (2	.TaskInfo"
+GS2CDelTask
+taskid ("I
+
+DialogInfo
+type (
+preId (
+content (	
+voice ("=
+
+GS2CDialog
+
+sessionidx (
+dialog (2.DialogInfo
 ‘
 server/player.proto"z
 GS2CPropChange

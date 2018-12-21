@@ -5,3 +5,7 @@ message C2GSHeartBeat {
 message C2GSGMCmd {
     optional string cmd = 1;
 }
+
+message C2GSCallback{
+    optional uint32 sessionidx	= 1;
+}

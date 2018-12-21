@@ -28,6 +28,7 @@ C2GS_DEFINES.scene = {
 C2GS_DEFINES.other = {
     C2GSHeartBeat = 3001,
     C2GSGMCmd = 3002,
+    C2GSCallback = 3003,
 }
 
 C2GS_DEFINES.war = {
@@ -48,6 +49,11 @@ C2GS_DEFINES.item = {
 
 C2GS_DEFINES.player = {
     
+}
+
+C2GS_DEFINES.task = {
+    C2GSClickTask = 7001,
+    C2GSTaskEvent = 7002,
 }
 
 --C2GS END
@@ -106,6 +112,13 @@ GS2C_DEFINES.item = {
 GS2C_DEFINES.player = {
     GS2CPropLogin = 6001,
     GS2CPropChange = 6002,
+}
+
+GS2C_DEFINES.task = {
+    GS2CLoginTask   = 7001,
+    GS2CAddTask      = 7002,
+    GS2CDelTask      = 7003,
+    GS2CDialog         = 7004,
 }
 
 --GS2C END

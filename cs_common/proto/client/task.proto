@@ -1,0 +1,9 @@
+
+message C2GSClickTask {
+	optional uint32 taskid		= 1;
+}
+
+message C2GSTaskEvent{
+	optional uint32 taskid		= 1;
+	optional uint32 npcid		= 2;
+}
