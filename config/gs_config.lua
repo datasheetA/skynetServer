@@ -8,6 +8,7 @@ cluster_name = "gs"
 proto_file = "cs_common/proto/proto.pb"
 proto_define = "cs_common/proto/netdefines.lua"
 db_file = config_file.."db.lua"
+res_file = "lualib/public/resfile.lua"
 
 -- 决定log输出到哪个文件
 APPNAME = "n1_server"

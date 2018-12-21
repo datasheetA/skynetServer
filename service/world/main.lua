@@ -4,6 +4,7 @@ local net = require "base.net"
 local interactive = require "base.interactive"
 local servicetimer = require "base.servicetimer"
 local texthandle = require "base.texthandle"
+local res = require "base.res"
 
 require "skynet.manager"
 
@@ -17,9 +18,6 @@ skynet.start(function()
     net.Init(netcmd)
     interactive.Init(logiccmd)
     texthandle.Init()
-
-    skynet.dispatch("text", function (session, address, message)
-    end)
 
     global.oGlobalTimer = servicetimer.NewTimer()
 

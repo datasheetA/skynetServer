@@ -1,19 +1,20 @@
 local global = require "global"
 local skynet = require "skynet"
-local net = require "base.net"
+local eio = require("base.extend").Io
+local sharedata = require "sharedata"
 local interactive = require "base.interactive"
-local res = require "base.res"
 
 require "skynet.manager"
 
 local logiccmd = import(service_path("logiccmd.init"))
-local scenemgrobj = import(service_path("scenemgrobj"))
 
 skynet.start(function()
     interactive.Init(logiccmd)
-    net.Init()
 
-    global.oSceneMgr = scenemgrobj.NewSceneMgr()
+    local sResFile = eio.readfile(skynet.getenv("res_file"))
+    sharedata.new("res", sResFile)
 
-    print("scene service booted")
+    skynet.register ".res"
+
+    print("res service booted")
 end)

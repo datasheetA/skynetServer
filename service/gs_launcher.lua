@@ -6,6 +6,7 @@ skynet.start(function()
 
     local iConsolePort = assert(skynet.getenv("GM_CONSOLE_PORT"))
     skynet.newservice("debug_console", iConsolePort)
+    skynet.newservice("res")
 
     skynet.newservice("gamedb")
     skynet.newservice("login")
