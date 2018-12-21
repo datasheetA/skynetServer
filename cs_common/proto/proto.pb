@@ -157,11 +157,13 @@ action_wid (
 GS2CLoginRole
 role (2
 .base.Role
-„
-server/scene.protobase/scene.proto"1
+˜
+server/scene.protobase/scene.proto"E
 GS2CShowScene
 scene_id (
-map_id ("P
+map_id (
+
+scene_name (	"P
 GS2CEnterScene
 scene_id (
 eid (

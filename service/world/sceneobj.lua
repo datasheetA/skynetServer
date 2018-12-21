@@ -194,7 +194,6 @@ function CSceneMgr:TransferScene(oPlayer, iTransferId)
         if not m then
             return
         end
-
         local iX, iY, iTargetMapIndex, iTargetX, iTargetY = m.x, m.y, m.target_scene, m.target_x, m.target_y
         oNowScene:QueryRemote("player_pos", {pid = oPlayer:GetPid()}, function (mRecord, mData)
             local m = mData.data
@@ -322,13 +321,13 @@ function CScene:EnterPlayer(oPlayer, mPos)
     end
     local iEid = self:DispatchEntityId()
     self.m_mPlayers[oPlayer:GetPid()] = iEid
-    oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, map_id = self:MapId()})
+    oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, scene_name = self:GetName(), map_id = self:MapId()})
     interactive.Send(self.m_iRemoteAddr, "scene", "EnterPlayer", {scene_id = self.m_iSceneId, eid = iEid, pid = oPlayer:GetPid(), pos = mPos, mail = oPlayer:MailAddr()})
     return true
 end
 
 function CScene:ReEnterPlayer(oPlayer)
-    oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, map_id = self:MapId()})
+    oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, scene_name = self:GetName(), map_id = self:MapId()})
     interactive.Send(self.m_iRemoteAddr, "scene", "ReEnterPlayer", {scene_id = self.m_iSceneId, pid = oPlayer:GetPid(), mail = oPlayer:MailAddr()})
     return true
 end

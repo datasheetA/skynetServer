@@ -29,7 +29,7 @@ end
 
 Helpers.testwar = {
     "测试多人PVP",
-    "testwar 其他玩家列表",
+    "testwar {玩家ID1,玩家ID2,...}",
     "testwar {999, 234,}",
 }
 function Commands.testwar(oMaster, lTargets)
@@ -123,6 +123,24 @@ function Commands.clearall(oMaster)
     for _,itemobj in pairs(oMaster.m_oItemCtrl.m_Item) do
         oMaster.m_oItemCtrl:RemoveItem(itemobj)
     end
+end
+
+Helpers.map = {
+    "跳到固定地图",
+    "map {id=固定场景编号,x=X坐标,y=Y坐标,}",
+    "map {id=1001,x=100,y=100,}",
+}
+function Commands.map(oMaster, m)
+    local res = require "base.res"
+    local iMapId = m.id
+    local oNowScene = oMaster.m_oActiveCtrl:GetNowScene()
+    if oNowScene:MapId() == iMapId then
+        return
+    end
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:SelectDurableScene(iMapId)
+    local mNowPos = oMaster.m_oActiveCtrl:GetNowPos()
+    oSceneMgr:EnterScene(oMaster, oScene:GetSceneId(), {pos = {x = m.x or mNowPos.x, y = m.y or mNowPos.y, z = mNowPos.z, face_x = mNowPos.face_x, face_y = mNowPos.face_y, face_z = mNowPos.face_z}}, true)
 end
 
 Helpers.help = {

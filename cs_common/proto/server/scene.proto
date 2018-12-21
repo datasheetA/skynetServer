@@ -3,6 +3,7 @@ import "base/scene.proto";
 message GS2CShowScene {
     optional uint32 scene_id = 1;
     optional uint32 map_id = 2;
+    optional string scene_name = 3;
 }
 
 message GS2CEnterScene {
