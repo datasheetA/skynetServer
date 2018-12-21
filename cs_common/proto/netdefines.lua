@@ -99,6 +99,11 @@ GS2C_DEFINES.item = {
     GS2CItemQuickUse = 5006,
 }
 
+GS2C_DEFINES.player = {
+    GS2CPropLogin = 6001,
+    GS2CPropChange = 6002,
+}
+
 --GS2C END
 
 for k, v in pairs(C2GS_DEFINES) do

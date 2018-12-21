@@ -78,7 +78,7 @@ action_wid (
 C2GSHeartBeat"
 	C2GSGMCmd
 cmd (	
-Ê
+¬
 client/item.proto"-
 C2GSItemUse
 itemid (
@@ -90,7 +90,15 @@ action_wid (
 iPos ("
 C2GSItemArrage"&
 C2GSAddItemExtendSize
-iSize (
+iSize ("0
+C2GSDeComposeItem
+
+id (
+iAmount (".
+C2GSComposeItem
+
+id (
+iAmount (
 å
 server/login.protobase/role.proto"
 	GS2CHello
@@ -247,4 +255,20 @@ GS2DelItem
 amount ("
 GS2CItemQuickUse
 
-id (
+id (
+ü
+server/player.proto"q
+GS2CPropLogin
+iGrade (
+sName (	
+iShape (
+	iGoldCoin (
+iGold (
+iSilver ("r
+GS2CPropChange
+iGrade (
+sName (	
+iShape (
+	iGoldCoin (
+iGold (
+iSilver (

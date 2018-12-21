@@ -3,6 +3,7 @@ local skynet = require "skynet"
 local global = require "global"
 
 local datactrl = import(lualib_path("public.datactrl"))
+local playernet = import(service_path("netcmd/player"))
 
 CPlayerBaseCtrl = {}
 CPlayerBaseCtrl.__index = CPlayerBaseCtrl
@@ -49,6 +50,7 @@ function CPlayerBaseCtrl:RewardGold(iVal,sReason)
     
     iGold = iGold + iVal
     self:SetData("gold",iGold)
+    playernet.GS2CPropChange(self.m_ID,"iGold",iGold)
 end
 
 function CPlayerBaseCtrl:ResumeGold(iVal,sReason,mArgs)
@@ -60,6 +62,7 @@ function CPlayerBaseCtrl:ResumeGold(iVal,sReason,mArgs)
     end
     iGold = iGold - iVal
     self:SetData("gold",iGold)
+    playernet.GS2CPropChange(self.m_ID,"iGold",iGold)
 end
 
 function CPlayerBaseCtrl:ValidSilver(iVal,mArgs)
@@ -81,6 +84,7 @@ function CPlayerBaseCtrl:RewardSilver(iVal,sReason,mArgs)
     
     iSilver = iSilver + iVal
     self:SetData("silver",iSilver)
+    playernet.GS2CPropChange(self.m_ID,"iSilver",iSilver)
 end
 
 function CPlayerBaseCtrl:ResumeSilver(iVal,sReason,mArgs)
@@ -92,4 +96,5 @@ function CPlayerBaseCtrl:ResumeSilver(iVal,sReason,mArgs)
     end
     iSilver = iSilver - iVal
     self:SetData("silver",iSilver)
+    playernet.GS2CPropChange(self.m_ID,"iSilver",iSilver)
 end

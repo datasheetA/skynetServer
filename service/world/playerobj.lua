@@ -3,6 +3,7 @@
 local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
+local playernet = import(service_path("netcmd/player"))
 
 local playerctrl = import(service_path("playerctrl.init"))
 
@@ -93,7 +94,8 @@ function CPlayer:OnLogin(bReEnter)
 
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnLogin(self, bReEnter)
-
+    
+    self:GS2CPropLogin()
     self:RefreshStep(1)
 
     if not bReEnter then
@@ -225,4 +227,12 @@ end
 
 function CPlayer:RewardSilver(iVal,sReason,mArgs)
     self.m_oBaseCtrl:RewardSilver(iVal,sReason,mArgs)
+end
+
+function CPlayer:GS2CPropLogin()
+    playernet.GS2CPropLogin(self)
+end
+
+function CPlayer:GS2CPropChange(key,value)
+    playernet.GS2CPropChange(self,key,value)
 end

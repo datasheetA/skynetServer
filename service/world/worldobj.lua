@@ -269,7 +269,7 @@ end
 function CWorldMgr:LoadRW(pid,func)
     local oRW = self.m_mOfflineRWs[pid]
     if oRW then
-        if oRW:IsLoad() then
+        if oRW:IsLoading() then
             oRW:AddWaitFunc(func)
         else
             func(oRW)

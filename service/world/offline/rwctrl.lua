@@ -2,9 +2,11 @@
 local skynet = require "skynet"
 local global = require "global"
 local interactive = require "base.interactive"
+local extend = require "base.extend"
 
 local datactrl = import(lualib_path("public.datactrl"))
 local timeop = import(lualib_path("base.timeop"))
+local defines = import(service_path("offline.defines"))
 
 CRWCtrl = {}
 CRWCtrl.__index = CRWCtrl
@@ -19,7 +21,9 @@ end
 function CRWCtrl:Init(pid)
     self.m_ID = pid
     self.m_FuncList = {}
-    self.m_Gold = 0
+    self.m_GoldCoin = 0                                                                                             --金元宝
+    self.m_RplGoldCoin = 0                                                                                        
+
     self.m_LastTime = timeop.get_time()
     self.m_bLoading = true
     self.m_WaitFuncList = {}
@@ -51,8 +55,9 @@ end
 
 function CRWCtrl:Save()
     local data = {}
-    data["Gold"] = self.m_Gold
-    data["FuncList"] = self.m_FuncList
+    data["GoldCoin"] = self.m_GoldCoin or 0
+    data["RplGoldCoin"]  = self.m_RplGoldCoin or 0
+    data["FuncList"] = self.m_FuncList or {}
     return data
 end
 
@@ -60,19 +65,40 @@ function CRWCtrl:Load(data)
     if not data then
         return
     end
-    self.m_Gold = data["Gold"]
-    self.m_FuncList = data["FuncList"]
+    self.m_GoldCoin = data["GoldCoin"] or 0
+    self.m_RplGoldCoin = data["RplGoldCoin"] or 0
+    self.m_FuncList = data["FuncList"] or {}
 end
 
 function CRWCtrl:ChargeGold(iGold,sReason)
     self:Dirty()
-    assert(self.m_Gold>=0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_Gold,iGold))
+    assert(self.m_GoldCoin>=0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_GoldCoin,iGold))
     assert(iGold>0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_Gold,iGold))
-    self.m_Gold = self.m_Gold + iGold
+    self.m_GoldCoin = self.m_GoldCoin + iGold
+end
+
+function CRWCtrl:AddFunc(sFunc,...)
+    local mArgs = {...}
+    extend.Table.print(defines)
+    local iFuncNo = defines.GetFuncNo(sFunc)
+    assert(iFuncNo>0,string.format("%d AddFuncList err:%s",self.m_ID,sFunc))
+    table.insert(self.m_FuncList,{iFuncNo,mArgs})
 end
 
 function CRWCtrl:OnLogin()
-    -- body
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    assert(oPlayer,string.format("CRWCtrl:OnLogin err:%d",self.m_ID))
+    self:Dirty()
+    local funclist = self.m_FuncList
+    self.m_FuncList = {}
+    for _,mFuncData in ipairs(funclist) do
+        local iFuncNo,mArgs = table.unpack(mFuncData)
+        local sFunc = defines.GetFuncByNo(iFuncNo)
+        if iFuncNo < 10000 then
+            oPlayer[sFunc](oPlayer,table.unpack(mArgs))
+        end
+    end
 end
 
 function CRWCtrl:Schedule()
