@@ -45,17 +45,13 @@ skynet.start(function()
     global.oWarMgr = warobj.NewWarMgr(lWarRemote)
 
     --lxldebug add some temp scene
-    local mTestScenes = {
-        {map_id = 1001, cnt = 3},
-        {map_id = 1002, cnt = 3},
-    }
-
-    local oSceneMgr = global.oSceneMgr
-    for _, v in ipairs(mTestScenes) do
-        local iMapId = v.map_id
-        for i = 1, v.cnt do
-            oSceneMgr:CreateScene({
-                map_id = iMapId,
+    local mScene = res["daobiao"]["scene"]
+    for k, v in pairs(mScene) do
+        local iCnt = v.line_count
+        for i = 1, iCnt do
+            global.oSceneMgr:CreateScene({
+                map_id = v.map_id,
+                res_data = v,
                 is_durable = true,
             })
         end

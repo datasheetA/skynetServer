@@ -21,7 +21,7 @@ function CPlayerActiveCtrl:Load(mData)
     local mSceneInfo = mData.scene_info
     if not mSceneInfo then
         mSceneInfo = {
-            map_id = 1001,
+            map_id = 10001,
             pos = {
                 x = 100,
                 y = 100,

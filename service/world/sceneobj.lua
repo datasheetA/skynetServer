@@ -3,6 +3,7 @@
 local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
+local res = require "base.res"
 
 local gamedefines = import(lualib_path("public.gamedefines"))
 
@@ -182,6 +183,52 @@ function CSceneMgr:EnterScene(oPlayer, iScene, mInfo, bForce)
     return {errcode = gamedefines.ERRCODE.ok}
 end
 
+function CSceneMgr:TransferScene(oPlayer, iTransferId)
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
+    if oNowScene then
+        local lTransfers = oNowScene:GetTransfers()
+        if not lTransfers then
+            return
+        end
+        local m = lTransfers[iTransferId]
+        if not m then
+            return
+        end
+
+        local iX, iY, iTargetMapIndex, iTargetX, iTargetY = m.x, m.y, m.target_scene, m.target_x, m.target_y
+        oNowScene:QueryRemote("player_pos", {pid = oPlayer:GetPid()}, function (mRecord, mData)
+            local m = mData.data
+            if not m then
+                return
+            end
+            local mMapInfo = res["daobiao"]["scene"][iTargetMapIndex]
+            if not mMapInfo then
+                return
+            end
+
+            local iRemoteScene = m.scene_id
+            local iRemotePid = m.pid
+            local mRemotePos = m.pos_info
+            local oWorldMgr = global.oWorldMgr
+            local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iRemotePid)
+            local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
+            if not oNowScene or oNowScene:GetSceneId() ~= iRemoteScene or oNowScene:MapId() == mMapInfo.map_id then
+                return
+            end
+            if ((mRemotePos.x - iX) ^ 2 + (mRemotePos.y - iY) ^ 2) > 12 ^ 2 then
+                return
+            end
+            local oScene = self:SelectDurableScene(mMapInfo.map_id)
+            if oScene then
+                if not self:IsRelease() then
+                    local mNowPos = oPlayer.m_oActiveCtrl:GetNowPos()
+                    self:EnterScene(oPlayer, oScene:GetSceneId(), {pos = {x = iTargetX, y = iTargetY, z = mNowPos.z, face_x = mNowPos.face_x, face_y = mNowPos.face_y, face_z = mNowPos.face_z}}, true)
+                end
+            end
+        end)
+    end
+end
+
 function CSceneMgr:RemoteEvent(sEvent, mData)
     return true
 end
@@ -198,6 +245,7 @@ function CScene:New(id, mInfo)
     o.m_iDispatchId = 0
     o.m_iMapId = mInfo.map_id
     o.m_bIsDurable = mInfo.is_durable
+    o.m_oResData = mInfo.res_data
 
     o.m_mPlayers = {}
     o.m_mNpc = {}
@@ -212,6 +260,17 @@ end
 
 function CScene:GetSceneId()
     return self.m_iSceneId
+end
+
+function CScene:GetName()
+    return self.m_oResData["scene_name"]
+end
+
+function CScene:GetTransfers()
+    if not self:IsDurable() then
+        return
+    end
+    return self.m_oResData["transfers"]
 end
 
 function CScene:DispatchEntityId()
@@ -232,6 +291,10 @@ function CScene:ConfirmRemote()
     local iRemoteAddr = oSceneMgr:SelectRemoteScene()
     self.m_iRemoteAddr = iRemoteAddr
     interactive.Send(iRemoteAddr, "scene", "ConfirmRemote", {scene_id = self.m_iSceneId})
+end
+
+function CScene:GetRemoteAddr()
+    return self.m_iRemoteAddr
 end
 
 function CScene:VaildLeave(oPlayer)
@@ -288,6 +351,10 @@ end
 function CScene:Forward(sCmd, iPid, mData)
     interactive.Send(self.m_iRemoteAddr, "scene", "Forward", {pid = iPid, scene_id = self.m_iSceneId, cmd = sCmd, data = mData})
     return true
+end
+
+function CScene:QueryRemote(sType, mData, func)
+        interactive.Request(self.m_iRemoteAddr, "scene", "Query", {scene_id = self.m_iSceneId, type = sType, data = mData}, func)
 end
 
 function CScene:EnterNpc(oNpc)

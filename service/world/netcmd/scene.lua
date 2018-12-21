@@ -10,3 +10,11 @@ function C2GSSyncPos(oPlayer, mData)
         oScene:Forward("C2GSSyncPos", oPlayer:GetPid(), mData)
     end
 end
+
+function C2GSTransfer(oPlayer, mData)
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oPlayer.m_oActiveCtrl:GetNowScene()
+    if oScene:GetSceneId() == mData.scene_id then
+        oSceneMgr:TransferScene(oPlayer, mData.transfer_id)
+    end
+end

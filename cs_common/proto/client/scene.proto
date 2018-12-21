@@ -5,3 +5,9 @@ message C2GSSyncPos {
     optional uint32 eid = 2;
     optional base.PosInfo pos_info = 3;
 }
+
+message C2GSTransfer {
+    optional uint32 scene_id = 1;
+    optional uint32 eid = 2;
+    optional uint32 transfer_id = 3;
+}

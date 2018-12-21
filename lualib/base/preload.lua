@@ -4,6 +4,7 @@ require "base.timeop"
 require "base.fileop"
 require "base.stringop"
 require "base.tableop"
+require "base.vector3"
 
 local skynet = require "skynet"
 local servicetimer = require "base.servicetimer"

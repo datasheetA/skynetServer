@@ -72,12 +72,16 @@ h
 C2GSLoginRole
 account (	
 pid (
-u
+¹
 client/scene.protobase/scene.proto"M
 C2GSSyncPos
 scene_id (
 eid (
-pos_info (2.base.PosInfo
+pos_info (2.base.PosInfo"B
+C2GSTransfer
+scene_id (
+eid (
+transfer_id (
 b
 client/npc.proto"
 C2GSClickNpc

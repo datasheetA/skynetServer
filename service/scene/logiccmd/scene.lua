@@ -3,6 +3,7 @@ local global = require "global"
 local skynet = require "skynet"
 local geometry = require "base.geometry"
 local protobuf = require "base.protobuf"
+local interactive = require "base.interactive"
 
 ForwardNetcmds = {}
 
@@ -125,6 +126,34 @@ function Forward(mRecord, mData)
             if func then
                 func(oPlayerEntity, m)
             end
+        end
+    end
+end
+
+function Query(mRecord, mData)
+    local oSceneMgr = global.oSceneMgr
+    local sType = mData.type
+    local iScene = mData.scene_id
+    local m = mData.data
+
+    local oScene = oSceneMgr:GetScene(iScene)
+    if not oScene then
+        interactive.Response(mRecord.source, mRecord.session, {})
+        return
+    end
+
+    if sType == "player_pos" then
+        local iPid = m.pid
+        local oPlayerEntity = oScene:GetPlayerEntity(iPid)
+        if oPlayerEntity then
+            interactive.Response(mRecord.source, mRecord.session, {
+                data = {
+                    scene_id = iScene,
+                    pid = iPid,
+                    pos_info = oPlayerEntity:GetPos(),
+                }
+            })
+            return
         end
     end
 end

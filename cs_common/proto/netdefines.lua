@@ -22,6 +22,7 @@ C2GS_DEFINES.login = {
 
 C2GS_DEFINES.scene = {
     C2GSSyncPos = 2001,
+    C2GSTransfer = 2002,
 }
 
 C2GS_DEFINES.other = {
