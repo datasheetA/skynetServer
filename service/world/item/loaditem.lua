@@ -25,6 +25,10 @@ function GetItemPath(sid)
     if extend.Table.find({"other","virtual"},sDir) then
         sPath  = string.format("item/%s/i%d",sDir,sid)
     end
+    --用于测试
+    if sid >= 10002 and sid <=10010 then
+        sPath = "item/other/otherbase"
+    end
    return sPath
 end
 

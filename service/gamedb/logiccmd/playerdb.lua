@@ -79,3 +79,17 @@ function SavePlayerItem(mRecord,mData)
     local oGameDb = global.oGameDb
     oGameDb:Update(sPlayerTableName,{pid=mData.pid},{["$set"]={item_info=mData.data}})
 end
+
+function LoadPlayerTimeInfo(mRecord,mData)
+    local oGameDb = global.oGameDb
+    local m = oGameDb:FindOne(sPlayerTableName,{pid = mData.pid},{time_info = true})
+    interactive.Response(mRecord.source,mRecord.session,{
+        data = m.time_info,
+        pid = mData.pid,
+     })
+end
+
+function SavePlayerTimeInfo(mRecord,mData)
+    local oGameDb = global.oGameDb
+    oGameDb:Update(sPlayerTableName,{pid=mData.pid},{["$set"]={time_info=mData.data}})
+end

@@ -52,17 +52,3 @@ function reload(sModule)
 
     recu(nm, om)
 end
-
-function importall(env,sModule)
-    local sPath = string.gsub(sModule, "%.", "/") .. ".lua"
-    local m = setmetatable({}, {__index = _G})
-    local f, s = loadfile(sPath, "bt", m)
-    if not f then
-        print("import error", s)
-        return
-    end
-    f()
-    for key,value in pairs(m) do
-        env[key] = value
-    end
-end

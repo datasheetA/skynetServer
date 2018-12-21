@@ -5,8 +5,8 @@ local interactive =  require "base.interactive"
 local datactrl = import(lualib_path("public.datactrl"))
 local timeop = import(lualib_path("base.timeop"))
 local itemnet = import(service_path("netcmd.item"))
+local itemdefines = import(service_path("item.itemdefines"))
 
-importall(_ENV,service_path("item.itemdefines"))
 
 local ITEMID = ITEMID  or 1
 
@@ -246,10 +246,10 @@ end
 function CItem:Key()
     local iKey = 0
     if self:IsBind() then
-        iKey = iKey | ITEM_KEY_BIND
+        iKey = iKey | itemdefines.ITEM_KEY_BIND
     end
     if self:IsTimeItem() then
-        iKey = iKey | ITEM_KEY_TIME
+        iKey = iKey | itemdefines.ITEM_KEY_TIME
     end
     return iKey
 end

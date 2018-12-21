@@ -28,7 +28,16 @@ function CPlayer:New(mConn, mRole)
     o.m_oBaseCtrl = playerctrl.NewBaseCtrl(self.m_iPid)
     o.m_oActiveCtrl = playerctrl.NewActiveCtrl(self.m_iPid)
     o.m_oItemCtrl = playerctrl.NewItemCtrl(self.m_iPid)
-
+    o.m_oThisTemp = playerctrl.NewThisTempCtrl(self.m_iPid)
+    o.m_oToday = playerctrl.NewTodayCtrl(self.m_iPid)
+    o.m_oThisWeek = playerctrl.NewWeekCtrl(self.m_iPid)
+    o.m_oSeveralDay = playerctrl.NewSeveralDayCtrl(self.m_iPid)
+    o.m_oTimeCtrl = playerctrl.NewTimeCtrl(self.m_iPid,{
+         ["Today"] = o.m_oToday,
+        ["Week"] = o.m_oThisWeek,
+        ["ThisTemp"] = o.m_oThisTemp,
+        ["SeveralDay"] = o.m_oSeveralDay,
+        })
     return o
 end
 
@@ -158,6 +167,12 @@ function CPlayer:SaveDb()
         local mData = self.m_oItemCtrl:Save()
         interactive.Send(".gamedb","playerdb","SavePlayerItem",{pid=self:GetPid(),data=mData})
         self.m_oItemCtrl:UnDirty()
+    end
+   
+    if self.m_oTimeCtrl:IsDirty() then
+        local mData = self.m_oTimeCtrl:Save()
+        interactive.Send(".gamedb","playerdb","SavePlayerTimeInfo",{pid=self:GetPid(),data=mData})
+        self.m_oTimeCtrl:UnDirty()
     end
 end
 

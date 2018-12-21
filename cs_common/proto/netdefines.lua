@@ -45,6 +45,10 @@ C2GS_DEFINES.item = {
     C2GSAddItemExtendSize  = 5005,
 }
 
+C2GS_DEFINES.player = {
+    
+}
+
 --C2GS END
 
 --GS2C BEGIN

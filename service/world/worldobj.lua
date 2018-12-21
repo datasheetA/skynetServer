@@ -222,13 +222,28 @@ function CWorldMgr:_LoginRole3(mRecord, mData)
 end
 
 function CWorldMgr:_LoginRole4(mRecord,mData)
-    local pid = mData.pid
+     local pid = mData.pid
     local m = mData.data
     local oPlayer = self.m_mLoginPlayers[pid]
     if not oPlayer then
         return
     end
     oPlayer.m_oItemCtrl:Load(m)
+    interactive.Request(".gamedb", "playerdb", "LoadPlayerTimeInfo", {pid = pid}, function (mRecord, mData)
+        if not self:IsRelease() then
+            self:_LoginRole5(mRecord, mData)
+        end
+    end)
+end
+
+function CWorldMgr:_LoginRole5(mRecord,mData)
+    local pid = mData.pid
+    local m = mData.data
+    local oPlayer = self.m_mLoginPlayers[pid]
+    if not oPlayer then
+        return
+    end
+    oPlayer.m_oTimeCtrl:Load(m)
 
     self.m_mLoginPlayers[pid] = nil
     self.m_mOnlinePlayers[pid] = oPlayer

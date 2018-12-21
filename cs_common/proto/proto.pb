@@ -106,6 +106,8 @@ action_wid (
 
 id (
 iAmount (
+
+client/player.proto
 å
 server/login.protobase/role.proto"
 	GS2CHello

@@ -7,6 +7,7 @@ local extend = require "base/extend"
 
 local loaditem = import(service_path("item/loaditem"))
 local itemnet = import(service_path("netcmd/item"))
+local timeop = import(lualib_path("base/timeop"))
 
 
 function NewGMMgr(...)
@@ -32,9 +33,18 @@ function Commands.testwar(oMaster, iTargetPid)
     end
 end
 
-function Commands.clone(oMaster,itemid)
-    local itemobj = loaditem.Create(itemid)
-    if itemobj then
+function Commands.clone(oMaster,sid,iAmount)
+    local itemobj = loaditem.GetItem(sid)
+    if not itemobj then
+        return
+    end
+   
+    while(iAmount>0) do
+        local itemobj = loaditem.Create(sid)
+        local iMaxAmount = itemobj:GetMaxAmount()
+        local iAddAmount = math.min(iAmount,iMaxAmount)
+        iAmount = iAmount - iAddAmount
+        itemobj:SetAmount(iAmount)
         oMaster:RewardItem(itemobj,"clone")
     end
 end
@@ -44,7 +54,6 @@ function Commands.clearall(oMaster)
         oMaster.m_oItemCtrl:RemoveItem(itemobj)
     end
 end
-
 
 CGMMgr = {}
 CGMMgr.__index = CGMMgr
