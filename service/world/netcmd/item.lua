@@ -89,10 +89,20 @@ end
 function GS2CItemQuickUse(iOwner,itemid)
     local mNet = {}
     mNet["id"] = itemid
-     local oWorldMgr = global.oWorldMgr
+    local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
     if oPlayer then
         oPlayer:Send("GS2CItemQuickUse",mNet)
+    end
+end
+
+function GS2CItemExtendSize(iOwner,iExtSize)
+    local mNet = {}
+    mNet["iExtSize"] = iExtSize
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
+    if oPlayer then
+        oPlayer:Send("GS2CItemExtendSize",mNet)
     end
 end
 

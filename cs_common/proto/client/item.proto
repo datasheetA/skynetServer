@@ -1,19 +1,19 @@
 
 //使用
 message C2GSItemUse{
-    required uint32 itemid = 1;                         //道具id
+    optional uint32 itemid = 1;                         //道具id
     optional uint32 target = 2;                          //使用目标
 }
 
 //请求道具信息
 message C2GSItemInfo{
-    required uint32 itemid = 1;                         //道具id
+    optional uint32 itemid = 1;                         //道具id
 }
 
 //移动到一个位置
 message C2GSItemMove {
-    required uint32 itemid = 1;                         //道具id
-    required uint32 iPos = 2;                              //目标位置
+    optional uint32 itemid = 1;                         //道具id
+    optional uint32 iPos = 2;                              //目标位置
 }
 
 //整理
@@ -22,16 +22,16 @@ message C2GSItemArrage{
 
 //道具背包开格子
 message C2GSAddItemExtendSize{
-    required uint32 iSize = 1;                          //格子数目:5,10
+    optional uint32 iSize = 1;                          //格子数目:5,10
 }
 
 //分解道具
 message C2GSDeComposeItem{
-    required uint32 id                 = 1;              //id
-    required uint32 iAmount     = 2;              //分解数目
+    optional uint32 id                 = 1;              //id
+    optional uint32 iAmount     = 2;              //分解数目
 }
 
 message C2GSComposeItem {
-    required uint32 id                  = 1;            //id
-    required uint32 iAmount       = 2;            //合成数目,需要整除
+    optional uint32 id                  = 1;            //id
+    optional uint32 iAmount       = 2;            //合成数目,需要整除
 }

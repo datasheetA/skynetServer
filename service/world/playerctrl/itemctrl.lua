@@ -115,6 +115,7 @@ function CItemCtrl:AddExtendSize(iSize)
     self:Dirty()
     iSize = iSize or 5
     self.m_ExtendSize = self.m_ExtendSize + iSize
+    itemnet.GS2CItemExtendSize(self.m_ExtendSize)
 end
 
 function CItemCtrl:CanAddExtendSize( )

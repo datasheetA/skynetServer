@@ -98,6 +98,7 @@ GS2C_DEFINES.item = {
     GS2CMoveItem = 5004,
     GS2CItemAmount = 5005,
     GS2CItemQuickUse = 5006,
+    GS2CItemExtendSize = 5007,
 }
 
 GS2C_DEFINES.player = {
