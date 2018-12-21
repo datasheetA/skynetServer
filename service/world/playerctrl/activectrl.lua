@@ -46,8 +46,8 @@ end
 
 function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
     local iGold = self:GetData("gold",0)
-    assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0)
+    assert(iGold>=0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
+    assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo))
     if iGold< iVal then
         local sTip = mArgs.tip
         if not sTip then
@@ -73,10 +73,7 @@ end
 function CPlayerActiveCtrl:ResumeGold(iVal,sReason,mArgs)
     local iGold = self:GetData("gold",0)
     assert(iGold>0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0)
-    if not self:ValidGold(iVal,mArgs) then
-        return
-    end
+    assert(iVal>0,string.format("%d gold cost err %d",self:GetInfo("pid"),iVal))
     iGold = iGold - iVal
     self:SetData("gold",iGold)
     local oWorldMgr = global.oWorldMgr
@@ -88,8 +85,8 @@ end
 
 function CPlayerActiveCtrl:ValidSilver(iVal,mArgs)
     local iSilver = self:GetData("silver",0)
-    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
-    assert(iVal>0)
+    assert(iSilver>=0,string.format("%d silver err %d",self:GetInfo("pid"),iSilver))
+    assert(iVal>0,string.format("%d cost silver err %d",self:GetInfo("pid"),iVal))
     if iSilver < iVal then
         local sTip = mArgs.tip
         if not sTip then
@@ -101,8 +98,8 @@ function CPlayerActiveCtrl:ValidSilver(iVal,mArgs)
 end
 
 function CPlayerActiveCtrl:RewardSilver(iVal,sReason,mArgs)
+    assert(iVal>0,string.format("%d  rewardsilver err %d",self:GetInfo("pid"),iVal))
     local iSilver = self:GetData("silver",0)
-    
     iSilver = iSilver + iVal
     self:SetData("silver",iSilver)
     local oWorldMgr = global.oWorldMgr
@@ -114,11 +111,8 @@ end
 
 function CPlayerActiveCtrl:ResumeSilver(iVal,sReason,mArgs)
     local iSilver = self:GetData("silver",0)
-    assert(iSilver>0,string.format("%d gold err %d",self:GetInfo("pid"),iSilver))
-    assert(iVal>0)
-    if not self:ValidSilver(iVal,mArgs) then
-        return
-    end
+    assert(iSilver>0,string.format("%d silver err %d",self:GetInfo("pid"),iSilver))
+    assert(iVal>0,string.format("%d cost silver err %d",self:GetInfo("pid"),iVal))
     iSilver = iSilver - iVal
     self:SetData("silver",iSilver)
     local oWorldMgr = global.oWorldMgr

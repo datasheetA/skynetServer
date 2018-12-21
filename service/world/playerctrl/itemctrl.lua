@@ -43,8 +43,8 @@ function CItemCtrl:Save()
         itemdata[iPos] = itemobj:Save()
     end
     mData["itemdata"] = itemdata
-    mData["TraceNo"] = self.m_TraceNo
-    mData["ExtendSize"] = self.m_ExtendSize
+    mData["trace_no"] = self.m_TraceNo
+    mData["extendsize"] = self.m_ExtendSize
     return mData
 end
 
@@ -64,8 +64,8 @@ function CItemCtrl:Load(mData)
             --
         end
     end
-    self.m_TraceNo = mData["TraceNo"] or self.m_TraceNo
-    self.m_ExtendSize = mData["ExtendSize"] or self.m_ExtendSize
+    self.m_TraceNo = mData["traceno"] or self.m_TraceNo
+    self.m_ExtendSize = mData["extendsize"] or self.m_ExtendSize
 end
 
 function CItemCtrl:DispatchTraceNo()
@@ -335,7 +335,7 @@ function CItemCtrl:GiveItem(ItemList,sReason)
     for sid,iAmount in pairs(ItemList) do
         while(iAmount > 0) do
             local itemobj = loaditem.Create(sid)
-            local iAddAmount = max(itemobj:GetMaxAmount(),iAmount)
+            local iAddAmount = min(itemobj:GetMaxAmount(),iAmount)
             iAmount = iAmount - iAddAmount
             itemobj:SetAmount(iAddAmount)
             self:AddItem(itemobj)

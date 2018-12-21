@@ -5,6 +5,7 @@ local basectrl = import(service_path("playerctrl.basectrl"))
 local activectrl = import(service_path("playerctrl.activectrl"))
 local itemctrl = import(service_path("playerctrl.itemctrl"))
 local timectrl = import(service_path("playerctrl.timectrl"))
+--local taskctrl = import(service_path("playerctrl.taskctrl"))
 
 function NewBaseCtrl(...)
     return basectrl.CPlayerBaseCtrl:New(...)
@@ -44,4 +45,8 @@ end
 
 function NewSeveralDayCtrl( ... )
     return timectrl.CSeveralDay:New(...)
+end
+
+function NewTaskCtrl( ... )
+    return taskctrl.CTaskCtrl:New(...)
 end
