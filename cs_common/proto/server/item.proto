@@ -1,0 +1,49 @@
+
+message applyinfo {
+    required string sKey            = 1;
+    required uint32 iValue         = 2;
+}
+
+message iteminfo {
+    required uint32 id                  = 1;                                  //服务的道具id
+    required uint32 sid                = 2;                                 //shape
+    required string sName          = 3;
+    optional uint32 iPos              = 4;                                 //位置
+    required uint32 iItemLevel   = 5;                                 //品质
+    required uint32 iAmount      = 6;                                 //数目
+    optional uint32 iTime            = 7;                                 //过期剩余时间
+    required uint32 iKey             = 8;                                  //key值,1.绑定,2.时效道具
+    repeated applyinfo apply_info = 9;                              //应用信息
+    required string sDesc           = 10;                                //描述信息
+}
+
+//登录发送背包道具信息
+message GS2CLoginItem{
+    repeated iteminfo itemdata  = 1;                                //背包道具信息
+    required uint32 iExtSize    = 2;                                    //扩展格子数目
+}
+
+message GS2CItemAdd {
+    required iteminfo itemdata   = 1;
+}
+
+//删除道具
+message GS2DelItem {
+    required uint32 id                  = 1;                                //服务的道具id
+}
+
+message GS2CMoveItem{
+    required uint32 id                  = 1;                                //id
+    required uint32 destpos        = 2;                                //目标位置
+}
+
+//刷新道具数目
+message GS2CItemAmount{
+    required uint32 id                  = 1;
+    required uint32 amount        = 2;
+}
+
+//客户端快捷使用
+message GS2CItemQuickUse{
+    required uint32 id                  = 1;
+}

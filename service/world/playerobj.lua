@@ -26,6 +26,7 @@ function CPlayer:New(mConn, mRole)
 
     o.m_oBaseCtrl = playerctrl.NewBaseCtrl(self.m_iPid)
     o.m_oActiveCtrl = playerctrl.NewActiveCtrl(self.m_iPid)
+    o.m_oItemCtrl = playerctrl.NewItemCtrl(self.m_iPid)
 
     return o
 end
@@ -93,6 +94,8 @@ function CPlayer:OnLogin(bReEnter)
     local oSceneMgr = global.oSceneMgr
     oSceneMgr:OnLogin(self, bReEnter)
 
+    self:RefreshStep(1)
+
     if not bReEnter then
         self:Schedule()
     end
@@ -132,6 +135,11 @@ function CPlayer:SaveDb()
         interactive.Send(".gamedb", "playerdb", "SavePlayerActive", {pid = self:GetPid(), data = mData})
         self.m_oActiveCtrl:UnDirty()
     end
+    if self.m_oItemCtrl:IsDirty() then
+        local mData = self.m_oItemCtrl:Save()
+        interactive.Send(".gamedb","playerdb","SavePlayerItem",{pid=self:GetPid(),data=mData})
+        self.m_oItemCtrl:UnDirty()
+    end
 end
 
 function CPlayer:ClientHeartBeat()
@@ -151,4 +159,42 @@ function CPlayer:_CheckHeartBeat()
         local oWorldMgr = global.oWorldMgr
         oWorldMgr:Logout(self:GetPid())
     end
+end
+
+function CPlayer:RefreshStep(iStep)
+    if iStep == 1 then
+        self.m_oItemCtrl:OnLogin()
+    end
+    if iStep < 1 then
+        self:AddTimeCb("RefreshStep",1,function() self:RefreshStep(iStep+1) end)
+    end
+end
+
+--道具相关
+function CPlayer:RewardItem(itemobj,sReason,iKey,mArgs)
+    local retobj = self.m_oItemCtrl:AddItem(itemobj,sReason)
+    --添加失败，放入邮件，功能稍后增加
+    if retobj then
+        return
+    end
+end
+
+function CPlayer:GiveItem(ItemList,sReason)
+    self.m_oItemCtrl:GiveItem(ItemList)
+end
+
+--ItemList:{sid:amount}
+function CPlayer:ValidGive(ItemList)
+    local bSuc = self.m_oItemCtrl:ValidGive(ItemList)
+    return bSuc
+end
+
+function CPlayer:RemoveItemAmount(sid,iAmount)
+    local bSuc = self.m_oItemCtrl:RemoveItemAmount(sid,iAmount)
+    return bSuc
+end
+
+function CPlayer:GetItemAmount(sid)
+    local iAmount = self.m_oItemCtrl:GetItemAmount(sid)
+    return iAmount
 end

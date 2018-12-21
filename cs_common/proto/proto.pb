@@ -78,6 +78,19 @@ action_wid (
 C2GSHeartBeat"
 	C2GSGMCmd
 cmd (	
+Ê
+client/item.proto"-
+C2GSItemUse
+itemid (
+target ("
+C2GSItemInfo
+itemid (",
+C2GSItemMove
+itemid (
+iPos ("
+C2GSItemArrage"&
+C2GSAddItemExtendSize
+iSize (
 å
 server/login.protobase/role.proto"
 	GS2CHello
@@ -193,4 +206,45 @@ action_wid ("J
 3
 server/other.proto"
 GS2CHeartBeat
-time (
+time (
+ó
+server/item.proto")
+	applyinfo
+sKey (	
+iValue ("±
+iteminfo
+
+id (
+sid (
+sName (	
+iPos (
+
+iItemLevel (
+iAmount (
+iTime (
+iKey (
+
+apply_info	 (2
+.applyinfo
+sDesc
+ (	">
+GS2CLoginItem
+itemdata (2	.iteminfo
+iExtSize ("*
+GS2CItemAdd
+itemdata (2	.iteminfo"
+
+GS2DelItem
+
+id ("+
+GS2CMoveItem
+
+id (
+destpos (",
+GS2CItemAmount
+
+id (
+amount ("
+GS2CItemQuickUse
+
+id (

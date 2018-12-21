@@ -65,3 +65,17 @@ function SavePlayerActive(mRecord, mData)
     local oGameDb = global.oGameDb
     oGameDb:Update(sPlayerTableName, {pid = mData.pid}, {["$set"]={active_info = mData.data}})
 end
+
+function LoadPlayerItem(mRecord,mData)
+    local oGameDb = global.oGameDb
+    local m = oGameDb:FindOne(sPlayerTableName,{pid = mData.pid},{item_info = true})
+    interactive.Response(mRecord.source,mRecord.session,{
+        data = m.item_info,
+        pid = mData.pid,
+     })
+end
+
+function SavePlayerItem(mRecord,mData)
+    local oGameDb = global.oGameDb
+    oGameDb:Update(sPlayerTableName,{pid=mData.pid},{["$set"]={item_info=mData.data}})
+end

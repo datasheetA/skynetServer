@@ -4,6 +4,9 @@ local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
 
+local loaditem = import(service_path("item/loaditem"))
+local itemnet = import(service_path("netcmd/item"))
+
 
 function NewGMMgr(...)
     local o = CGMMgr:New(...)
@@ -16,6 +19,21 @@ function Commands.setgrade(oMaster, i)
     oMaster.m_oBaseCtrl:SetData("grade", i)
 end
 
+function Commands.clone(oMaster,itemid)
+    local itemobj = loaditem.Create(itemid)
+    if itemobj then
+        oMaster:RewardItem(itemobj,"clone")
+    end
+end
+
+function Commands.clearall(oMaster)
+    for _,itemobj in pairs(oMaster.m_oItemCtrl.m_Item) do
+        oMaster.m_oItemCtrl:RemoveItem(itemobj)
+    end
+end
+
+function Commands.C2GSGMCmd(oMaster,iCmd)
+end
 
 CGMMgr = {}
 CGMMgr.__index = CGMMgr

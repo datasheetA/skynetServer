@@ -36,6 +36,14 @@ C2GS_DEFINES.war = {
     C2GSWarEscape = 4004,
 }
 
+C2GS_DEFINES.item = {
+    C2GSItemUse = 5001,
+    C2GSItemInfo = 5002,
+    C2GSItemMove = 5003,
+    C2GSItemArrage = 5004,
+    C2GSAddItemExtendSize  = 5005,
+}
+
 --C2GS END
 
 --GS2C BEGIN
@@ -80,6 +88,15 @@ GS2C_DEFINES.war = {
     GS2CWarEscapeEnd = 4015,
     GS2CWarDamage = 4016,
     GS2CWarWarriorStatus = 4017,
+}
+
+GS2C_DEFINES.item = {
+    GS2CLoginItem = 5001,
+    GS2CItemAdd = 5002,
+    GS2DelItem  = 5003,
+    GS2CMoveItem = 5004,
+    GS2CItemAmount = 5005,
+    GS2CItemQuickUse = 5006,
 }
 
 --GS2C END
