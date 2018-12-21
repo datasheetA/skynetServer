@@ -107,6 +107,24 @@ function CWar:GetPlayerWarrior(iPid)
     return self:GetWarrior(id)
 end
 
+--lxldebug
+function CWar:ChooseRandomEnemy(obj)
+    local iCamp = obj:GetCampId()
+    local iCnt = math.random(1, 5)
+    local l = {}
+    for k, _ in pairs(self.m_mWarriors) do
+        local o = self:GetWarrior(k)
+        if o and o:GetCampId() ~= iCamp then
+            table.insert(l, o)
+            iCnt = iCnt - 1
+            if iCnt <= 0 then
+                break
+            end
+        end
+    end
+    return l
+end
+
 function CWar:Enter(obj, iCamp)
     self.m_lCamps[iCamp]:Enter(obj)
     self.m_mWarriors[obj:GetWid()] = iCamp
@@ -271,7 +289,7 @@ function CWar:BoutExecute()
             if sCmd == "defense" then
                 oAction:SetDefense(true)
             elseif sCmd == "protect" then
-                oAction:SetProtect(mData.victim_id)
+                oAction:SetProtect(mData.select_wid)
             else
                 table.insert(lExecute, {k, v})
             end

@@ -26,6 +26,10 @@ function Commands.testwar(oMaster, lTargets)
     local oWorldMgr = global.oWorldMgr
     local oWar = oWarMgr:CreateWar({})
 
+    if #lTargets <= 0 then
+        return
+    end
+
     local lRes = {}
     for _, v in ipairs(lTargets) do
         local o = oWorldMgr:GetOnlinePlayerByPid(v)
@@ -33,16 +37,16 @@ function Commands.testwar(oMaster, lTargets)
             table.insert(lRes, o)
         end
     end
-    local iMiddle = math.floor(#lRes/2)
+    local iMiddle = math.floor(#lRes/2 + 1)
 
     oWarMgr:EnterWar(oMaster, oWar:GetWarId(), {camp_id = 1}, true)
     for i = 1, iMiddle do
         local o = lRes[i]
-        oWarMgr:EnterWar(o, oWar:GetWarId(), {camp_id = 1}, true)
-    end
-    for i = iMiddle+1, #lRes do
-        local o = lRes[i]
         oWarMgr:EnterWar(o, oWar:GetWarId(), {camp_id = 2}, true)
+    end
+    for i = iMiddle + 1, #lRes do
+        local o = lRes[i]
+        oWarMgr:EnterWar(o, oWar:GetWarId(), {camp_id = 1}, true)
     end
 
     oWarMgr:StartWar(oWar:GetWarId())

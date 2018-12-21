@@ -48,10 +48,17 @@ function CPlayerWarrior:ReEnter(mMail)
 
     local oWar = self:GetWar()
 
+    self:Send("GS2CWarAddWarrior", {
+        war_id = self:GetWarId(),
+        camp_id = self:GetCampId(),
+        type = self:Type(),
+        warrior = self:GetSimpleWarriorInfo(),
+    })
+
     local mWarriorMap = oWar:GetWarriorMap()
     for k, _ in pairs(mWarriorMap) do
         local o = self:GetWarrior(k)
-        if o then
+        if o and o:GetWid() ~= self:GetWid() then
             self:Send("GS2CWarAddWarrior", {
                 war_id = o:GetWarId(),
                 camp_id = o:GetCampId(),
