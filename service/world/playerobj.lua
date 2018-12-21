@@ -25,14 +25,14 @@ function CPlayer:New(mConn, mRole)
     o.m_iDisconnectedTime = nil
     o.m_fHeartBeatTime = get_time()
 
-    o.m_oBaseCtrl = playerctrl.NewBaseCtrl(self.m_iPid)
-    o.m_oActiveCtrl = playerctrl.NewActiveCtrl(self.m_iPid)
-    o.m_oItemCtrl = playerctrl.NewItemCtrl(self.m_iPid)
-    o.m_oThisTemp = playerctrl.NewThisTempCtrl(self.m_iPid)
-    o.m_oToday = playerctrl.NewTodayCtrl(self.m_iPid)
-    o.m_oThisWeek = playerctrl.NewWeekCtrl(self.m_iPid)
-    o.m_oSeveralDay = playerctrl.NewSeveralDayCtrl(self.m_iPid)
-    o.m_oTimeCtrl = playerctrl.NewTimeCtrl(self.m_iPid,{
+    o.m_oBaseCtrl = playerctrl.NewBaseCtrl(o.m_iPid)
+    o.m_oActiveCtrl = playerctrl.NewActiveCtrl(o.m_iPid)
+    o.m_oItemCtrl = playerctrl.NewItemCtrl(o.m_iPid)
+    o.m_oThisTemp = playerctrl.NewThisTempCtrl(o.m_iPid)
+    o.m_oToday = playerctrl.NewTodayCtrl(o.m_iPid)
+    o.m_oThisWeek = playerctrl.NewWeekCtrl(o.m_iPid)
+    o.m_oSeveralDay = playerctrl.NewSeveralDayCtrl(o.m_iPid)
+    o.m_oTimeCtrl = playerctrl.NewTimeCtrl(o.m_iPid,{
          ["Today"] = o.m_oToday,
         ["Week"] = o.m_oThisWeek,
         ["ThisTemp"] = o.m_oThisTemp,
@@ -109,7 +109,7 @@ function CPlayer:OnLogin(bReEnter)
     oSceneMgr:OnLogin(self, bReEnter)
     
     self:GS2CPropLogin()
-    self:RefreshStep(1)
+    self.m_oItemCtrl:OnLogin()
 
     if not bReEnter then
         self:Schedule()
@@ -192,15 +192,6 @@ function CPlayer:_CheckHeartBeat()
     if fTime - self.m_fHeartBeatTime >= 3*60 then
         local oWorldMgr = global.oWorldMgr
         oWorldMgr:Logout(self:GetPid())
-    end
-end
-
-function CPlayer:RefreshStep(iStep)
-    if iStep == 1 then
-        self.m_oItemCtrl:OnLogin()
-    end
-    if iStep < 1 then
-        self:AddTimeCb("RefreshStep",1,function() self:RefreshStep(iStep+1) end)
     end
 end
 

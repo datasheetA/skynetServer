@@ -206,7 +206,7 @@ action_wid (
 server/other.proto"
 GS2CHeartBeat
 time (
-ó
+ô
 server/item.proto")
 	applyinfo
 sKey (	
@@ -230,10 +230,9 @@ apply_info	 (2
 GS2CLoginItem
 itemdata (2	.iteminfo
 iExtSize ("*
-GS2CItemAdd
-itemdata (2	.iteminfo"
-
-GS2DelItem
+GS2CAddItem
+itemdata (2	.iteminfo"
+GS2CDelItem
 
 id ("+
 GS2CMoveItem

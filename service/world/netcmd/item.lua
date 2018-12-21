@@ -35,7 +35,7 @@ function GS2CLoginItem(iOwner,oContainer)
         table.insert(itemdata,PackItemInfo(itemobj))
     end
     mNet["itemdata"] = itemdata
-    mNet["extendsize"] = oContainer:GetExtendSize()
+    mNet["iExtSize"] = oContainer:GetExtendSize()
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
     if oPlayer then

@@ -7,18 +7,16 @@ local min = math.min
 --道具整理
 
 local function SortFunc(oItem1,oItem2)
-    if oItem1:SortNo() < oItem2:SortNo() then
-        return true
+    if oItem1:SortNo() ~= oItem2:SortNo() then
+        return oItem1:SortNo() < oItem2:SortNo()
     else
-        if oItem1:SID() < oItem2:SID() then
-            return true
+        if oItem1:SID() ~= oItem2:SID() then
+            return oItem1:SID() < oItem2:SID()
         else
-            if oItem1:GetAmount() > oItem2:GetAmount() then
-                return true
+            if oItem1:GetAmount() ~= oItem2:GetAmount() then
+                return oItem1:GetAmount() > oItem2:GetAmount()
             else
-                if oItem1.m_ID < oItem2.m_ID then
-                    return true
-                end
+                return oItem1.m_ID < oItem2.m_ID
             end
         end
     end
@@ -38,7 +36,7 @@ function Arrange(oContainer)
                 local iAdd = max(iMaxAmount-iHave,0)
                 iAdd = min(iAdd,iLast)
                 if iAdd > 0 then
-                    iLast = iLast - iAdd
+                     iLast = iLast - iAdd
                      srcobj:AddAmount(-iAdd,"arrange")
                      destobj:AddAmount(iAdd,"arrange")
                 end
@@ -48,6 +46,7 @@ function Arrange(oContainer)
             end
         end
     end
+
     for _,itemobj in pairs(oContainer.m_Item) do
         table.insert(ItemList,itemobj)
     end
@@ -55,6 +54,8 @@ function Arrange(oContainer)
     table.sort(ItemList,SortFunc)
 
     for iPos,srcobj in ipairs(ItemList) do
-        oContainer:ArrangeChange(srcobj,iPos)
+        if iPos ~= srcobj.m_Pos then
+            oContainer:ArrangeChange(srcobj,iPos)
+        end
     end
 end

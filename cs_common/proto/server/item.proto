@@ -23,12 +23,12 @@ message GS2CLoginItem{
     required uint32 iExtSize    = 2;                                    //扩展格子数目
 }
 
-message GS2CItemAdd {
+message GS2CAddItem {
     required iteminfo itemdata   = 1;
 }
 
 //删除道具
-message GS2DelItem {
+message GS2CDelItem {
     required uint32 id                  = 1;                                //服务的道具id
 }
 

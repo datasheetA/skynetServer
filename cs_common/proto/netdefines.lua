@@ -93,8 +93,8 @@ GS2C_DEFINES.war = {
 
 GS2C_DEFINES.item = {
     GS2CLoginItem = 5001,
-    GS2CItemAdd = 5002,
-    GS2DelItem  = 5003,
+    GS2CAddItem = 5002,
+    GS2CDelItem  = 5003,
     GS2CMoveItem = 5004,
     GS2CItemAmount = 5005,
     GS2CItemQuickUse = 5006,

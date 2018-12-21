@@ -346,5 +346,5 @@ function CItemCtrl:GS2CDelItem(itemobj)
 end
 
 function CItemCtrl:GS2CMoveItem(itemobj,iPos)
-    itemnet.GS2CMoveItem(itemobj,iPos)
+    itemnet.GS2CMoveItem(self.m_Owner,itemobj,iPos)
 end

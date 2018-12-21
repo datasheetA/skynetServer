@@ -40,6 +40,7 @@ function CItem:Init(sid)
      self.m_QuickUse = mData["quickable"] or 1
      self.m_IsStore = mData["stallable"] or 1
      self.m_IsGive = mData["giftable"] or 0
+     self.m_CreateTime = timeop.get_time()
 end
 
 function CItem:Release()
@@ -98,6 +99,7 @@ function CItem:Load(mData)
     self.m_SID = mData["SID"]
     self.m_Data = mData["Data"]
     self.m_ItemLevel = mData["ItemLevel"]
+    self.m_CreateTime = mData["CreateTime"]
 end
 
 function CItem:Save()
@@ -106,6 +108,7 @@ function CItem:Save()
     mData["SID"] = self.m_SID
     mData["Data"] = self.m_Data
     mData["ItemLevel"] = self.m_ItemLevel
+    mData["CreateTime"] = self.m_CreateTime
     return mData
 end
 

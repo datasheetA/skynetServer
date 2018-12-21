@@ -44,7 +44,7 @@ function Commands.clone(oMaster,sid,iAmount)
         local iMaxAmount = itemobj:GetMaxAmount()
         local iAddAmount = math.min(iAmount,iMaxAmount)
         iAmount = iAmount - iAddAmount
-        itemobj:SetAmount(iAmount)
+        itemobj:SetAmount(iAddAmount)
         oMaster:RewardItem(itemobj,"clone")
     end
 end
