@@ -128,3 +128,47 @@ function Forward(mRecord, mData)
         end
     end
 end
+
+function EnterPlayer(mRecord, mData)
+    local iScene = mData.scene_id
+    local mPos = mData.pos
+    local iPid = mData.pid
+    local iEid = mData.eid
+    local mMail = mData.mail
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:GetScene(iScene)
+    assert(oScene, string.format("EnterPlayer error scene: %d %d %d", iScene, iPid, iEid))
+    oScene:EnterPlayer(iPid, iEid, mMail, mPos)
+end
+
+function EnterNpc(mRecord,mData)
+   local iScene = mData.scene_id
+   local mPos = mData.pos
+   local mInfo = mData.data
+   local iEid = mData.eid
+   local oSceneMgr = global.oSceneMgr
+   local oScene = oSceneMgr:GetScene(iScene)
+   assert(oScene,string.format("EnterNpc error scene:%d %d %d",iScene,iEid,mInfo.npctype))
+   oScene:EnterNpc(iEid,mPos,mInfo)
+end
+
+function SyncNpcInfo(mRecord,mData)
+    local iScene = mData.scene_id
+    local mArgs = mData.mArgs
+    local iEid = mData.eid
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:GetScene(iScene)
+    assert(oScene,string.format("SyncNpcInfo err scene,%d",iScene))
+    local oNpcEntity = oScene:GetEntity(iEid)
+    assert(oNpcEntity,string.format("SyncNpcInfo err %d",iEid))
+    oNpcEntity:SyncInfo(mArgs)
+end
+
+function RemoveSceneNpc(mRecord,mData)
+    local iScene = mData.scene_id
+    local iEid = mData.eid
+    local oSceneMgr = global.oSceneMgr
+    local oScene = oSceneMgr:GetScene(iScene)
+    assert(oScene,string.format("RemoveSceneNpc error scene%d %d %d",iScene,iEid))
+    oScene:RemoveSceneNpc(iEid)
+end

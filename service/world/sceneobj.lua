@@ -92,6 +92,16 @@ function CSceneMgr:RemoveScene(id)
     end
 end
 
+function CSceneMgr:GetSceneListByMap(iMapId)
+    local mScene = self.m_mDurableScenes[iMapId] or {}
+    local mSceneObj = {}
+    for _,iScene in pairs(mScene) do
+        local oScene = self:GetScene(iScene)
+        table.insert(mSceneObj,oScene)
+    end
+    return mSceneObj
+end
+
 function CSceneMgr:OnEnterWar(oPlayer)
     local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oNowScene then
@@ -190,6 +200,7 @@ function CScene:New(id, mInfo)
     o.m_bIsDurable = mInfo.is_durable
 
     o.m_mPlayers = {}
+    o.m_mNpc = {}
 
     return o
 end
@@ -277,4 +288,23 @@ end
 function CScene:Forward(sCmd, iPid, mData)
     interactive.Send(self.m_iRemoteAddr, "scene", "Forward", {pid = iPid, scene_id = self.m_iSceneId, cmd = sCmd, data = mData})
     return true
+end
+
+function CScene:EnterNpc(oNpc)
+    local iEid = self:DispatchEntityId()
+    self.m_mNpc[oNpc.m_ID] = iEid
+    local mData = oNpc:PackInfo()
+    local mPos = oNpc:PosInfo()
+    interactive.Send(self.m_iRemoteAddr, "scene", "EnterNpc", {scene_id = self.m_iSceneId, eid = iEid,pos=mPos,data=mData})
+end
+
+function CScene:SyncNpcInfo(oNpc,mArgs)
+    local iEid = self.m_mNpc[oNpc.m_ID]
+    interactive.Send(self.m_iRemoteAddr, "scene", "SyncNpcInfo", {scene_id = self.m_iSceneId, eid = iEid,mArgs=mArgs})
+end
+
+function CScene:RemoveSceneNpc(npcid)
+    local iEid = self.m_mNpc[npcid]
+    assert(iEid,string.format("RemoveSceneNpc npcid err:%d",npcid))
+    interactive.Send(self.m_iRemoteAddr,"scene","RemoveSceneNpc",{scene_id = self.m_iSceneId,eid=iEid})
 end

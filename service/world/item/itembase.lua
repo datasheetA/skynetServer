@@ -320,7 +320,7 @@ end
 
 function CItem:GS2CItemAmount()
     local iOwner = self:GetOwner()
-    itemnet.GS2CItemAmount(iOwner,self:GetAmount())
+    itemnet.GS2CItemAmount(iOwner,self.m_ID,self:GetAmount())
 end
 
 function CItem:OnAddToPos(iPos)

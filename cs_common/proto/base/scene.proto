@@ -19,3 +19,26 @@ message PlayerAoi {
 message PlayerAoiBlock {
     optional uint32 mask = 1; /* */
 }
+
+message Desc {
+    optional uint32 scale                            = 1;           /*缩放比例*/
+    repeated uint32 color                           = 2;            /*染色*/
+    optional uint32 mutateTexture           = 3;            /*变色贴图*/
+    optional uint32 weapon                       = 4;           /*关联武器id*/
+    optional uint32 adorn                           = 5;           /*装饰*/
+}
+
+message NpcAoi {
+    optional NpcAoiBlock block                 = 1;
+    optional PosInfo pos_info                     = 2;
+    optional uint32 npctype                       = 3;
+    optional uint32 npcid                           = 4;
+    optional string name                            = 5;
+    optional string title                               = 6;
+    optional uint32 model                          = 7;
+    optional Desc desc                                = 8;
+}
+
+message NpcAoiBlock{
+    optional uint32 mask = 1;/* */
+}

@@ -257,6 +257,9 @@ function CItemCtrl:ArrangeChange(srcobj,iPos)
     if iPos < ITEM_START then
         iPos = iPos + ITEM_START - 1
     end
+    if srcpos == iPos then
+        return
+    end
     local destobj = self:GetItem(iPos)
     if not destobj then
         self:ChangeToPos(srcobj,iPos)

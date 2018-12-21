@@ -7,6 +7,7 @@ local geometry = require "base.geometry"
 
 local gamedefines = import(lualib_path("public.gamedefines"))
 local playerobj = import(service_path("playerobj"))
+local npcobj = import(service_path("npcobj"))
 
 function NewScene(...)
     local o = CScene:New(...)
@@ -144,4 +145,26 @@ function CScene:ReEnterPlayer(iPid, mMail)
     local oEntity = self:GetPlayerEntity(iPid)
     assert(oEntity, string.format("ReEnterPlayer error %d", iPid))
     oEntity:ReEnter(mMail)
+end
+
+function CScene:EnterNpc(iEid,mPos,mInfo)
+    local obj = npcobj.NewNpcEntity(iEid)
+    obj:Init({
+        aoi_mode = "wm",
+        scene_id = self:GetSceneId(),
+        pos = mPos,
+        speed = 0,
+        data = mInfo,
+    })
+
+    return self:Enter(obj)
+end
+
+function CScene:RemoveSceneNpc(iEid)
+    local oNpcEntity = self:GetEntity(iEid)
+    local iNpcType = gamedefines.SCENE_ENTITY_TYPE.NPC_TYPE
+    assert(oNpcEntity:Type()~=iNpcType,string.format("RemoveSceneNpc err :%d",iEid))
+    if oNpcEntity then
+        self:Leave(oNpcEntity)
+    end
 end

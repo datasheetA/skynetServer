@@ -15,6 +15,7 @@ local sceneobj = import(service_path("sceneobj"))
 local warobj = import(service_path("warobj"))
 local gmobj = import(service_path("gmobj"))
 local publicobj = import(service_path("publicobj"))
+local npcobj = import(service_path("npcobj"))
 
 skynet.start(function()
     net.Init(netcmd)
@@ -61,6 +62,9 @@ skynet.start(function()
     end
 
     global.oPubMgr = publicobj.NewPubMgr()
+    global.oNpcMgr = npcobj.NewNpcMgr()
+    local oNpcMgr = global.oNpcMgr
+    oNpcMgr:LoadInit()
 
     skynet.register ".world"
 

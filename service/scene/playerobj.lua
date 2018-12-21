@@ -102,12 +102,26 @@ function CPlayerEntity:GetAoiInfo()
 end
 
 function CPlayerEntity:OnEnterAoi(oMarker)
-    self:Send("GS2CEnterAoi", {
-        scene_id = oMarker:GetSceneId(),
-        eid = oMarker:GetEid(),
-        type = oMarker:Type(),
-        aoi_player = oMarker:GetAoiInfo(),
-    })
+    local mNet
+    if oMarker:Type() == gamedefines.SCENE_ENTITY_TYPE.PLAYER_TYPE then
+        mNet = {
+             scene_id = oMarker:GetSceneId(),
+            eid = oMarker:GetEid(),
+            type = oMarker:Type(),
+            aoi_player = oMarker:GetAoiInfo(),
+        }
+    elseif oMarker:Type() == gamedefines.SCENE_ENTITY_TYPE.NPC_TYPE then
+        mNet = {
+            scene_id = oMarker:GetSceneId(),
+            eid = oMarker:GetEid(),
+            type = oMarker:Type(),
+            aoi_player = oMarker:GetAoiInfo(),
+        }
+    end
+    if not mNet then
+        return
+    end
+    self:Send("GS2CEnterAoi",mNet)
 end
 
 function CPlayerEntity:OnLeaveAoi(oMarker)

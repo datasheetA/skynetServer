@@ -1,5 +1,5 @@
 
-ÿ
+¬
 base/scene.protobase"e
 PosInfo	
 v (	
@@ -14,6 +14,24 @@
 pos_info (2.base.PosInfo
 pid ("
 PlayerAoiBlock
+mask ("Z
+Desc
+scale (
+color (
+mutateTexture (
+weapon (
+adorn ("±
+NpcAoi 
+block (2.base.NpcAoiBlock
+pos_info (2.base.PosInfo
+npctype (
+npcid (
+name (	
+title (	
+model (
+desc (2
+.base.Desc"
+NpcAoiBlock
 mask (
 Ž
 base/war.protobase"M
@@ -60,6 +78,13 @@ u
 scene_id (
 eid (
 pos_info (2.base.PosInfo
+b
+client/npc.proto"
+C2GSClickNpc
+npcid ("/
+C2GSNpcRespond
+npcid (
+answer (
 ô
 client/war.proto"\
 C2GSWarSkill
@@ -128,7 +153,7 @@ action_wid (
 GS2CLoginRole
 role (2
 .base.Role
-å
+„
 server/scene.protobase/scene.proto"1
 GS2CShowScene
 scene_id (
@@ -136,13 +161,14 @@ action_wid (
 GS2CEnterScene
 scene_id (
 eid (
-pos_info (2.base.PosInfo"`
+pos_info (2.base.PosInfo"
 GS2CEnterAoi
 scene_id (
 eid (
 type (#
 
-aoi_player (2.base.PlayerAoi"-
+aoi_player (2.base.PlayerAoi
+aoi_npc (2.base.NpcAoi"-
 GS2CLeaveAoi
 scene_id (
 eid ("X
@@ -154,6 +180,14 @@ aoi_player (2.base.PlayerAoi"-
 scene_id (
 eid (
 pos_info (2.base.PosInfo
+Z
+server/npc.proto"F
+
+GS2CNpcSay
+npcid (
+model (
+name (	
+text (	
 ·
 server/war.protobase/war.proto"
 GS2CShowWar

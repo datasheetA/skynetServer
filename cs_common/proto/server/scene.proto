@@ -14,9 +14,10 @@ message GS2CEnterScene {
 message GS2CEnterAoi {
     optional uint32 scene_id = 1;
     optional uint32 eid = 2;
-    optional uint32 type = 3; /*1 player*/
+    optional uint32 type = 3; /*1 player,2 npc*/
 
     optional base.PlayerAoi aoi_player = 4;
+    optional base.NpcAoi aoi_npc    = 5;
 }
 
 message GS2CLeaveAoi {
