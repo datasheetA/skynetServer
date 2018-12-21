@@ -19,6 +19,8 @@ CItem = {}
 CItem.__index = CItem
 inherit(CItem,datactrl.CDataCtrl)
 
+CItem.m_ItemType = "base"
+
 function CItem:New(sid)
     local o = super(CItem).New(self)
     o:Init(sid)
@@ -30,8 +32,8 @@ function CItem:Init(sid)
     self.m_SID = sid
     local mData = self:GetItemData()
     self.m_Amount = 1
-    self.m_MaxAmount = mData["maxOverlay"]
-    self.m_Name = mData["name"]
+    self.m_MaxAmount = mData["maxOverlay"] or 1
+    self.m_Name = mData["name"] or ""
     self.m_CanStore = mData["canStore"] or 1
      self.m_ItemLevel = mData["quality"] or 1
      self.m_SortId  = mData["sort"] or 100
@@ -83,7 +85,8 @@ end
 
 function CItem:GetItemData()
     local res = require "base.res"
-    local mData = res["daobiao"]["item"]
+    local mData = res["daobiao"]["item"][self.m_ItemType]
+    assert(mData,string.format("itembase GetItemData err:%d %s",self.m_SID,self.m_ItemType))
     return mData[self.m_SID]
 end
 

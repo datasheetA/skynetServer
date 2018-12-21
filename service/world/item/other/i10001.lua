@@ -2,7 +2,7 @@ local global = require "global"
 local skynet = require "skynet"
 local interactive =  require "base.interactive"
 
-local itembase = import(service_path("item/itembase"))
+local itembase = import(service_path("item/other/otherbase"))
 
 function NewItem(sid)
     local o = CItem:New(sid)
@@ -18,7 +18,8 @@ function CItem:New(sid)
     return o
 end
 
-function CItem:TrueUse()
+function CItem:TrueUse(who,target)
     local iCostAmount = self:GetUseCostAmount()
     self:AddAmount(-iCostAmount,"itemuse")
+    who:RewardGold(5000)
 end

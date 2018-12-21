@@ -183,6 +183,15 @@ end
 
 --道具相关
 function CPlayer:RewardItem(itemobj,sReason,iKey,mArgs)
+    if itemobj:SID() < 10000 then
+        local oRealObj = itemobj:RealObj()
+        if oRealObj then
+            --
+        else
+            itemobj:Reward(self)
+            return
+        end
+    end
     local retobj = self.m_oItemCtrl:AddItem(itemobj,sReason)
     --添加失败，放入邮件，功能稍后增加
     if retobj then
@@ -208,4 +217,12 @@ end
 function CPlayer:GetItemAmount(sid)
     local iAmount = self.m_oItemCtrl:GetItemAmount(sid)
     return iAmount
+end
+
+function CPlayer:RewardGold(iVal,sReason,mArgs)
+    self.m_oBaseCtrl:RewardGold(iVal,sReason,mArgs)
+end
+
+function CPlayer:RewardSilver(iVal,sReason,mArgs)
+    self.m_oBaseCtrl:RewardSilver(iVal,sReason,mArgs)
 end

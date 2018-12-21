@@ -6,7 +6,8 @@ local stringop = import(lualib_path("base.stringop"))
 local ItemList = {}
 
 local ItemDir = {
-    ["other"]  = {10000,11000},
+    ["virtual"]  = {1001,10000},
+    ["other"]   = {10001,11000},
 }
 
 function GetItemDir(sid)
@@ -21,7 +22,7 @@ end
 function GetItemPath(sid)
     local sDir = GetItemDir(sid)
     local sPath = string.format("item/%s/%sbase",sDir,sDir)
-    if extend.Table.find({"other",},sDir) then
+    if extend.Table.find({"other","virtual"},sDir) then
         sPath  = string.format("item/%s/i%d",sDir,sid)
     end
    return sPath
