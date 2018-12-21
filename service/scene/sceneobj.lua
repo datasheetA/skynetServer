@@ -3,7 +3,6 @@
 local global = require "global"
 local skynet = require "skynet"
 local laoi = require "laoi"
-local interactive = require "base.interactive"
 local geometry = require "base.geometry"
 
 local gamedefines = import(lualib_path("public.gamedefines"))
@@ -28,12 +27,20 @@ function CScene:New(id)
     return o
 end
 
+function CScene:Release()
+    for _, v in pairs(self.m_mEntitys) do
+        v:Release()
+    end
+    self.m_mEntitys = {}
+    super(CScene).Release(self)
+end
+
 function CScene:Init(mInit)
     local f1
     f1 = function ()
-        self:DelTimeCb("CheckAoiSchedule")
-        self:AddTimeCb("CheckAoiSchedule", 1*100, f1)
-        self:CheckAoiSchedule()
+        self:DelTimeCb("_CheckAoiSchedule")
+        self:AddTimeCb("_CheckAoiSchedule", 1*100, f1)
+        self:_CheckAoiSchedule()
     end
     f1()
 end
@@ -54,7 +61,8 @@ function CScene:GetPlayerEntity(id)
 end
 
 --lxldebug
-function CScene:CheckAoiSchedule()
+function CScene:_CheckAoiSchedule()
+    assert(not self:IsRelease(), "_CheckAoiSchedule fail")
     local l = self.m_oAoi:laoi_message()
     for _, v in ipairs(l) do
         local iWatcher, iMarker = v[1], v[2]
@@ -91,6 +99,7 @@ function CScene:Leave(obj)
         end
     end
     self.m_mEntitys[obj:GetEid()] = nil
+    obj:Release()
     self:UpdateEntityToAoi(iEid, "d")
 end
 

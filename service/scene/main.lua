@@ -5,11 +5,11 @@ local interactive = require "base.interactive"
 
 require "skynet.manager"
 
-local luacmd = import(service_path("luacmd.init"))
+local logiccmd = import(service_path("logiccmd.init"))
 local scenemgrobj = import(service_path("scenemgrobj"))
 
 skynet.start(function()
-    interactive.Init(luacmd)
+    interactive.Init(logiccmd)
     net.Init()
 
     global.oSceneMgr = scenemgrobj.NewSceneMgr()

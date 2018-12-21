@@ -1,6 +1,7 @@
 import "base/role.proto";
 
 message GS2CHello {
+    optional uint32 time = 1;
 }
 
 message GS2CLoginError {
@@ -10,11 +11,9 @@ message GS2CLoginError {
 
 message GS2CLoginAccount {
     optional string account = 1;
+    repeated base.SimpleRole role_list = 2;
 }
 
 message GS2CLoginRole {
     optional base.Role role = 1;
-}
-
-message GS2CTestDo {
 }

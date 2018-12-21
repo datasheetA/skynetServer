@@ -7,6 +7,7 @@ Cmds = {}
 
 Cmds.login = import(service_path("netcmd.login"))
 Cmds.scene = import(service_path("netcmd.scene"))
+Cmds.other = import(service_path("netcmd.other"))
 
 function Invoke(sModule, sCmd, fd, mData)
     local m = Cmds[sModule]

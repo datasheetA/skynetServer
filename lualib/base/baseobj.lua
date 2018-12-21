@@ -2,8 +2,7 @@
 
 local servicetime = require "base.servicetimer"
 
-local gamedefines = import(lualib_path("public.gamedefines"))
-local status = import(lualib_path("public.status"))
+local basedefines = import(lualib_path("base.basedefines"))
 
 CBaseObject = {}
 CBaseObject.__index = CBaseObject
@@ -11,19 +10,17 @@ CBaseObject.__index = CBaseObject
 function CBaseObject:New()
     local o = setmetatable({}, self)
     o.m_oTimer = servicetime.NewTimer()
-    o.m_oStatus = status.NewStatus()
-    o.m_oStatus:Set(gamedefines.BASEOBJ_STATUS.is_alive)
+    o.m_bIsRelease = false
     return o
 end
 
 function CBaseObject:Release()
     self.m_oTimer:Release()
-    self.m_oStatus:Set(gamedefines.BASEOBJ_STATUS.is_release)
+    self.m_bIsRelease = true
 end
 
 function CBaseObject:IsRelease()
-    local iStatus = self.m_oStatus:Get()
-    return (iStatus == gamedefines.BASEOBJ_STATUS.is_release)
+    return self.m_bIsRelease
 end
 
 function CBaseObject:AddTimeCb(sKey, iDelay, func)

@@ -18,11 +18,15 @@ local C2GS_DEFINES = {}
 C2GS_DEFINES.login = {
     C2GSLoginAccount = 1001,
     C2GSLoginRole = 1002,
-    C2GSTestDo = 1003,
 }
 
 C2GS_DEFINES.scene = {
     C2GSSyncPos = 2001,
+}
+
+C2GS_DEFINES.other = {
+    C2GSHeartBeat = 3001,
+    C2GSGMCmd = 3002,
 }
 
 --C2GS END
@@ -36,7 +40,6 @@ GS2C_DEFINES.login = {
     GS2CLoginError = 1002,
     GS2CLoginAccount = 1003,
     GS2CLoginRole = 1004,
-    GS2CTestDo = 1005,
 }
 
 GS2C_DEFINES.scene = {
@@ -46,6 +49,10 @@ GS2C_DEFINES.scene = {
     GS2CLeaveAoi = 2004,
     GS2CSyncAoi = 2005,
     GS2CSyncPos = 2006,
+}
+
+GS2C_DEFINES.other = {
+    GS2CHeartBeat = 3001,
 }
 
 --GS2C END

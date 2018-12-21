@@ -10,3 +10,11 @@ function split_string(s, rep, f)
     end)
     return lst
 end
+
+function index_string(s, i)
+    local iLen = #s
+    if i > iLen or i < 1 then
+        return
+    end
+    return string.char(s:byte(i))
+end

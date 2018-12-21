@@ -27,6 +27,22 @@ function CWorldMgr:New()
     return o
 end
 
+function CWorldMgr:Release()
+    for _, v in ipairs({self.m_mOnlinePlayers, self.m_mLoginPlayers, self.m_mLogoutPlayers}) do
+        for _, v2 in pairs(v) do
+            v:Release()
+        end
+    end
+    for _, v in pairs(self.m_mConnections) do
+        v:Release()
+    end
+    self.m_mOnlinePlayers = {}
+    self.m_mLoginPlayers = {}
+    self.m_mLogoutPlayers = {}
+    self.m_mConnections = {}
+    super(CWorldMgr).Release(self)
+end
+
 function CWorldMgr:GetConnection(iHandle)
     return self.m_mConnections[iHandle]
 end
@@ -36,6 +52,7 @@ function CWorldMgr:DelConnection(iHandle)
     if oConnection then
         self.m_mConnections[iHandle] = nil
         oConnection:Disconnected()
+        oConnection:Release()
     end
 end
 
@@ -78,6 +95,24 @@ function CWorldMgr:KickConnection(iHandle)
     end
 end
 
+function CWorldMgr:Logout(iPid)
+    local oPlayer = self.m_mLoginPlayers[iPid]
+    if oPlayer then
+        self.m_mLoginPlayers[iPid] = nil
+        return
+    end
+    oPlayer = self.m_mOnlinePlayers[iPid]
+    if oPlayer then
+        self.m_mOnlinePlayers[iPid] = nil
+        self.m_mLogoutPlayers[iPid] = oPlayer
+        if oPlayer then
+            oPlayer:OnLogout()
+        end        
+        self.m_mLogoutPlayers[iPid] = nil
+        oPlayer:Release()
+    end
+end
+
 function CWorldMgr:Login(mRecord, mConn, mRole)
     local pid = mRole.pid
     if self.m_mLoginPlayers[pid] then
@@ -104,7 +139,6 @@ function CWorldMgr:Login(mRecord, mConn, mRole)
         interactive.Send(mRecord.source, "login", "LoginResult", {pid = pid, handle = mConn.handle, errcode = gamedefines.ERRCODE.ok})
         return
     else
-        --lxldebug todo load db
         local oPlayer = playerobj.NewPlayer(mConn, mRole)
         self.m_mLoginPlayers[oPlayer:GetPid()] = oPlayer
 
@@ -112,10 +146,72 @@ function CWorldMgr:Login(mRecord, mConn, mRole)
         oConnection:Forward()
         self.m_mConnections[mConn.handle] = oConnection
 
-        self.m_mLoginPlayers[oPlayer:GetPid()] = nil
-        self.m_mOnlinePlayers[oPlayer:GetPid()] = oPlayer
+        interactive.Request(".gamedb", "playerdb", "GetPlayer", {pid = pid}, function (mRecord, mData)
+            if not self:IsRelease() then
+                self:_LoginRole1(mRecord, mData)
+            end
+        end)
+        return
+    end
+end
 
-        oPlayer:OnLogin(false)
-        interactive.Send(mRecord.source, "login", "LoginResult", {pid = pid, handle = mConn.handle, errcode = gamedefines.ERRCODE.ok})
+function CWorldMgr:_LoginRole1(mRecord, mData)
+    local pid = mData.pid
+    local m = mData.data
+    local oPlayer = self.m_mLoginPlayers[pid]
+    if not oPlayer then
+        return
+    end
+
+    if not m then
+        self.m_mLoginPlayers[pid] = nil
+        local oConn = oPlayer:GetConn()
+        if oConn then
+            interactive.Send(".login", "login", "LoginResult", {pid = pid, handle = oConn.m_iHandle, errcode = gamedefines.ERRCODE.not_exist_player})
+        end
+        return
+    end
+
+    interactive.Request(".gamedb", "playerdb", "LoadPlayerBase", {pid = pid}, function (mRecord, mData)
+        if not self:IsRelease() then
+            self:_LoginRole2(mRecord, mData)
+        end
+    end)
+end
+
+function CWorldMgr:_LoginRole2(mRecord, mData)
+    local pid = mData.pid
+    local m = mData.data
+    local oPlayer = self.m_mLoginPlayers[pid]
+    if not oPlayer then
+        return
+    end
+
+    oPlayer.m_oBaseCtrl:Load(m)
+
+    interactive.Request(".gamedb", "playerdb", "LoadPlayerActive", {pid = pid}, function (mRecord, mData)
+        if not self:IsRelease() then
+            self:_LoginRole3(mRecord, mData)
+        end
+    end)
+end
+
+function CWorldMgr:_LoginRole3(mRecord, mData)
+    local pid = mData.pid
+    local m = mData.data
+    local oPlayer = self.m_mLoginPlayers[pid]
+    if not oPlayer then
+        return
+    end
+
+    oPlayer.m_oActiveCtrl:Load(m)
+
+    self.m_mLoginPlayers[pid] = nil
+    self.m_mOnlinePlayers[pid] = oPlayer
+
+    oPlayer:OnLogin(false)
+    local oConn = oPlayer:GetConn()
+    if oConn then
+        interactive.Send(".login", "login", "LoginResult", {pid = pid, handle = oConn.m_iHandle, errcode = gamedefines.ERRCODE.ok})
     end
 end

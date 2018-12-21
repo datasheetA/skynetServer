@@ -8,6 +8,12 @@ function ConfirmRemote(mRecord, mData)
     oSceneMgr:ConfirmRemote(iScene)
 end
 
+function RemoveScene(mRecord, mData)
+    local iScene = mData.scene_id
+    local oSceneMgr = global.oSceneMgr
+    oSceneMgr:RemoveScene(iScene)
+end
+
 function EnterPlayer(mRecord, mData)
     local iScene = mData.scene_id
     local mPos = mData.pos

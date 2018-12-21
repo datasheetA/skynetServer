@@ -15,39 +15,49 @@
 pid ("
 PlayerAoiBlock
 mask (
-=
-base/role.protobase"$
+X
+base/role.protobase"
+
+SimpleRole
+pid ("$
 Role
 account (	
 pid (
-v
+h
 client/login.proto"#
 C2GSLoginAccount
 account (	"-
 C2GSLoginRole
 account (	
-pid ("
-
-C2GSTestDo
+pid (
+?
+client/other.proto"
+C2GSHeartBeat"
+	C2GSGMCmd
+cmd (	
 u
 client/scene.protobase/scene.proto"M
 C2GSSyncPos
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-À
-server/login.protobase/role.proto"
-	GS2CHello".
+å
+server/login.protobase/role.proto"
+	GS2CHello
+time (".
 GS2CLoginError
 pid (
-errcode ("#
+errcode ("H
 GS2CLoginAccount
-account (	")
+account (	#
+	role_list (2.base.SimpleRole")
 GS2CLoginRole
 role (2
-.base.Role"
-
-GS2CTestDo
+.base.Role
+3
+server/other.proto"
+GS2CHeartBeat
+time (
 å
 server/scene.protobase/scene.proto"1
 GS2CShowScene

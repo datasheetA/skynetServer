@@ -2,24 +2,19 @@ local global = require "global"
 local skynet = require "skynet"
 local net = require "base.net"
 local interactive = require "base.interactive"
+local texthandle = require "base.texthandle"
 
 require "skynet.manager"
-require "base.skynet_text"
 
 local textcmd = import(service_path("textcmd.init"))
 local netcmd = import(service_path("netcmd.init"))
-local luacmd = import(service_path("luacmd.init"))
+local logiccmd = import(service_path("logiccmd.init"))
 local gateobj = import(service_path("gateobj"))
 
 skynet.start(function()
     net.Init(netcmd)
-    interactive.Init(luacmd)
-
-    skynet.dispatch("text", function (session, address, message)
-        local id, cmd , parm = string.match(message, "(%d+) (%w+) ?(.*)")
-        id = tonumber(id)
-        textcmd.Invoke(cmd, address, id, parm)
-    end)
+    interactive.Init(logiccmd)
+    texthandle.Init(textcmd)
 
     global.oGateMgr = gateobj.NewGateMgr()
     local  sPorts = skynet.getenv("GATEWAY_PORTS")

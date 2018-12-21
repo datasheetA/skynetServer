@@ -1,0 +1,7 @@
+
+message C2GSHeartBeat {
+}
+
+message C2GSGMCmd {
+    optional string cmd = 1;
+}

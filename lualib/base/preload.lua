@@ -1,6 +1,7 @@
 
 require "base.reload"
 require "base.timeop"
+require "base.fileop"
 require "base.stringop"
 
 local skynet = require "skynet"
@@ -25,7 +26,7 @@ lualib_path = function (sPath)
 end
 
 table_print = function (t)
-    local p = require("base/extend").Table.print
+    local p = require("base.extend").Table.print
     p(t)
 end
 
@@ -38,6 +39,6 @@ super = function (child)
 end
 
 logic_base_cls = function ()
-    local baseobj = import(lualib_path("public.baseobj"))
+    local baseobj = import(lualib_path("base.baseobj"))
     return baseobj.CBaseObject
 end

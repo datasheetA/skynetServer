@@ -4,7 +4,6 @@ local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
 
-local gamedefines = import(lualib_path("public.gamedefines"))
 local sceneobj = import(service_path("sceneobj"))
 
 function NewSceneMgr(...)
@@ -22,6 +21,14 @@ function CSceneMgr:New()
     return o
 end
 
+function CSceneMgr:Release()
+    for _, v in pairs(self.m_mScenes) do
+        v:Release()
+    end
+    self.m_mScenes = {}
+    super(CSceneMgr).Release(self)
+end
+
 function CSceneMgr:ConfirmRemote(iScene)
     assert(not self.m_mScenes[iScene], string.format("ConfirmRemote error %d", iScene))
     local oScene = sceneobj.NewScene(iScene)
@@ -31,4 +38,12 @@ end
 
 function CSceneMgr:GetScene(iScene)
     return self.m_mScenes[iScene]
+end
+
+function CSceneMgr:RemoveScene(iScene)
+    local oScene = self.m_mScenes[iScene]
+    if oScene then
+        self.m_mScenes[iScene] = nil
+        oScene:Release()
+    end
 end

@@ -48,9 +48,9 @@ function CEntity:Init(mInit)
 
     local f1
     f1 = function ()
-        self:DelTimeCb("CheckAoi")
-        self:AddTimeCb("CheckAoi", 3*1000, f1)
-        self:CheckAoi()
+        self:DelTimeCb("_CheckAoi")
+        self:AddTimeCb("_CheckAoi", 3*1000, f1)
+        self:_CheckAoi()
     end
     f1()
 end
@@ -94,7 +94,8 @@ function CEntity:IsOutOfAoi(o)
 end
 
 --lxldebug
-function CEntity:CheckAoi()
+function CEntity:_CheckAoi()
+    assert(not self:IsRelease(), "_CheckAoi fail")
     local mMarker = self:GetMarkerMap()
     for k, _ in pairs(mMarker) do
         local oMarker = self:GetEntity(k)

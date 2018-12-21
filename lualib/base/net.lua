@@ -3,7 +3,7 @@ local skynet = require "skynet"
 local netpack = require "netpack"
 local protobuf = require "base.protobuf"
 local netfind = require "base.netfind"
-local zinctype = require "base.zinctype"
+local extype = require "base.extype"
 
 local M = {}
 
@@ -13,7 +13,7 @@ function M.Init(netcmd)
 
     skynet.register_protocol {
         name = "zinc",
-        id = zinctype.ZINC,
+        id = extype.ZINC,
         pack = function ( ... )
             return ...
         end,
@@ -22,7 +22,7 @@ function M.Init(netcmd)
     if netcmd then
         skynet.register_protocol {
             name = "zinc_client",
-            id = zinctype.ZINC_CLIENT,
+            id = extype.ZINC_CLIENT,
             unpack = function (...) return ... end,
             dispatch = function (session, source, msg, sz)
                 local sData = netpack.tostring2(msg, sz)

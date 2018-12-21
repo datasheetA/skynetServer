@@ -25,9 +25,6 @@ function CTimer:New(id)
     return o
 end
 
-function CTimer:Init()
-end
-
 function CTimer:GetTimerId()
     return self.m_iTimerId
 end
@@ -105,7 +102,6 @@ end
 function CTimerMgr:NewTimer()
     local id = self:GetTimerDispatchId()
     local o = CTimer:New(id)
-    o:Init()
     self.m_mTimer[id] = o
     return o
 end

@@ -1,5 +1,9 @@
 package base;
 
+message SimpleRole {
+    optional uint32 pid = 1;
+}
+
 message Role {
     optional string account = 1;
     optional uint32 pid = 2;

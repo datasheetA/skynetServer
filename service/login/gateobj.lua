@@ -2,12 +2,12 @@
 
 local global = require "global"
 local skynet = require "skynet"
-local net = require "base/net"
-local interactive = require "base/interactive"
-local zinctype = require "base/zinctype"
+local net = require "base.net"
+local interactive = require "base.interactive"
+local extype = require "base.extype"
 
+local status = import(lualib_path("base.status"))
 local gamedefines = import(lualib_path("public.gamedefines"))
-local status = import(lualib_path("public.status"))
 
 function NewGateMgr(...)
     local o = CGateMgr:New(...)
@@ -34,6 +34,7 @@ function CConnection:New(source, handle, ip, port)
     o.m_iHandle = handle
     o.m_sIP = ip
     o.m_iPort = port
+    o.m_sAccount = nil
 
     self.m_oStatus = status.NewStatus()
     self.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.no_account)
@@ -41,8 +42,21 @@ function CConnection:New(source, handle, ip, port)
     return o
 end
 
+function CConnection:Release()
+    self.m_oStatus:Release()
+    super(CConnection).Release(self)
+end
+
 function CConnection:Send(sMessage, mData)
     net.Send({gate = self.m_iGateAddr, fd = self.m_iHandle}, sMessage, mData)
+end
+
+function CConnection:SetAccount(sAccount)
+    self.m_sAccount = sAccount
+end
+
+function CConnection:GetAccount()
+    return self.m_sAccount
 end
 
 function CConnection:LoginAccount(mData)
@@ -58,11 +72,25 @@ function CConnection:LoginAccount(mData)
     self.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.in_login_account)
 
     local sAccount = mData.account
-    --todo login account
 
+    interactive.Request(".gamedb", "playerdb", "GetPlayerListByAccount", {account = sAccount}, function (mRecord, mData)
+        if not self:IsRelease() then
+            self:_LoginAccount1(mRecord, mData)
+        end
+    end)
+end
+
+function CConnection:_LoginAccount1(mRecord, mData)
     self.m_oStatus:Set(gamedefines.LOGIN_CONNECTION_STATUS.login_account)
-
-    self:Send("GS2CLoginAccount", {account = sAccount})
+    self:SetAccount(mData.account)
+    local lRet = {}
+    local lData = mData.data
+    for _, v in ipairs(lData) do
+        if not v.deleted then
+            table.insert(lRet, {pid = v.pid})
+        end
+    end
+    self:Send("GS2CLoginAccount", {account = mData.account, role_list = lRet})
 end
 
 function CConnection:LoginRole(mData)
@@ -80,6 +108,27 @@ function CConnection:LoginRole(mData)
     local sAccount = mData.account
     local pid = mData.pid
 
+    interactive.Request(".gamedb", "playerdb", "GetPlayer", {pid = pid}, function (mRecord, mData)
+        if not self:IsRelease() then
+            self:_LoginRole1(mRecord, mData)
+        end
+    end)
+end
+
+function CConnection:_LoginRole1(mRecord, mData)
+    local m = mData.data
+    --lxldebug
+    if not m then
+        interactive.Send(".gamedb", "playerdb", "CreatePlayer", {
+            data = {
+                pid = mData.pid,
+                account = self:GetAccount(),
+                deleted = false,
+                base_info = {grade = 0, name = string.format("DEBUG%d", mData.pid)},
+                active_info = {map_id = 1001, pos = {x = 100, y = 100, z  = 0, face_x = 0, face_y = 0, face_z = 0}},
+            }
+        })
+    end
     interactive.Send(".world", "login", "LoginPlayer", {
         conn = {
             handle = self.m_iHandle,
@@ -88,8 +137,8 @@ function CConnection:LoginRole(mData)
             port = self.m_iPort,
         },
         role = {
-            account = sAccount,
-            pid = pid,
+            account = self:GetAccount(),
+            pid = mData.pid,
         }
         })
 end
@@ -112,11 +161,19 @@ inherit(CGate, logic_base_cls())
 
 function CGate:New(iPort)
     local o = super(CGate).New(self)
-    local iAddr = skynet.launch("zinc_gate", "S", skynet.address(MY_ADDR), iPort, zinctype.ZINC_CLIENT, 10000)
+    local iAddr = skynet.launch("zinc_gate", "S", skynet.address(MY_ADDR), iPort, extype.ZINC_CLIENT, 10000)
     o.m_iAddr = iAddr
     o.m_iPort = iPort
     o.m_mConnections = {}
     return o
+end
+
+function CGate:Release()
+    for _, v in pairs(self.m_mConnections) do
+        v:Release()
+    end
+    self.m_mConnections = {}
+    super(CGate).Release(self)
 end
 
 function CGate:GetConnection(fd)
@@ -130,13 +187,17 @@ function CGate:AddConnection(oConn)
 
     skynet.send(self.m_iAddr, "text", "forward", oConn.m_iHandle, skynet.address(MY_ADDR), skynet.address(self.m_iAddr))
     skynet.send(self.m_iAddr, "text", "start", oConn.m_iHandle)
-    oConn:Send("GS2CHello", {})
+    oConn:Send("GS2CHello", {time = math.floor(get_time())})
 end
 
 function CGate:DelConnection(iHandle)
-    self.m_mConnections[iHandle] = nil
-    local oGateMgr = global.oGateMgr
-    oGateMgr:SetConnection(iHandle, nil)
+    local oConn = self.m_mConnections[iHandle]
+    if oConn then
+        self.m_mConnections[iHandle] = nil
+        oConn:Release()
+        local oGateMgr = global.oGateMgr
+        oGateMgr:SetConnection(iHandle, nil)
+    end
 end
 
 CGateMgr = {}
@@ -148,6 +209,14 @@ function CGateMgr:New()
     o.m_mGates = {}
     o.m_mNoteConnections = {}
     return o
+end
+
+function CGateMgr:Release()
+    for _, v in pairs(self.m_mGates) do
+        v:Release()
+    end
+    self.m_mGates = {}
+    super(CGateMgr).Release(self)
 end
 
 function CGateMgr:AddGate(oGate)

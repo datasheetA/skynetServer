@@ -1,0 +1,4 @@
+
+message GS2CHeartBeat {
+    optional uint32 time = 1;
+}

@@ -31,6 +31,14 @@ function CSceneMgr:New(lSceneRemote)
     return o
 end
 
+function CSceneMgr:Release()
+    for _, v in pairs(self.m_mScenes) do
+        v:Release()
+    end
+    self.m_mScenes = {}
+    super(CSceneMgr).Release(self)
+end
+
 function CSceneMgr:DispatchSceneId()
     self.m_iDispatchId = self.m_iDispatchId + 1
     return self.m_iDispatchId
@@ -85,10 +93,14 @@ function CSceneMgr:RemoveScene(id)
 end
 
 function CSceneMgr:OnDisconnected(oPlayer)
-    local oNowScene = oPlayer:GetNowScene()
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oNowScene then
         oNowScene:NotifyDisconnected(oPlayer)
     end
+end
+
+function CSceneMgr:OnLogout(oPlayer)
+    self:LeaveScene(oPlayer, true)
 end
 
 function CSceneMgr:OnLogin(oPlayer, bReEnter)
@@ -96,21 +108,22 @@ function CSceneMgr:OnLogin(oPlayer, bReEnter)
         self:ReEnterScene(oPlayer)
     else
         --lxldebug test
-        local iMapId = 1001
-        local mPos = {x = 100, y = 100, z = 0, face_x = 0, face_y = 0, face_z = 0}
+        local mDurableInfo = oPlayer.m_oActiveCtrl:GetDurableSceneInfo()
+        local iMapId = mDurableInfo.map_id
+        local mPos = mDurableInfo.pos
         local oScene = self:SelectDurableScene(iMapId)
         self:EnterScene(oPlayer, oScene:GetSceneId(), {pos = mPos}, true)
     end
 end
 
 function CSceneMgr:ReEnterScene(oPlayer)
-    local oNowScene = oPlayer:GetNowScene()
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     oNowScene:ReEnterPlayer(oPlayer)
     return {errcode = gamedefines.ERRCODE.ok}
 end
 
 function CSceneMgr:LeaveScene(oPlayer, bForce)
-    local oNowScene = oPlayer:GetNowScene()
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if not oNowScene then
         return {errcode = gamedefines.ERRCODE.ok}
     end
@@ -126,7 +139,7 @@ end
 function CSceneMgr:EnterScene(oPlayer, iScene, mInfo, bForce)
     local oNewScene = self:GetScene(iScene)
     assert(oNewScene, string.format("EnterScene error %d", iScene))
-    local oNowScene = oPlayer:GetNowScene()
+    local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
 
     if not bForce then
         if oNowScene and not oNowScene:VaildLeave(oPlayer) then
@@ -160,6 +173,11 @@ function CScene:New(id, mInfo)
     o.m_mPlayers = {}
 
     return o
+end
+
+function CScene:Release()
+    interactive.Send(self.m_iRemoteAddr, "scene", "RemoveRemote", {scene_id = self.m_iSceneId})
+    super(CScene).Release(self)
 end
 
 function CScene:GetSceneId()
@@ -201,10 +219,13 @@ function CScene:LeavePlayer(oPlayer)
 end
 
 function CScene:EnterPlayer(oPlayer, mPos)
-    oPlayer:SetSceneInfo({
+    oPlayer.m_oActiveCtrl:SetNowSceneInfo({
         now_scene = self.m_iSceneId,
         now_pos = mPos,
     })
+    if self:IsDurable() then
+        oPlayer.m_oActiveCtrl:SetDurableSceneInfo(self.m_iMapId, mPos)
+    end
     local iEid = self:DispatchEntityId()
     self.m_mPlayers[oPlayer:GetPid()] = iEid
     oPlayer:Send("GS2CShowScene", {scene_id = self.m_iSceneId, map_id = self:MapId()})

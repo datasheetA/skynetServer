@@ -8,11 +8,7 @@ ERRCODE = {
 --login
     in_login = 1001,
     in_logout = 1002,
-}
-
-BASEOBJ_STATUS = {
-    is_alive = 1,
-    is_release = 2,
+    not_exist_player = 1003,
 }
 
 LOGIN_CONNECTION_STATUS = {

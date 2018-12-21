@@ -3,18 +3,20 @@ local skynet = require "skynet"
 local net = require "base.net"
 local interactive = require "base.interactive"
 local servicetimer = require "base.servicetimer"
+local texthandle = require "base.texthandle"
 
 require "skynet.manager"
-require "base.skynet_text"
 
 local netcmd = import(service_path("netcmd.init"))
-local luacmd = import(service_path("luacmd.init"))
+local logiccmd = import(service_path("logiccmd.init"))
 local worldobj = import(service_path("worldobj"))
 local sceneobj = import(service_path("sceneobj"))
+local gmobj = import(service_path("gmobj"))
 
 skynet.start(function()
     net.Init(netcmd)
-    interactive.Init(luacmd)
+    interactive.Init(logiccmd)
+    texthandle.Init()
 
     skynet.dispatch("text", function (session, address, message)
     end)
@@ -22,6 +24,7 @@ skynet.start(function()
     global.oGlobalTimer = servicetimer.NewTimer()
 
     global.oWorldMgr = worldobj.NewWorldMgr()
+    global.oGMMgr = gmobj.NewGMMgr()
 
     local iCount = skynet.getenv("SCENE_SERVICE_COUNT")
     local lSceneRemote = {}

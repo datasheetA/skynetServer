@@ -5,7 +5,7 @@ local skynet = require "skynet"
 
 Cmds = {}
 
-Cmds.login = import(service_path("luacmd.login"))
+Cmds.login = import(service_path("logiccmd.login"))
 
 function Invoke(sModule, sCmd, mRecord, mData)
     local m = Cmds[sModule]

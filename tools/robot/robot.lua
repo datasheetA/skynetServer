@@ -135,6 +135,15 @@ function Robot:handle_server_request(name, args)
     if func then
         self:fork(func, self, args)
     end
+    --extra
+    if name == "GS2CLoginRole" then
+        self:fork(function ()
+            while 1 do
+                self:sleep(10)
+                self:run_cmd("C2GSHeartBeat", {})
+            end
+        end)
+    end
 end
 
 function Robot:unpack_package(text)

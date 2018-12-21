@@ -20,7 +20,7 @@ function C2GSSyncPos(oPlayer, mData)
         face_z = geometry.Recover(mPosInfo.face_z),
     }
 
-    local oScene = oPlayer:GetNowScene()
+    local oScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oScene:GetSceneId() == iScene then
         oScene:SyncPos(iEid, oPlayer:GetPid(), mPos)
     end
