@@ -62,3 +62,11 @@ message GS2CDialog{
     optional uint32 sessionidx                 = 1;                                //回调id,0不需要回调
     repeated DialogInfo dialog                  = 2;                                //剧情对白列表
 }
+
+//刷新任务信息
+/*target:1*/
+message GS2CRefreshTask {
+    optional uint32 mask                            = 1;
+    optional uint32 taskid                           = 2;
+    optional uint32 target                           = 3;                                //任务当前目标
+}

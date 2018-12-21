@@ -54,6 +54,16 @@ C2GS_DEFINES.player = {
 C2GS_DEFINES.task = {
     C2GSClickTask = 7001,
     C2GSTaskEvent = 7002,
+    C2GSUseTaskItem = 7003,
+}
+
+C2GS_DEFINES.npc = {
+    C2GSClickNpc = 8001,
+    C2GSNpcRespond = 8002,
+}
+
+C2GS_DEFINES.openui = {
+    
 }
 
 --C2GS END
@@ -119,6 +129,15 @@ GS2C_DEFINES.task = {
     GS2CAddTask      = 7002,
     GS2CDelTask      = 7003,
     GS2CDialog         = 7004,
+    GS2CRefreshTask = 7005,
+}
+
+GS2C_DEFINES.npc = {
+    GS2CNpcSay = 8001,
+}
+
+GS2C_DEFINES.openui = {
+    GS2CLoadUI = 9001,
 }
 
 --GS2C END

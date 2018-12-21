@@ -1,0 +1,8 @@
+
+//进度条
+message GS2CLoadUI {
+	optional uint32 sessionidx	= 1;	//回调id
+	optional uint32 type		= 2;	//类型
+	optional uint32 tip		= 3;	//提示
+	optional uint32 time		= 4;	//时间
+}

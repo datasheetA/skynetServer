@@ -158,15 +158,20 @@ sessionidx (
 
 id (
 amount (
-d
+—
 client/task.proto"
 C2GSClickTask
 taskid (".
 C2GSTaskEvent
 taskid (
-npcid (
+npcid ("1
+C2GSUseTaskItem
+taskid (
+itemid (
 
 client/player.proto
+
+client/openui.proto
 …
 server/login.protobase/common.proto"
 	GS2CHello
@@ -326,7 +331,7 @@ apply_info	 (2
 id ("%
 GS2CItemExtendSize
 extsize (
-±
+ò
 server/task.protobase/common.proto"*
 NeedItem
 itemid (
@@ -378,9 +383,22 @@ DialogInfo
 GS2CDialog
 
 sessionidx (
-dialog (2.DialogInfo
+dialog (2.DialogInfo"?
+GS2CRefreshTask
+mask (
+taskid (
+target (
 T
 server/player.protobase/common.proto"*
 GS2CPropChange
 role (2
 .base.Role
+`
+server/openui.proto"I
+
+GS2CLoadUI
+
+sessionidx (
+type (
+tip (
+time (
