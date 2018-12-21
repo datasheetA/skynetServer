@@ -158,7 +158,7 @@ function CActionMgr:DoSkill(oAction, oVictim, iSkill)
     if iDamage > 0 then
         oVictim:AddHp(iDamage)
     elseif iDamage < 0 then
-        oVictim:SubHp(math.floor(iDamage))
+        oVictim:SubHp(math.abs(iDamage))
     end
     oAction:SendAll("GS2CWarDamage", {
         war_id = oVictim:GetWarId(),
@@ -169,7 +169,7 @@ function CActionMgr:DoSkill(oAction, oVictim, iSkill)
 end
 
 function CActionMgr:DoNormalAttack(oAction, oVictim)
-    local iDamage = math.random(-10, 10)
+    local iDamage = math.random(-10, -1)
     local iFlag = 0
     if iDamage == 0 then
         iFlag = gamedefines.WAR_RECV_DAMAGE_FLAG.MISS
@@ -191,7 +191,7 @@ function CActionMgr:DoNormalAttack(oAction, oVictim)
     if iDamage > 0 then
         oVictim:AddHp(iDamage)
     elseif iDamage < 0 then
-        oVictim:SubHp(math.floor(iDamage))
+        oVictim:SubHp(math.abs(iDamage))
     end
     oAction:SendAll("GS2CWarDamage", {
         war_id = oVictim:GetWarId(),

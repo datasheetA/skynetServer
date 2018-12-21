@@ -215,12 +215,20 @@ function CWar:GetOperateTime()
     return self.m_iOperateWaitTime
 end
 
+function CWar:BaseOperateTime()
+    return 1000
+end
+
 function CWar:ResetOperateTime()
-    self.m_iOperateWaitTime = 1000
+    self.m_iOperateWaitTime = 0
 end
 
 function CWar:GetAnimationTime()
     return self.m_iAnimationWaitTime
+end
+
+function CWar:BaseAnimationTime()
+    return 1000
 end
 
 function CWar:AddAnimationTime(iTime)
@@ -228,7 +236,7 @@ function CWar:AddAnimationTime(iTime)
 end
 
 function CWar:ResetAnimationTime()
-    self.m_iAnimationWaitTime = 1000
+    self.m_iAnimationWaitTime = 0
 end
 
 function CWar:WarPrepare(mInfo)
@@ -272,7 +280,7 @@ function CWar:BoutStart()
 
     safe_call(self.OnBoutStart, self)
 
-    self:AddTimeCb("BoutProcess", self:GetOperateTime(), function ()
+    self:AddTimeCb("BoutProcess", self:GetOperateTime() + self:BaseOperateTime(), function ()
         self:BoutProcess()
     end)
 end
@@ -355,7 +363,7 @@ function CWar:BoutProcess()
     elseif iAliveCount2 <= 0 then
         self:WarEnd()
     else
-        self:AddTimeCb("BoutStart", self:GetAnimationTime(), function ()
+        self:AddTimeCb("BoutStart", self:GetAnimationTime() + self:BaseAnimationTime(), function ()
             self:BoutStart()
         end)
     end
