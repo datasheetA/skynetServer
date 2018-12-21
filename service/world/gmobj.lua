@@ -21,16 +21,31 @@ function Commands.setgrade(oMaster, i)
     oMaster.m_oBaseCtrl:SetData("grade", i)
 end
 
-function Commands.testwar(oMaster, iTargetPid)
+function Commands.testwar(oMaster, lTargets)
     local oWarMgr = global.oWarMgr
     local oWorldMgr = global.oWorldMgr
-    local oTarget = oWorldMgr:GetOnlinePlayerByPid(iTargetPid)
-    if oTarget then
-        local oWar = oWarMgr:CreateWar({})
-        oWarMgr:EnterWar(oMaster, oWar:GetWarId(), {camp_id = 1}, true)
-        oWarMgr:EnterWar(oTarget, oWar:GetWarId(), {camp_id = 2}, true)
-        oWarMgr:StartWar(oWar:GetWarId())
+    local oWar = oWarMgr:CreateWar({})
+
+    local lRes = {}
+    for _, v in ipairs(lTargets) do
+        local o = oWorldMgr:GetOnlinePlayerByPid(v)
+        if o then
+            table.insert(lRes, o)
+        end
     end
+    local iMiddle = math.floor(#lRes/2)
+
+    oWarMgr:EnterWar(oMaster, oWar:GetWarId(), {camp_id = 1}, true)
+    for i = 1, iMiddle do
+        local o = lRes[i]
+        oWarMgr:EnterWar(o, oWar:GetWarId(), {camp_id = 1}, true)
+    end
+    for i = iMiddle+1, #lRes do
+        local o = lRes[i]
+        oWarMgr:EnterWar(o, oWar:GetWarId(), {camp_id = 2}, true)
+    end
+
+    oWarMgr:StartWar(oWar:GetWarId())
 end
 
 function Commands.wartimeover(oMaster)

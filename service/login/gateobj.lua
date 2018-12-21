@@ -242,6 +242,7 @@ function CGateMgr:KickConnection(iHandle)
         if oGate and oGate:GetConnection(iHandle) then
             oGate:DelConnection(iHandle)
         end
+        print(string.format("KickConnection %s %s", iHandle, debug.traceback()))
         skynet.send(oConnection.m_iGateAddr, "text", "kick", oConnection.m_iHandle)
     end
 end

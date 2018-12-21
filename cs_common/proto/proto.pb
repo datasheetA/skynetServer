@@ -154,7 +154,7 @@ aoi_player (2.base.PlayerAoi"-
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-¦
+·
 server/war.protobase/war.proto"
 GS2CShowWar
 war_id ("0
@@ -192,11 +192,12 @@ select_wid ("n
 
 action_wid (
 
-select_wid ("3
+select_wid ("D
 GS2CWarEscape
 war_id (
 
-action_wid ("J
+action_wid (
+success ("J
 GS2CWarDamage
 war_id (
 wid (

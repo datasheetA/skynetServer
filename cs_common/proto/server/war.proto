@@ -55,6 +55,7 @@ message GS2CWarProtect {
 message GS2CWarEscape {
     optional uint32 war_id = 1;
     optional uint32 action_wid = 2;
+    optional bool success = 3;
 }
 
 message GS2CWarDamage {

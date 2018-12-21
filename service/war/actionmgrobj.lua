@@ -45,15 +45,27 @@ end
 function CActionMgr:WarEscape(oAction)
     local oWar = oAction:GetWar()
 
-    oAction:SendAll("GS2CWarEscape", {
-        war_id = oAction:GetWarId(),
-        action_wid = oAction:GetWid(),
-    })
-    oWar:AddAnimationTime(1 * 1000)
+    local iRan = math.random(100)
+    if iRan >= 80 then
+        oAction:SendAll("GS2CWarEscape", {
+            war_id = oAction:GetWarId(),
+            action_wid = oAction:GetWid(),
+            success = true,
+        })
+        oWar:AddAnimationTime(1 * 1000)
 
-    if oAction:Type() == gamedefines.WAR_WARRIOR_TYPE.PLAYER_TYPE then
-        oWar:LeavePlayer(oAction:GetPid())
+        if oAction:Type() == gamedefines.WAR_WARRIOR_TYPE.PLAYER_TYPE then
+            oWar:LeavePlayer(oAction:GetPid())
+        end
+    else
+        oAction:SendAll("GS2CWarEscape", {
+            war_id = oAction:GetWarId(),
+            action_wid = oAction:GetWid(),
+            success = false,
+        })
+        oWar:AddAnimationTime(1 * 1000)
     end
+
 end
 
 function CActionMgr:WarNormalAttack(oAction, oVictim)
