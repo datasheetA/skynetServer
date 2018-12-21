@@ -15,14 +15,6 @@
 pid ("
 PlayerAoiBlock
 mask (
-X
-base/role.protobase"
-
-SimpleRole
-pid ("$
-Role
-account (	
-pid (
 á
 base/war.protobase"-
 PlayerWarriorStatus
@@ -37,6 +29,14 @@ SimpleRole
 WarCamp
 camp_id ((
 player_list (2.base.PlayerWarrior
+X
+base/role.protobase"
+
+SimpleRole
+pid ("$
+Role
+account (	
+pid (
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -44,11 +44,6 @@ h
 C2GSLoginRole
 account (	
 pid (
-?
-client/other.proto"
-C2GSHeartBeat"
-	C2GSGMCmd
-cmd (	
 u
 client/scene.protobase/scene.proto"M
 C2GSSyncPos
@@ -78,6 +73,11 @@ select_wid ("3
 war_id (
 
 action_wid (
+?
+client/other.proto"
+C2GSHeartBeat"
+	C2GSGMCmd
+cmd (	
 å
 server/login.protobase/role.proto"
 	GS2CHello
@@ -91,10 +91,6 @@ action_wid (
 GS2CLoginRole
 role (2
 .base.Role
-3
-server/other.proto"
-GS2CHeartBeat
-time (
 å
 server/scene.protobase/scene.proto"1
 GS2CShowScene
@@ -194,3 +190,7 @@ action_wid ("J
 wid (
 type ()
 status (2.base.PlayerWarriorStatus
+3
+server/other.proto"
+GS2CHeartBeat
+time (
