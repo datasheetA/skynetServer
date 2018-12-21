@@ -1,0 +1,99 @@
+import "base/war.proto";
+
+message GS2CWarStart {
+    optional uint32 war_id = 1;
+    repeated base.WarCamp camp_list = 2;
+}
+
+message GS2CWarEnd {
+    optional uint32 war_id = 1;
+}
+
+message GS2CWarBoutStart {
+    optional uint32 war_id = 1;
+    optional uint32 bout_id = 2;
+}
+
+message GS2CWarBoutEnd {
+    optional uint32 war_id = 1;
+    optional uint32 bout_id = 2;
+}
+
+message GS2CWarAddWarrior {
+    optional uint32 war_id = 1;
+    optional uint32 type = 2; /*1 player */
+
+    optional base.PlayerWarrior warrior = 3;
+}
+
+message GS2CWarSkillStart {
+    optional uint32 war_id = 1;
+    repeated uint32 action_wlist = 2;
+    optional uint32 skill_id = 3;
+}
+
+message GS2CWarSkillEnd {
+    optional uint32 war_id = 1;
+    repeated uint32 action_wlist = 2;
+    optional uint32 skill_id = 3;
+}
+
+message GS2CWarNormalAttackStart {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+    optional uint32 select_wid = 3;
+}
+
+message GS2CWarNormalAttackEnd {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+}
+
+message GS2CWarMagicStart {
+    optional uint32 war_id = 1;
+    repeated uint32 action_wlist = 2;
+    repeated uint32 select_wlist = 3;
+    optional uint32 magic_id = 4;
+}
+
+message GS2CWarMagicEnd {
+    optional uint32 war_id = 1;
+    repeated uint32 action_wlist = 2;
+    optional uint32 magic_id = 3;
+}
+
+message GS2CWarProtectStart {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+    optional uint32 select_wid = 3;
+}
+
+message GS2CWarProtectEnd {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+}
+
+message GS2CWarEscapeStart {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+}
+
+message GS2CWarEscapeEnd {
+    optional uint32 war_id = 1;
+    optional uint32 action_wid = 2;
+}
+
+message GS2CWarDamage {
+    optional uint32 war_id = 1;
+    optional uint32 wid = 2;
+    optional uint32 type = 3;
+    optional int32 damage = 4;
+}
+
+message GS2CWarWarriorStatus {
+    optional uint32 war_id = 1;
+    optional uint32 wid = 2;
+    optional uint32 type = 3;
+
+    optional base.PlayerWarriorStatus status = 4;
+}

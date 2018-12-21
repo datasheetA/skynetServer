@@ -23,6 +23,20 @@ SimpleRole
 Role
 account (	
 pid (
+á
+base/war.protobase"-
+PlayerWarriorStatus
+
+hp (
+
+mp ("T
+PlayerWarrior
+wid (
+pos ()
+status (2.base.PlayerWarriorStatus"D
+WarCamp
+camp_id ((
+player_list (2.base.PlayerWarrior
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -41,6 +55,29 @@ u
 scene_id (
 eid (
 pos_info (2.base.PosInfo
+¾
+client/war.proto"\
+C2GSWarSkill
+war_id (
+action_wlist (
+select_wlist (
+skill_id ("M
+C2GSWarNormalAttack
+war_id (
+
+action_wid (
+
+select_wid ("H
+C2GSWarProtect
+war_id (
+
+action_wid (
+
+select_wid ("3
+C2GSWarEscape
+war_id (
+
+action_wid (
 å
 server/login.protobase/role.proto"
 	GS2CHello
@@ -84,3 +121,76 @@ aoi_player (2.base.PlayerAoi"-
 scene_id (
 eid (
 pos_info (2.base.PosInfo
+Ï	
+server/war.protobase/war.proto"@
+GS2CWarStart
+war_id ( 
+	camp_list (2.base.WarCamp"
+
+GS2CWarEnd
+war_id ("3
+GS2CWarBoutStart
+war_id (
+bout_id ("1
+GS2CWarBoutEnd
+war_id (
+bout_id ("W
+GS2CWarAddWarrior
+war_id (
+type ($
+warrior (2.base.PlayerWarrior"K
+GS2CWarSkillStart
+war_id (
+action_wlist (
+skill_id ("I
+GS2CWarSkillEnd
+war_id (
+action_wlist (
+skill_id ("R
+GS2CWarNormalAttackStart
+war_id (
+
+action_wid (
+
+select_wid ("<
+GS2CWarNormalAttackEnd
+war_id (
+
+action_wid ("a
+GS2CWarMagicStart
+war_id (
+action_wlist (
+select_wlist (
+magic_id ("I
+GS2CWarMagicEnd
+war_id (
+action_wlist (
+magic_id ("M
+GS2CWarProtectStart
+war_id (
+
+action_wid (
+
+select_wid ("7
+GS2CWarProtectEnd
+war_id (
+
+action_wid ("8
+GS2CWarEscapeStart
+war_id (
+
+action_wid ("6
+GS2CWarEscapeEnd
+war_id (
+
+action_wid ("J
+GS2CWarDamage
+war_id (
+wid (
+type (
+damage ("l
+GS2CWarWarriorStatus
+war_id (
+wid (
+type ()
+status (2.base.PlayerWarriorStatus

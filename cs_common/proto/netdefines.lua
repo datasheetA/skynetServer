@@ -29,6 +29,13 @@ C2GS_DEFINES.other = {
     C2GSGMCmd = 3002,
 }
 
+C2GS_DEFINES.war = {
+    C2GSWarSkill = 4001,
+    C2GSWarNormalAttack = 4002,
+    C2GSWarProtect = 4003,
+    C2GSWarEscape = 4004,
+}
+
 --C2GS END
 
 --GS2C BEGIN
@@ -53,6 +60,26 @@ GS2C_DEFINES.scene = {
 
 GS2C_DEFINES.other = {
     GS2CHeartBeat = 3001,
+}
+
+GS2C_DEFINES.war = {
+    GS2CWarStart = 4001,
+    GS2CWarEnd = 4002,
+    GS2CWarBoutStart = 4003,
+    GS2CWarBoutEnd = 4004,
+    GS2CWarAddWarrior = 4005,
+    GS2CWarSkillStart = 4006,
+    GS2CWarSkillEnd = 4007,
+    GS2CWarNormalAttackStart = 4008,
+    GS2CWarNormalAttackEnd = 4009,
+    GS2CWarMagicStart = 4010,
+    GS2CWarMagicEnd = 4011,
+    GS2CWarProtectStart = 4012,
+    GS2CWarProtectEnd = 4013,
+    GS2CWarEscapeStart = 4014,
+    GS2CWarEscapeEnd = 4015,
+    GS2CWarDamage = 4016,
+    GS2CWarWarriorStatus = 4017,
 }
 
 --GS2C END
