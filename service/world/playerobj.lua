@@ -179,6 +179,11 @@ function PropHelperFunc.school(oPlayer)
     return oPlayer:GetSchool()
 end
 
+PropHelperDef.point = 34
+function PropHelperFunc.point(oPlayer)
+    return oPlayer:GetPoint()
+end
+
 
 
 CPlayer = {}
@@ -503,7 +508,37 @@ end
 function CPlayer:UpGrade()
     local iNextGrade = self:GetGrade() + 1
     self.m_oBaseCtrl:SetData("grade", iNextGrade)
-    self:PropChange("grade")
+
+    local mSchool = res["daobiao"]["school"]
+    local m = mSchool[self:GetSchool()]
+    local mPoint = m.points
+    local iAdd
+    iAdd = mPoint["agility"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("agility", self.m_oBaseCtrl:GetData("agility") + iAdd)
+    end
+    iAdd = mPoint["strength"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("strength", self.m_oBaseCtrl:GetData("strength") + iAdd)
+    end
+    iAdd = mPoint["magic"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("magic", self.m_oBaseCtrl:GetData("magic") + iAdd)
+    end
+    iAdd = mPoint["endurance"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("endurance", self.m_oBaseCtrl:GetData("endurance") + iAdd)
+    end
+    iAdd = mPoint["physique"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("physique", self.m_oBaseCtrl:GetData("physique") + iAdd)
+    end
+    iAdd = mPoint["left"]
+    if iAdd > 0 then
+        self.m_oBaseCtrl:SetData("point", self.m_oBaseCtrl:GetData("point") + iAdd)
+    end
+
+    self:PropChange("grade", "agility", "strength", "magic", "endurance", "physique", "point")
 end
 
 function CPlayer:RewardGold(iVal,sReason,mArgs)
@@ -525,6 +560,10 @@ end
 
 function CPlayer:GetGrade()
     return self.m_oBaseCtrl:GetData("grade")
+end
+
+function CPlayer:GetPoint()
+    return self.m_oBaseCtrl:GetData("point")
 end
 
 function CPlayer:GetExp()

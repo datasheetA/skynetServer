@@ -1,5 +1,5 @@
 
-ç
+ö
 base/common.protobase"e
 PosInfo	
 v (	
@@ -18,7 +18,7 @@
 adorn ("
 
 SimpleRole
-pid ("‚
+pid ("‘
 Role
 mask (
 grade (
@@ -62,7 +62,8 @@ seal_ratio (
 res_mag_critical_ratio (#
 
 model_info  (2.base.ModelInfo
-school! ("^
+school! (
+point" ("^
 	PlayerAoi#
 block (2.base.PlayerAoiBlock
 pos_info (2.base.PosInfo
@@ -148,14 +149,20 @@ action_wid ("4
 war_id (
 
 action_wid (
-c
+¬
 client/other.proto"
 C2GSHeartBeat"
 	C2GSGMCmd
-cmd (	""
+cmd (	"(
+
+CommitItem
+
+id (
+amount ("A
 C2GSCallback
 
-sessionidx (
+sessionidx (
+itemlist (2.CommitItem
 ¨
 client/item.proto"-
 C2GSItemUse
@@ -177,16 +184,15 @@ sessionidx (
 
 id (
 amount (
-—
+†
 client/task.proto"
 C2GSClickTask
 taskid (".
 C2GSTaskEvent
 taskid (
-npcid ("1
-C2GSUseTaskItem
-taskid (
-itemid (
+npcid (" 
+C2GSCommitTask
+taskid (
 
 client/player.proto
 
@@ -424,7 +430,7 @@ T
 GS2CPropChange
 role (2
 .base.Role
-`
+ƒ
 server/openui.proto"I
 
 GS2CLoadUI
@@ -432,4 +438,6 @@ GS2CLoadUI
 sessionidx (
 type (
 tip (
-time (
+time ("!
+GS2CPopTaskItem
+taskid (

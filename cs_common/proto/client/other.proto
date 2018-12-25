@@ -6,7 +6,7 @@ message C2GSGMCmd {
     optional string cmd = 1;
 }
 
---提交任务需求道具
+/*提交任务需求道具*/
 message CommitItem {
     optional uint32 id = 1;
     optional uint32 amount = 2;

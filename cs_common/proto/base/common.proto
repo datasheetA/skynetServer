@@ -57,6 +57,7 @@ message Role {
     optional uint32 res_mag_critical_ratio = 31;
     optional ModelInfo model_info = 32;
     optional uint32 school = 33;
+    optional uint32 point = 34;
 }
 
 message PlayerAoi {
