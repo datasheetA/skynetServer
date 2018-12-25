@@ -1,5 +1,5 @@
 
-–
+∏
 base/common.protobase"e
 PosInfo	
 v (	
@@ -113,7 +113,13 @@ model_info (2.base.ModelInfo"a
 
 apply_info	 (2.base.ApplyInfo
 desc
- (	
+ (	"f
+BasePointProp
+agility (
+strength (
+magic (
+physique (
+	endurance (
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -226,8 +232,15 @@ sessionidx (
 npcid (" 
 C2GSCommitTask
 taskid (
-
-client/player.proto
+ª
+client/player.protobase/common.proto"&
+C2GSSelectPointPlan
+plan_id ("1
+C2GSAddPoint!
+prop (2.base.BasePointProp""
+C2GSWashPoint
+	prop_name (	"
+C2GSWashAllPoint
 
 client/openui.proto
 Ö
@@ -473,14 +486,23 @@ sessionidx (
 GS2CRemoveNpc
 taskid (
 npcid (
-è
+Ï
 server/player.protobase/common.proto"*
 GS2CPropChange
 role (2
 .base.Role"9
 GS2CServerGradeInfo
 server_grade (
-days (
+days ("N
+GS2CSelectPointPlan
+remain_point (!
+prop (2.base.BasePointProp"1
+GS2CAddPoint!
+prop (2.base.BasePointProp"!
+GS2CWashPoint
+prop_val ("5
+GS2CWashAllPoint!
+prop (2.base.BasePointProp
 ó
 server/openui.proto"I
 

@@ -522,12 +522,14 @@ function CWorldMgr:SetPlayerPropChange(iPid, l)
 end
 
 function CWorldMgr:WorldDispatchFinishHook()
-    local mPlayerPropChange = self.m_mPlayerPropChange
-    for k, v in pairs(mPlayerPropChange) do
-        local oPlayer = self:GetOnlinePlayerByPid(k)
-        if oPlayer and next(v) then
-            oPlayer:ClientPropChange(v)
+    if next(self.m_mPlayerPropChange) then
+        local mPlayerPropChange = self.m_mPlayerPropChange
+        for k, v in pairs(mPlayerPropChange) do
+            local oPlayer = self:GetOnlinePlayerByPid(k)
+            if oPlayer and next(v) then
+                oPlayer:ClientPropChange(v)
+            end
         end
+        self.m_mPlayerPropChange = {}
     end
-    self.m_mPlayerPropChange = {}
 end

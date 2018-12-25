@@ -67,17 +67,19 @@ function CSceneMgr:SetEntityAoiChange(iScene, iEid, l)
 end
 
 function CSceneMgr:SceneDispatchFinishHook()
-    local m1 = self.m_mEntityAoiChange
-    for k, v in pairs(m1) do
-        local oScene = self:GetScene(k)
-        if oScene then
-            for k2, v2 in pairs(v) do
-                local o = oScene:GetEntity(k2)
-                if o and next(v2) then
-                    o:ClientBlockChange(v2)
+    if next(self.m_mEntityAoiChange) then
+        local m1 = self.m_mEntityAoiChange
+        for k, v in pairs(m1) do
+            local oScene = self:GetScene(k)
+            if oScene then
+                for k2, v2 in pairs(v) do
+                    local o = oScene:GetEntity(k2)
+                    if o and next(v2) then
+                        o:ClientBlockChange(v2)
+                    end
                 end
             end
         end
+        self.m_mEntityAoiChange = {}
     end
-    self.m_mEntityAoiChange = {}
 end
