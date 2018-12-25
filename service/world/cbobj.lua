@@ -48,6 +48,17 @@ function CCBMgr:GS2CLoadUI(pid,mNet)
     end
 end
 
+--[[
+npc回调
+]]
+function CCBMgr:GS2CNpcSay(pid,mNet)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(pid)
+    if oPlayer then
+        oPlayer:Send("GS2CNpcSay",mNet)
+    end
+end
+
 function CCBMgr:GS2CPopTaskItem(pid,mNet)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(pid)
@@ -78,7 +89,7 @@ function CCBMgr:CallBack(oPlayer,iSessionIdx,mData)
     local iOwner,fResCallBack,fCallback = table.unpack(mCallBack)
     assert(iOwner==pid,string.format("Callback err %d %d %d",iSessionIdx,pid,iOwner))
     if fResCallBack then
-        if not fResCallBack() then
+        if not fResCallBack(oPlayer,mData) then
             return
         end
     end

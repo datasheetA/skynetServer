@@ -5,11 +5,13 @@ local extend = require "base.extend"
 local datactrl = import(lualib_path("public.datactrl"))
 local timeop = import(lualib_path("base.timeop"))
 local stringop = import(lualib_path("base.stringop"))
+local tableop = import(lualib_path("base.tableop"))
 
 local loaditem = import(service_path("item/loaditem"))
 local clientnpc = import(service_path("task/clientnpc"))
 local loadtask = import(service_path("task/loadtask"))
 local tasknet = import(service_path("netcmd/task"))
+local gamedefines = import(lualib_path("public.gamedefines"))
 
 local min = math.min
 local max = math.max
@@ -101,6 +103,13 @@ function CTask:GetSceneGroup(iGroup)
     return mData
 end
 
+function CTask:GetTextData(iText)
+    local res = require "base.res"
+    local mData = res["daobiao"]["tasktext"][iText]
+    mData = mData["content"]
+    assert(mData,string.format("CTask:GetTextData err:%d",iText))
+end
+
 --任务类型:寻人，寻物等
 function CTask:TaskType()
     local mData = self:GetTaskData()
@@ -111,6 +120,12 @@ end
 function CTask:Type()
     local mData = self:GetTaskData()
     return mData["type"]
+end
+
+--寻路类型
+function CTask:AutoType()
+    local mData = self:GetTaskData()
+    return mData["autotype"]
 end
 
 function CTask:Name()
@@ -338,8 +353,30 @@ function CTask:CreateClientNpc(iTempNpc)
     return oClientNpc
 end
 
-function CTask:RemoveClientNpc( ... )
-    -- body
+function CTask:RemoveClientNpc(npcobj)
+    if not npcobj then
+        return
+    end
+    local bFlag
+    local npcid = npcobj.m_ID
+    for _,oClientNpc in ipairs(self.m_mClientNpc) do
+        if oClientNpc.m_ID == npcid then
+            bFlag = true
+        end
+    end
+    if not bFlag then
+        return
+    end
+    extend.Array.remove(self.m_mClientNpc,npcobj)
+    local mNet = {}
+    mNet["taskid"] = self.m_ID
+    mNet["npcid"] = npcid
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if not oPlayer then
+        return
+    end
+    oPlayer:Send("GS2CRemoveNpc",mNet)
 end
 
 function CTask:GetClientObj(npcid)
@@ -443,7 +480,20 @@ function CTask:SetRanScTaskItem(mArgs)
     table.insert(self.m_mTaskItem,mData)
 end
 
+function CTask:SetAttr(mArgs)
+    for _,sArgs in pairs(mArgs) do
+        local key,value = string.match(sArgs,"(.+)=(.+)")
+        if tonumber(value) then
+            value = tonumber(value)
+        end
+        self:SetData(key,value)
+    end
+end
+
 function CTask:DoScript(pid,npcobj,s)
+    if type(s) ~= "table" then
+        return
+    end
     for _,ss in pairs(s) do
         self:DoScript2(pid,npcobj,ss)
     end
@@ -462,18 +512,12 @@ function CTask:DoScript2(pid,npcobj,s)
         self:SetNeedTaskItem(mArgs)
     elseif string.sub(s,1,3) == "GTI" then
         local sArgs = string.sub(s,4,-1)
-         local mArgs = stringop.split_string(sArgs,":")
+        local mArgs = stringop.split_string(sArgs,":")
         self:SetRanScTaskItem(mArgs)
-    elseif string.sub(s,1,7) == "GIVESUM" then
-        local sArgs = string.sub(s,8,-2)
-        local sumid,attrid = string.match(sArgs,"(.+):(.+)")
-        sumid = tonumber(sumid)
-        attrid = tonumber(attrid)
-        self:GiveSummon(sumid,attrid)
-    elseif string.sub(s,1,7) == "PARTNER" then
-        local parid = string.sub(s,8,-2)
-        parid = tonumber(parid)
-        self:GivePartner(pid,parid)
+   elseif string.sub(s,1,3) == "SET" then
+        local sArgs = string.sub(s,5,-2)
+        local mArgs = stringop.split_string(sArgs,"|")
+        self:SetAttr(mArgs)
     elseif string.sub(s,1,4) == "ITEM" then
         local sArgs = string.sub(s,6,-2)
         local mArgs = stringop.split_string(sArgs,"|")
@@ -506,38 +550,22 @@ function CTask:DoScript2(pid,npcobj,s)
         local iTarget = string.sub(s,7,-1)
         iTarget = tonumber(iTarget)
         self:SetTarget(iTarget)
+    elseif string.sub(s,1,2) == "D" then
+        local iText = string.sub(s,2,-1)
+        iText = tonumber(iText)
+        if not iText then
+            return
+        end
+        local sText = self:GetTextData(iText)
+        if sText then
+            self:SayText(pid,npcobj,sText)
+        end
     elseif string.sub(s,1,2) == "DI" then
         local iDialog = string.sub(s,3,-1)
         iDialog = tonumber(iDialog)
-        local mData = self:GetDialogData(iDialog)
-        if not mData then
-            return
-        end
-        local npcid = npcobj.m_ID
-        local iEvent = self:GetEvent(npcid)
-        if not iEvent then
-            local mNet = {}
-            mNet["dialog"] = mData
-            self:GS2CDialog(pid,mNet)
-        else
-            local taskid = self.m_ID
-            local func = function (oPlayer,mData)
-                local oTask = oPlayer.m_oTaskCtrl:GetTask(taskid)
-                if not oTask then
-                    return
-                end
-                local oNpc = self:GetNpcObj(npcid)
-                if not oNpc then
-                    return
-                end
-                local mEvent = self:GetEventData(iEvent)
-                oTask:DoScript(pid,oNpc,mEvent["answer"])
-            end
-            local mNet = {}
-            mNet["dialog"] = mData
-            local oCbMgr = global.oCbMgr
-            oCbMgr:SetCallBack(pid,"GS2CDialog",mNet,nil,func)
-        end
+        self:Dialog(iDialog)
+    elseif string.sub(s,1,3) == "RN" then
+        self:RemoveClientNpc(npcobj)
     end
     self:OtherScript(pid,npcobj,s)
 end
@@ -668,8 +696,29 @@ function CTask:TakeNeedSummon()
 end
 
 --点击任务
-function CTask:Click()
-    --
+function CTask:Click(pid)
+    local iType = self:TaskType()
+    local npcid
+    local sc
+    if extend.Table.find({gamedefines.TASK_TYPE.TASK_FIND_NPC,gamedefines.TASK_TYPE.TASK_NPC_FIGHT},iType) then
+        npcid = self:Target()
+    --暂时测试，以后更改
+    elseif extend.Table.find({gamedefines.TASK_TYPE.TASK_FIND_ITEM,gamedefines.TASK_TYPE.TASK_FIND_SUMMON},iType) then
+        npcid = 5201
+    elseif extend.Table.find({gamedefines.TASK_TYPE.TASK_ANLEI},iType) then
+        --
+    end
+    if npcid then
+        local oNpc = self:GetNpcObj(npcid)
+        if not oNpc then
+            return
+        end
+        local iMap = oNpc:MapId()
+        local iX = oNpc.m_mPosInfo["x"]
+        local iZ = oNpc.m_mPosInfo["z"]
+        local oSceneMgr = global.oSceneMgr
+        oSceneMgr:SceneAutoFindPath(pid,iMap,iX,iZ,npcid,self:AutoType())
+    end
 end
 
 function CTask:GetNpcObj(npcid)
@@ -725,18 +774,7 @@ end
 
 function CTask:DoNpcEvent(pid,npcid)
     local oNpc = self:GetClientObj(npcid)
-    local iEvent
-    if oNpc then
-        iEvent = oNpc.m_iEvent
-    else
-        oNpcMgr = global.oNpcMgr
-        oNpc = oNpcMgr:GetObject(npcid)
-        if not oNpc then
-            return
-        end
-        local npctype = oNpc:Type()
-        iEvent = self.m_mEvent[npctype]
-    end
+    local iEvent = self:GetEvent(npcid)
     if not iEvent then
         return
     end
@@ -745,6 +783,105 @@ function CTask:DoNpcEvent(pid,npcid)
         return
     end
     self:DoScript(pid,oNpc,mEvent["look"])
+end
+
+function CTask:Dialog(iDialog)
+    local mData = self:GetDialogData(iDialog)
+    if not mData then
+        return
+    end
+    local mNet = {}
+    mNet["dialog"] = mData
+    if not npcobj then
+        self:GS2CDialog(pid,mNet)
+        return
+    end
+    local npcid = npcobj.m_ID
+    local iEvent = self:GetEvent(npcid)
+    if not iEvent then
+        self:GS2CDialog(pid,mNet)
+        return
+    end
+    local taskid = self.m_ID
+    local func = function (oPlayer,mData)
+        local oTask = oPlayer.m_oTaskCtrl:GetTask(taskid)
+        if not oTask then
+            return
+        end
+        local oNpc = self:GetNpcObj(npcid)
+        if not oNpc then
+            return
+        end
+        local mEvent = self:GetEventData(iEvent)
+        oTask:DoScript(pid,oNpc,mEvent["answer"])
+    end
+    local mNet = {}
+    mNet["dialog"] = mData
+    local oCbMgr = global.oCbMgr
+    oCbMgr:SetCallBack(pid,"GS2CDialog",mNet,nil,func)
+end
+
+function CTask:SayText(pid,npcobj,sText)
+    if not npcobj then
+        local mNet = {}
+        mNet["text"] = sText
+        local oWorldMgr = global.oWorldMgr
+        local oPlayer = oWorldMgr:GetOnlinePlayerByPid(pid)
+        if oPlayer then
+            oPlayer:Send("GS2CNpcSay",mNet)
+        end
+        return
+    end
+
+    local npcid = npcobj.m_ID
+    local iEvent = self:GetEvent(npcid)
+    if not iEvent then
+        npcobj:Say(sText)
+        return
+    end
+    local mEvent = oTask:GetEventData(iEvent)
+    local mAnswer = mEvent["answer"] or {}
+    if tableop.table_count(mAnswer) == 0 then
+        npcobj:Say(sText)
+        return
+    end
+    self:SayRespondText(pid,npcobj,sText)
+end
+
+function CTask:SayRespondText(pid,npcobj,sText)
+    if not npcobj then
+        return
+    end
+    local taskid = self.m_ID
+    local npcid = npcobj.m_ID
+    local resfunc = function (oPlayer,mData)
+        local oTask = oPlayer.m_oTaskCtrl:GetTask(taskid)
+        if not oTask then
+            return false
+        end
+        local oNpc = oTask:GetNpcObj(npcid)
+        if not oNpc then
+            return false
+        end
+        return true
+    end
+    local func = function (oPlayer,mData)
+        local oTask = oPlayer.m_oTaskCtrl:GetTask(taskid)
+        local oNpc = self:GetNpcObj(npcid)
+        local iEvent = self:GetEvent(npcid)
+        if not iEvent then
+            return
+        end
+        local mEvent = oTask:GetEventData(iEvent)
+        if not mEvent then
+            return
+        end
+        local iAnswer = mData["answer"]
+        local mAnswer = mEvent["answer"]
+        local s = mAnswer[iAnswer] or ""
+        self:DoScript(pid,oNpc,s)
+    end
+    npcobj:SayRespond(pid,sText,resfunc,func)
 end
 
 function CTask:TransString(pid,npcobj,s)
@@ -789,7 +926,7 @@ function CTask:Refresh(mNet)
     }
     for key,iBit in pairs(mArgs) do
         if mNet[key] then
-            iMask = iMask + 1<<(iBit-1)
+            iMask = iMask | (2^(iBit-1))
         end
     end
     mNet["mask"] = iMask

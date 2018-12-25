@@ -8,5 +8,6 @@ message GS2CLoadUI {
 }
 
 message GS2CPopTaskItem {
-	optional uint32 taskid		= 1;	//任务id
+	optional uint32 sessionidx	= 1;	//回调id
+	optional uint32 taskid		= 2;	//任务id
 }

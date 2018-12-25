@@ -43,7 +43,6 @@ message TaskInfo {
     optional uint32 time                               = 12;                               //剩余时间
     optional uint32 rewardinfo                    = 13;                               //奖励信息
     repeated TaskItem taskitem                  = 14;                               //任务道具信息
-    
 }
 
 //登录发送
@@ -79,4 +78,9 @@ message GS2CRefreshTask {
     optional uint32 mask                            = 1;
     optional uint32 taskid                           = 2;
     optional uint32 target                           = 3;                                //任务当前目标
+}
+
+message GS2CRemoveNpc {
+    optional uint32 taskid = 1;
+    optional uint32 npcid  = 2;
 }

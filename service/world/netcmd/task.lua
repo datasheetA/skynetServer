@@ -16,7 +16,7 @@ function C2GSClickTask(oPlayer,mData)
     if not oTask then
         return
     end
-    oTask:Click(oPlayer)
+    oTask:Click(oPlayer.m_iPid)
 end
 
 function C2GSTaskEvent(oPlayer,mData)

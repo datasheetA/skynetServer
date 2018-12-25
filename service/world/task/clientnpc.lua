@@ -1,9 +1,12 @@
 --import module
 local global = require "global"
+local geometry = require "base.geometry"
+
+local npcobj = import(service_path("npc/npcobj"))
 
 CClientNpc = {}
 CClientNpc.__index = CClientNpc
-inherit(CClientNpc,logic_base_cls())
+inherit(CClientNpc,npcobj.CNpc)
 
 function CClientNpc:New(mArgs)
     local o = super(CClientNpc).New(self)
@@ -24,11 +27,6 @@ function CClientNpc:Init(mArgs)
 
     self.m_iEvent = mArgs["event"] or 0
     self.m_iReUse = mArgs["reuse"]
-end
-
-function CClientNpc:InitObject()
-    local oNpcMgr = global.oNpcMgr
-    self.m_ID = oNpcMgr:DispatchId()
 end
 
 function CClientNpc:Release()
@@ -56,22 +54,27 @@ function CClientNpc:PackInfo()
             name = self.m_sName,
             title = self.m_sTitle,
             map_id = self.m_iMapid,
-            pos_info = self.m_PosInfo,
+            pos_info = self:GetPos(),
             model_info = self.m_mModel,
     }
     return mData
 end
 
-function CClientNpc:Type()
-    return self.m_iType
-end
-
-function CClientNpc:Name()
-    return self.m_sName
-end
-
 function CClientNpc:SetEvent(iEvent)
     self.m_iEvent = iEvent
+end
+
+function CClientNpc:GetPos()
+    local mPos = self.m_mPosInfo
+    pos_info = {
+            x = math.floor(geometry.Cover(mPos.x)),
+            y = math.floor(geometry.Cover(mPos.y)),
+            z = math.floor(geometry.Cover(mPos.z)),
+            face_x = math.floor(geometry.Cover(mPos.face_x)),
+            face_y = math.floor(geometry.Cover(mPos.face_y)),
+            face_z = math.floor(geometry.Cover(mPos.face_z)),
+        }
+        return pos_info
 end
 
 function NewClientNpc(mArgs)

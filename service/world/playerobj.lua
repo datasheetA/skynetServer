@@ -561,6 +561,17 @@ function CPlayer:UpGrade()
     end
 
     self:PropChange("grade", "agility", "strength", "magic", "endurance", "physique", "point")
+
+    self:OnUpGrade(iNextGrade)
+end
+
+function CPlayer:OnUpGrade(iGrade)
+    local oTaskCtrl = self.m_oTaskCtrl
+    for _,oTask in pairs(oTaskCtrl.m_List) do
+        if oTask.CheckGrade then
+            oTask:CheckGrade(iGrade)
+        end
+    end
 end
 
 function CPlayer:RewardGold(iVal,sReason,mArgs)

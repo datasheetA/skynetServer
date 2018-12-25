@@ -40,3 +40,11 @@ message GS2CSyncPos {
     optional uint32 eid = 2;
     optional base.PosInfo pos_info = 3;
 }
+
+message GS2CAutoFindPath{
+    optional uint32 npcid  = 1;
+    optional uint32 map_id  = 2;
+    optional uint32 pos_x = 3;
+    optional uint32 pos_z = 4;
+    optional uint32 autotype = 5;       //自动寻路类型,1:先跳场景,再寻路,2:通过跳转点寻路
+}

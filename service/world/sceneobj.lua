@@ -4,6 +4,7 @@ local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
 local res = require "base.res"
+local geometry = require "base.geometry"
 
 local gamedefines = import(lualib_path("public.gamedefines"))
 
@@ -234,6 +235,43 @@ function CSceneMgr:TransferScene(oPlayer, iTransferId)
             end
         end)
     end
+end
+
+function CSceneMgr:SceneAutoFindPath(pid,iMapId,iX,iZ,npcid,iAutoType)
+    iAutoType = iAutoType or 1
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(pid)
+    if not oPlayer then
+        return
+    end
+    local mNowPos = oPlayer.m_oActiveCtrl:GetNowPos()
+    local oScene = oPlayer.m_oActiveCtrl:GetNowScene()
+    local iNowMapId = oScene:MapId()
+    local mNet = {}
+    mNet["map_id"] = iMapId
+    mNet["pos_x"] = math.floor(geometry.Cover(iX))
+    mNet["pos_z"] =math.floor(geometry.Cover(iZ))
+    mNet["npcid"] = npcid
+    mNet["autotype"] = iAutoType
+    if iAutoType == 1 and iNowMapId ~= iMapId then
+        local oScene = self:SelectDurableScene(iMapId)
+        local iNewX,iNewZ = self:GetFlyData(iMapId)
+        self:EnterScene(oPlayer, oScene:GetSceneId(), {pos = {x = iNewX, y = mNowPos.y , z = iNewZ, face_x = mNowPos.face_x, face_y = mNowPos.face_y, face_z = mNowPos.face_z}})
+        oPlayer:Send("GS2CAutoFindPath",mNet)
+    else
+        oPlayer:Send("GS2CAutoFindPath",mNet)
+    end
+end
+
+function CSceneMgr:GetFlyData(iMapId)
+    local res = require "base.res"
+    local mData = res["daobiao"]["scenefly"][iMapId] or {}
+    local iX,iZ = table.unpack(mData["pos"])
+    iX = iX or 10
+    iZ = iZ or 10
+    iX = math.floor(geometry.Cover(iX))
+    iZ = math.floor(geometry.Cover(iZ))
+    return iX,iZ
 end
 
 function CSceneMgr:RemoteEvent(sEvent, mData)

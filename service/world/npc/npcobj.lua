@@ -49,7 +49,7 @@ function CNpc:InitObject()
     self.m_ID = id
 end
 
-function CNpc:Release( ... )
+function CNpc:Release()
     -- body
 end
 
@@ -65,23 +65,46 @@ end
 function CNpc:do_look(oPlayer)
 end
 
-function CNpc:Respond(...)
+function CNpc:Say(pid,sText)
+    local mNet = {}
+    mNet["shape"] = self:Shape()
+    mNet["name"] = self:Name()
+    mNet["text"] = sText
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(pid)
+    if oPlayer then
+        oPlayer:Send("GS2CNpcSay",mNet)
+    end
 end
 
-function CNpc:Say(pid,sText)
-    npcnet.GS2CNpcObjSay(pid,self,sText)
+--需要客户端回应
+function CNpc:SayRespond(pid,sText,fResCb,fCallBack)
+    local mNet = {}
+    mNet["shape"] = self:Shape()
+    mNet["name"] = self:Name()
+    mNet["text"] = sText
+    local oCbMgr = global.oCbMgr
+    oCbMgr:SetCallBack(pid,"GS2CNpcSay",mNet,fResCb,fCallBack)
 end
 
 function CNpc:Name()
     return self.m_sName
 end
 
-function CNpc:Model()
-    return self.m_iModel
-end
-
 function CNpc:Type()
     return self.m_iType
+end
+
+function CNpc:Shape()
+    return self.m_mModel["shape"]
+end
+
+function CNpc:PosInfo()
+    return self.m_PosInfo
+end
+
+function CNpc:MapId()
+    return self.m_iMapid
 end
 
 function CNpc:Dialog()
@@ -101,10 +124,6 @@ function CNpc:PackSceneInfo()
         scale = self.m_iScale
     }
     return mInfo
-end
-
-function CNpc:PosInfo()
-    return self.m_PosInfo
 end
 
 --同步信息去场景

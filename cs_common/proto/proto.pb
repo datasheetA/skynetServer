@@ -212,7 +212,7 @@ sessionidx (
 pid (
 role (2
 .base.Role
-÷
+π
 server/scene.protobase/common.proto"E
 GS2CShowScene
 scene_id (
@@ -242,7 +242,13 @@ aoi_player (2.base.PlayerAoi
 GS2CSyncPos
 scene_id (
 eid (
-pos_info (2.base.PosInfo
+pos_info (2.base.PosInfo"a
+GS2CAutoFindPath
+npcid (
+map_id (
+pos_x (
+pos_z (
+autotype (
 _
 server/npc.proto"K
 
@@ -362,7 +368,7 @@ apply_info	 (2
 id ("%
 GS2CItemExtendSize
 extsize (
-È
+ô
 server/task.protobase/common.proto"*
 NeedItem
 itemid (
@@ -425,7 +431,10 @@ sessionidx (
 GS2CRefreshTask
 mask (
 taskid (
-target (
+target (".
+GS2CRemoveNpc
+taskid (
+npcid (
 è
 server/player.protobase/common.proto"*
 GS2CPropChange
@@ -434,7 +443,7 @@ sessionidx (
 GS2CServerGradeInfo
 server_grade (
 days (
-É
+ó
 server/openui.proto"I
 
 GS2CLoadUI
@@ -442,6 +451,8 @@ GS2CLoadUI
 sessionidx (
 type (
 tip (
-time ("!
-GS2CPopTaskItem
-taskid (
+time ("5
+GS2CPopTaskItem
+
+sessionidx (
+taskid (

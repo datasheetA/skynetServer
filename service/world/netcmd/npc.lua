@@ -20,31 +20,3 @@ function C2GSNpcRespond(oPlayer,mData)
     assert(oNpc,string.format("C2GSNpcRespond err %d",npcid))
     handlenpc.Respond(oPlayer.m_iPid,npcid,iAnswer)
 end
-
-function GS2CNpcObjSay(pid,oNpc,sText)
-    handlenpc.ClearRespond(pid)
-    local mNet = {}
-    mNet["npcid"] = oNpc.m_ID
-    mNet["shape"] = oNpc.m_Model
-    mNet["name"] = oNpc:Name()
-    mNet["text"] = sText
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CNpcSay",mNet)
-    end
-end
-
-function GS2CNpcSay(pid,npcid,iModel,sName,sText)
-    handlenpc.ClearRespond(pid)
-    local mNet = {}
-    mNet["npcid"] = npcid
-    mNet["shape"] = iModel
-    mNet["name"] = sName
-    mNet["text"] = sText
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CNpcSay",mNet)
-    end
-end

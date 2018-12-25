@@ -86,6 +86,7 @@ GS2C_DEFINES.scene = {
     GS2CLeaveAoi = 2004,
     GS2CSyncAoi = 2005,
     GS2CSyncPos = 2006,
+    GS2CAutoFindPath = 2007,
 }
 
 GS2C_DEFINES.other = {
