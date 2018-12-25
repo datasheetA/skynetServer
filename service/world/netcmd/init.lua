@@ -12,6 +12,8 @@ Cmds.item = import(service_path("netcmd.item"))
 Cmds.war = import(service_path("netcmd.war"))
 Cmds.player = import(service_path("netcmd.player"))
 Cmds.npc = import(service_path("netcmd.npc"))
+Cmds.openui = import(service_path("netcmd.openui"))
+Cmds.warehouse =import(service_path("netcmd.warehouse"))
 
 function Invoke(sModule, sCmd, fd, mData)
     local m = Cmds[sModule]

@@ -107,3 +107,17 @@ function SavePlayerTaskInfo(mRecord,mData)
     local oGameDb = global.oGameDb
     oGameDb:Update(sPlayerTableName,{pid=mData.pid},{["$set"]={task_info=mData.data}})
 end
+
+function LoadPlayerWareHouse(mRecord,mData)
+   local oGameDb = global.oGameDb
+    local m = oGameDb:FindOne(sPlayerTableName,{pid = mData.pid},{wh_info = true})
+    interactive.Response(mRecord.source,mRecord.session,{
+        data = m.wh_info,
+        pid = mData.pid,
+     })
+end
+
+function SavePlayerWareHouse(mRecord,mData)
+    local oGameDb = global.oGameDb
+    oGameDb:Update(sPlayerTableName,{pid=mData.pid},{["$set"]={wh_info=mData.data}})
+end

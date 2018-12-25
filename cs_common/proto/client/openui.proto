@@ -1,0 +1,5 @@
+
+message C2GSExchangeMoney{
+	optional uint32 type	= 1;	//1.元宝换金币，元宝换银币
+	optional uint32 goldcoin = 2;	//元宝兑换数目
+}

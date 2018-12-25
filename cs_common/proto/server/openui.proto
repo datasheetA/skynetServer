@@ -11,3 +11,8 @@ message GS2CPopTaskItem {
 	optional uint32 sessionidx	= 1;	//回调id
 	optional uint32 taskid		= 2;	//任务id
 }
+
+//弹出资源获得界面
+message GS2CShortWay {
+	optional uint32 type		= 1;	//1:金币,2:银币,3:铜币
+}

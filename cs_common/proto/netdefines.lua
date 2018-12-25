@@ -67,7 +67,7 @@ C2GS_DEFINES.npc = {
 }
 
 C2GS_DEFINES.openui = {
-    
+    C2GSExchangeMoney = 9001,
 }
 
 C2GS_DEFINES.warehouse = {
@@ -157,6 +157,8 @@ GS2C_DEFINES.npc = {
 
 GS2C_DEFINES.openui = {
     GS2CLoadUI = 9001,
+    GS2CPopTaskItem = 9002,
+    GS2CShortWay = 9003,
 }
 
 GS2C_DEFINES.notify = {

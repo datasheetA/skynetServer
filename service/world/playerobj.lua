@@ -213,6 +213,7 @@ function CPlayer:New(mConn, mRole)
         ["SeveralDay"] = o.m_oSeveralDay,
         })
     o.m_oTaskCtrl = playerctrl.NewTaskCtrl(o.m_iPid)
+    o.m_oWHCtrl = playerctrl.NewWHCtrl(o.m_iPid)
     return o
 end
 
@@ -338,6 +339,7 @@ function CPlayer:OnLogin(bReEnter)
     
     self.m_oItemCtrl:OnLogin()
     self.m_oTaskCtrl:OnLogin()
+    self.m_oWHCtrl:OnLogin()
 
     if not bReEnter then
         local iDiffDisconnect = iNowTime - self.m_oActiveCtrl:GetDisconnectTime()
@@ -450,6 +452,10 @@ function CPlayer:SaveDb()
         local mData = self.m_oTaskCtrl:Save()
         interactive.Send(".gamedb","playerdb","SavePlayerTaskInfo",{pid=self:GetPid(),data=mData})
         self.m_oTaskCtrl:UnDirty()
+    end
+    if self.m_oWHCtrl:IsDirty() then
+        local mData = self.m_oWHCtrl:Save()
+        interactive.Send(".gamedb","playerdb","SavePlayerWareHouse",{pid=self:GetPid(),data=mData})
     end
 end
 
@@ -587,6 +593,17 @@ function CPlayer:AddChubeiExp(iVal, sReason)
     self.m_oActiveCtrl:AddChubeiExp(iVal, sReason)
 end
 
+function CPlayer:ValidGoldCoin(iVal)
+    local oRW = self:GetRW()
+    local bFlag = oRW:ValidGoldCoin(iVal)
+    return bFlag
+end
+
+function CPlayer:ResumeGoldCoin(iVal,sReason,mArgs)
+    local oRW = self:GetRW()
+    oRW:ResumeGoldCoin(iVal,sReason,mArgs)
+end
+
 function CPlayer:GetGrade()
     return self.m_oBaseCtrl:GetData("grade")
 end
@@ -617,6 +634,11 @@ function CPlayer:GetModelInfo()
     mRet.weapon = m.weapon
     mRet.adorn = m.adorn
     return mRet
+end
+
+function CPlayer:Shape()
+    local m = self.m_oBaseCtrl:GetData("model_info") or {}
+    return m.shape
 end
 
 function CPlayer:GetMaxHp()

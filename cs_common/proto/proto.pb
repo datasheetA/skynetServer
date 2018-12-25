@@ -1,5 +1,5 @@
 
-¸
+Î
 base/common.protobase"e
 PosInfo	
 v (	
@@ -113,13 +113,32 @@ model_info (2.base.ModelInfo"a
 
 apply_info	 (2.base.ApplyInfo
 desc
- (	"f
-BasePointProp
+ (	"|
+WashPointInfo
 agility (
 strength (
 magic (
 physique (
-	endurance (
+	endurance (
+remain_point (
+¢
+client/team.proto"
+C2GSCreateTeam"
+C2GSTeamInfo
+teamid ("
+C2GSApplyTeam
+pid ("
+C2GSTeamApplyInfo" 
+C2GSApplyTeamPass
+pid (" 
+C2GSInviteTeam
+target ("
+C2GSInvitePass"
+C2GSShortLeave"
+C2GSLeaveTeam"
+C2GSKickOutTeam
+pid ("
+C2GSSetLeader
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -232,17 +251,37 @@ sessionidx (
 npcid (" 
 C2GSCommitTask
 taskid (
-»
-client/player.protobase/common.proto"&
+Ó
+client/player.protobase/common.proto"
+C2GSGetPointPlanInfo"&
 C2GSSelectPointPlan
 plan_id ("1
 C2GSAddPoint!
-prop (2.base.BasePointProp""
+prop (2.base.WashPointInfo""
 C2GSWashPoint
 	prop_name (	"
 C2GSWashAllPoint
-
-client/openui.proto
+J
+client/openui.proto"3
+C2GSExchangeMoney
+type (
+goldcoin (
+ù
+server/team.proto"a
+TeamMem
+pid (
+name (	
+title (	
+shape (
+school (
+grade ("€
+GS2CAddTeam
+teamid (
+leader (
+member (2.TeamMem
+
+shortleave (2.TeamMem
+offline (2.TeamMem
 …
 server/login.protobase/common.proto"
 	GS2CHello
@@ -486,24 +525,26 @@ sessionidx (
 GS2CRemoveNpc
 taskid (
 npcid (
-ì
+½
 server/player.protobase/common.proto"*
 GS2CPropChange
 role (2
 .base.Role"9
 GS2CServerGradeInfo
 server_grade (
-days ("N
-GS2CSelectPointPlan
-remain_point (!
-prop (2.base.BasePointProp"1
-GS2CAddPoint!
-prop (2.base.BasePointProp"!
-GS2CWashPoint
-prop_val ("5
-GS2CWashAllPoint!
-prop (2.base.BasePointProp
-—
+days ("U
+GS2CGetPointPlanInfo
+selected_plan (&
+	wash_prop (2.base.WashPointInfo"=
+GS2CSelectPointPlan&
+	wash_prop (2.base.WashPointInfo"6
+GS2CAddPoint&
+	wash_prop (2.base.WashPointInfo""
+GS2CWashPoint
+	wash_prop (":
+GS2CWashAllPoint&
+	wash_prop (2.base.WashPointInfo
+µ
 server/openui.proto"I
 
 GS2CLoadUI
@@ -515,4 +556,6 @@ sessionidx (
 GS2CPopTaskItem
 
 sessionidx (
-taskid (
+taskid ("
+GS2CShortWay
+type (

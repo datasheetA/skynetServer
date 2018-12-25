@@ -58,17 +58,26 @@ function CPlayerActiveCtrl:SetDisconnectTime(iTime)
 end
 
 function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
+    mArgs = mArgs or {}
     local iGold = self:GetData("gold",0)
     assert(iGold>=0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
     assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo("pid"),iVal))
-    if iGold< iVal then
-        local sTip = mArgs.tip
-        if not sTip then
-            sTip = ""
-        end
-        return false
+    if iGold >= iVal then
+        return true
     end
-    return true
+    local sTip = mArgs.tip
+    if not sTip then
+        sTip = "金币不足"
+    end
+    local oNotifyMgr = global.oNotifyMgr
+    local pid = self:GetInfo("pid")
+    oNotifyMgr:Notify(pid,sTip)
+    local bShort = mArgs.short
+    if not bShort then
+        local oUIMgr = global.oUIMgr
+        oUIMgr:GS2CShortWay(pid,2)
+    end
+    return false
 end
 
 function CPlayerActiveCtrl:RewardGold(iVal,sReason)
@@ -93,17 +102,23 @@ function CPlayerActiveCtrl:ResumeGold(iVal,sReason,mArgs)
 end
 
 function CPlayerActiveCtrl:ValidSilver(iVal,mArgs)
+    mArgs = mArgs or {}
     local iSilver = self:GetData("silver",0)
     assert(iSilver>=0,string.format("%d silver err %d",self:GetInfo("pid"),iSilver))
     assert(iVal>0,string.format("%d cost silver err %d",self:GetInfo("pid"),iVal))
-    if iSilver < iVal then
-        local sTip = mArgs.tip
-        if not sTip then
-            sTip = ""
-        end
-        return false
+    if iSilver >= iVal then
+        return true
     end
-    return true
+    local sTip = mArgs.tip
+    if not sTip then
+        sTip = "银币不足"
+    end
+    local pid = self:GetInfo("pid")
+    local oNotifyMgr = global.oNotifyMgr
+    oNotifyMgr:Notify(pid,sTip)
+    local oUIMgr = global.oUIMgr
+    oUIMgr:GS2CShortWay(pid,3)
+    return false
 end
 
 function CPlayerActiveCtrl:RewardSilver(iVal,sReason,mArgs)

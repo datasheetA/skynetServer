@@ -46,7 +46,8 @@ function C2GSItemMove(oPlayer,mData)
 end
 
 function C2GSItemArrage(oPlayer,mData)
-    arrange.Arrange(oPlayer.m_oItemCtrl)
+    local oPubMgr = global.oPubMgr
+    oPubMgr:Arrange(oPlayer.m_iPid,oPlayer.m_oItemCtrl)
 end
 
 function C2GSAddItemExtendSize(oPlayer,mData)

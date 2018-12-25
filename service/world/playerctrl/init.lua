@@ -6,6 +6,7 @@ local activectrl = import(service_path("playerctrl.activectrl"))
 local itemctrl = import(service_path("playerctrl.itemctrl"))
 local timectrl = import(service_path("playerctrl.timectrl"))
 local taskctrl = import(service_path("playerctrl.taskctrl"))
+local warehousectrl = import(service_path("playerctrl.warehousectrl"))
 
 function NewBaseCtrl(...)
     return basectrl.CPlayerBaseCtrl:New(...)
@@ -17,6 +18,10 @@ end
 
 function NewItemCtrl( ... )
     return itemctrl.CItemCtrl:New(...)
+end
+
+function NewWHCtrl( ... )
+    return warehousectrl.CWareHouseCtrl:New(...)
 end
 
 function NewTimeCtrl( ... )

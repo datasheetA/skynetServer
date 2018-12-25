@@ -77,13 +77,6 @@ function CRWCtrl:Load(data)
     self:Dirty()
 end
 
-function CRWCtrl:ChargeGold(iGold,sReason)
-    self:Dirty()
-    assert(self.m_GoldCoin>=0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_GoldCoin,iGold))
-    assert(iGold>0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_Gold,iGold))
-    self.m_GoldCoin = self.m_GoldCoin + iGold
-end
-
 function CRWCtrl:AddFunc(sFunc,...)
     local mArgs = {...}
     local iFuncNo = defines.GetFuncNo(sFunc)
@@ -107,6 +100,13 @@ function CRWCtrl:OnLogin()
     end
 end
 
+function CRWCtrl:ChargeGold(iGold,sReason)
+    self:Dirty()
+    assert(self.m_GoldCoin>=0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_GoldCoin,iGold))
+    assert(iGold>0,string.format("%d ChargeGold err:%d %d",self:GetInfo("pid"),self.m_Gold,iGold))
+    self.m_GoldCoin = self.m_GoldCoin + iGold
+end
+
 function CRWCtrl:AddGoldCoin(iGoldCoin,sReason)
     self:Dirty()
     local iOldGoldCoin = self.m_GoldCoin
@@ -116,7 +116,6 @@ function CRWCtrl:AddGoldCoin(iGoldCoin,sReason)
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
     if oPlayer then
         oPlayer:PropChange("goldcoin")
-        oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
     end
 end
 
@@ -129,7 +128,6 @@ function  CRWCtrl:AddRplGoldCoin(iRplGold,sReason)
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
     if oPlayer then
         oPlayer:PropChange("goldcoin")
-        oPlayer.m_oBaseCtrl:SetData("goldcoin",self:GoldCoin())
     end
 end
 
@@ -138,20 +136,42 @@ function CRWCtrl:GoldCoin()
     return iGold
 end
 
-function CRWCtrl:ValidGoldCoin(iGold)
+function CRWCtrl:ValidGoldCoin(iGold,mArgs)
+    mArgs = mArgs or {}
     local iSumGold = self:GoldCoin()
-    if iSumGold < iGold then
-        return false
+    if iSumGold >= iGold then
+        return true
     end
-    return true
+    local sTip = mArgs.tip
+    if not sTip then
+        sTip = "元宝不足"
+    end
+    local oNotifyMgr = global.oNotifyMgr
+    oNotifyMgr:Notify(self.m_ID,sTip)
+    local bShort = mArgs.short
+    if not bShort then
+        local oUIMgr = global.oUIMgr
+        oUIMgr:GS2CShortWay(self.m_ID,1)
+    end
+    return false
 end
 
 -- 优先绑定
-function CRWCtrl:PayGoldCoin(iVal)
-    if not self:ValidGoldCoin(iVal) then
-        return
-    end
+function CRWCtrl:ResumeGoldCoin(iVal,sReason,mArgs)
     self:Dirty()
+    mArgs = mArgs or {}
+    if self.m_RplGoldCoin >= iVal then
+        self.m_RplGoldCoin = self.m_RplGoldCoin - iVal
+    else
+        self.m_RplGoldCoin = 0
+        iVal = iVal - self.m_RplGoldCoin
+        self.m_GoldCoin = self.m_GoldCoin - iVal
+    end
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_ID)
+    if oPlayer then
+        oPlayer:PropChange("goldcoin")
+    end
 end
 
 function CRWCtrl:Schedule()

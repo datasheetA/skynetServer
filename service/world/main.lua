@@ -18,6 +18,7 @@ local publicobj = import(service_path("publicobj"))
 local npcobj = import(service_path("npcobj"))
 local cbobj = import(service_path("cbobj"))
 local notify = import(service_path("notify"))
+local uiobj = import(service_path("uiobj"))
 
 skynet.start(function()
     net.Init(netcmd)
@@ -68,6 +69,7 @@ skynet.start(function()
             local oNpcMgr = global.oNpcMgr
             oNpcMgr:LoadInit()
             global.oCbMgr = cbobj.NewCBMgr()
+            global.oUIMgr = uiobj.NewUIMgr()
 
             skynet.dispatch_finish_hook(function ()
                 local oWorldMgr = global.oWorldMgr
