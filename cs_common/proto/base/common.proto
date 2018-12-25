@@ -100,3 +100,21 @@ message PlayerWarrior {
     optional uint32 pos = 3;
     optional PlayerWarriorStatus status = 4;
 }
+
+message ApplyInfo {
+    optional string key            = 1;
+    optional uint32 value         = 2;
+}
+
+message ItemInfo {
+    optional uint32 id                  = 1;                                  //服务的道具id
+    optional uint32 sid                = 2;                                 //shape
+    optional string  name         = 3;
+    optional uint32 pos              = 4;                                 //位置
+    optional uint32 itemlevel   = 5;                                 //品质
+    optional uint32 amount      = 6;                                 //数目
+    optional uint32 time            = 7;                                 //过期剩余时间
+    optional uint32 key             = 8;                                  //key值,1.绑定,2.时效道具
+    repeated ApplyInfo apply_info = 9;                              //应用信息
+    optional string desc           = 10;                                //描述信息
+}

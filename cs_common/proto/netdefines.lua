@@ -66,6 +66,15 @@ C2GS_DEFINES.openui = {
     
 }
 
+C2GS_DEFINES.warehouse = {
+    C2GSSwitchWareHouse = 10001,
+    C2GSBuyWareHouse = 10002,
+    C2GSRenameWareHouse = 10003,
+    C2GSWareHouseWithStore = 10004,
+    C2GSWareHouseWithDraw = 10005,
+    C2GSWareHouseArrange = 10006,
+}
+
 --C2GS END
 
 --GS2C BEGIN
@@ -143,6 +152,15 @@ GS2C_DEFINES.openui = {
 
 GS2C_DEFINES.notify = {
     GS2CNotify = 10001,
+}
+
+GS2C_DEFINES.warehouse = {
+    GS2CWareHouseLogin = 11001,
+    GS2CRefreshWareHouse = 11002,
+    GS2CWareHouseName = 11003,
+    GS2CAddWareHouseItem = 11004,
+    GS2CDelWareHouseItem = 11005,
+    GS2CMoveWareHouseItem = 11006,
 }
 
 --GS2C END

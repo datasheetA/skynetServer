@@ -1,5 +1,5 @@
 
-õ
+Ð
 base/common.protobase"e
 PosInfo	
 v (	
@@ -96,7 +96,24 @@ model_info (2.base.ModelInfo"a
 wid (
 pid (
 pos ()
-status (2.base.PlayerWarriorStatus
+status (2.base.PlayerWarriorStatus"'
+	ApplyInfo
+key (	
+value ("¯
+ItemInfo
+
+id (
+sid (
+name (	
+pos (
+	itemlevel (
+amount (
+time (
+key (#
+
+apply_info	 (2.base.ApplyInfo
+desc
+ (	
 h
 client/login.proto"#
 C2GSLoginAccount
@@ -163,6 +180,22 @@ CommitItem
 sessionidx (
 answer (
 itemlist (2.CommitItem
+‘
+client/warehouse.proto""
+C2GSSwitchWareHouse
+wid ("
+C2GSBuyWareHouse"0
+C2GSRenameWareHouse
+wid (
+name (	"5
+C2GSWareHouseWithStore
+wid (
+itemid ("1
+C2GSWareHouseWithDraw
+wid (
+pos ("#
+C2GSWareHouseArrange
+wid (
 ¨
 client/item.proto"-
 C2GSItemUse
@@ -327,31 +360,36 @@ Q
 
 GS2CNotify
 cmd (	
-‘
-server/item.proto"'
-	applyinfo
-key (	
-value ("ª
-iteminfo
+¥
+server/warehouse.protobase/common.proto"4
+GS2CWareHouseLogin
+size (
+namelist (	"S
+GS2CRefreshWareHouse
+wid (
+name (	 
+itemdata (2.base.ItemInfo".
+GS2CWareHouseName
+wid (
+name (	"E
+GS2CAddWareHouseItem
+wid ( 
+itemdata (2.base.ItemInfo"3
+GS2CDelWareHouseItem
+wid (
+itemid ("A
+GS2CMoveWareHouseItem
+wid (
 
-id (
-sid (
-name (	
-pos (
-	itemlevel (
-amount (
-time (
-key (
-
-apply_info	 (2
-.applyinfo
-desc
- (	"=
-GS2CLoginItem
-itemdata (2	.iteminfo
-extsize ("*
-GS2CAddItem
-itemdata (2	.iteminfo"
+id (
+destpos (
+Ø
+server/item.protobase/common.proto"B
+GS2CLoginItem 
+itemdata (2.base.ItemInfo
+extsize ("/
+GS2CAddItem 
+itemdata (2.base.ItemInfo"
 GS2CDelItem
 
 id ("+
