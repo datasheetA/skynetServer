@@ -71,3 +71,21 @@ function chinadate()
     end
     return iWeekDay,mDate.hour
 end
+
+function get_daytime(iDay)
+    iDay = iDay or 1
+    local iTime = get_time()
+    local iNextTime = iTime + iDay * 3600 * 24
+    local date = os.date("*t",iNextTime)
+    iNextTime = os.time({year=date.year,month=date.month,day=date.day,hour=0,min=0,sec=0})
+    return iNextTime - iTime
+end
+
+function get_hourtime(iHour)
+    iHour = iHour or 1
+    local iTime = get_time()
+    local iNextTime = iTime + iHour * 3600
+    local date = os.date("*t",iNextTime)
+    iNextTime = os.time({year=date.year,month=date.month,day=date.day,hour=date.hour,min=0,sec=0})
+    return iNextTime - iTime
+end

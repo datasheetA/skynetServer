@@ -30,6 +30,7 @@ function CWorldMgr:New()
     o.m_mOfflineRWs = {}
 
     o.m_mConnections = {}
+    o:_CheckNewHour()
     return o
 end
 
@@ -261,9 +262,6 @@ function CWorldMgr:_LoginRole6(mRecord,mData)
     end
     oPlayer.m_oTimeCtrl:Load(m)
 
-    self.m_mLoginPlayers[pid] = nil
-    self.m_mOnlinePlayers[pid] = oPlayer
-
     local mFunc = {"LoadRO","LoadRW"}
     local mLoad = {}
     for _,sFunc in pairs(mFunc) do
@@ -279,8 +277,13 @@ function CWorldMgr:_LoginRole6(mRecord,mData)
 end
 
 function CWorldMgr:LoadEnd(pid)
-    local oPlayer = self.m_mOnlinePlayers[pid]
-    assert(oPlayer,string.format("LoadEnd err %d",pid))
+    local oPlayer = self.m_mLoginPlayers[pid]
+    if not oPlayer then
+        return
+    end
+    self.m_mLoginPlayers[pid] = nil
+    self.m_mOnlinePlayers[pid] = oPlayer
+
      oPlayer:OnLogin(false)
     local oConn = oPlayer:GetConn()
     if oConn then
@@ -364,5 +367,24 @@ end
 function CWorldMgr:GetRW(pid)
     local oRW = self.m_mOfflineRWs[pid]
     return oRW
+end
+
+function CWorldMgr:_CheckNewHour()
+    local iSecs = timeop.get_hourtime()
+    self:AddTimeCb("newhour",iSecs,function ()  self:NewHour()  end)
+end
+
+function CWorldMgr:NewHour()
+    self:DelTimeCb("newhour")
+    self:AddTimeCb("newhour",3600,function()  self:NewHour()  end)
+
+    local iDay,iHour = timeop.chinadate()
+    if iHour == 0 then
+        self:NewDay(iDay)
+    end
+end
+
+function CWorldMgr:NewDay(iDay)
+    -- body
 end
 
