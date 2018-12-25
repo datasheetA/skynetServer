@@ -7,6 +7,7 @@ Cmds = {}
 
 Cmds.playerdb = import(service_path("logiccmd.playerdb"))
 Cmds.offlinedb = import(service_path("logiccmd.offlinedb"))
+Cmds.worlddb = import(service_path("logiccmd.worlddb"))
 
 function Invoke(sModule, sCmd, mRecord, mData)
     local m = Cmds[sModule]

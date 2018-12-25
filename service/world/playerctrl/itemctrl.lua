@@ -66,6 +66,8 @@ function CItemCtrl:Load(mData)
     end
     self.m_TraceNo = mData["traceno"] or self.m_TraceNo
     self.m_ExtendSize = mData["extendsize"] or self.m_ExtendSize
+
+    self:Dirty()
 end
 
 function CItemCtrl:DispatchTraceNo()

@@ -35,6 +35,8 @@ function CPlayerBaseCtrl:Load(mData)
     self:SetData("agility", mData.agility or 10)
     self:SetData("model_info", mData.model_info)
     self:SetData("school", mData.school)
+
+    self:Dirty()
 end
 
 function CPlayerBaseCtrl:Save()

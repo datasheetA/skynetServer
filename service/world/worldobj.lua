@@ -10,6 +10,7 @@ local connectionobj = import(service_path("connectionobj"))
 local offline = import(service_path("offline.init"))
 local timeop = import(lualib_path("base.timeop"))
 local tableop = import(lualib_path("base.tableop"))
+local datactrl = import(lualib_path("public.datactrl"))
 
 function NewWorldMgr(...)
     local o = CWorldMgr:New(...)
@@ -18,7 +19,7 @@ end
 
 CWorldMgr = {}
 CWorldMgr.__index = CWorldMgr
-inherit(CWorldMgr, logic_base_cls())
+inherit(CWorldMgr, datactrl.CDataCtrl)
 
 function CWorldMgr:New()
     local o = super(CWorldMgr).New(self)
@@ -30,7 +31,6 @@ function CWorldMgr:New()
     o.m_mOfflineRWs = {}
 
     o.m_mConnections = {}
-    o:_CheckNewHour()
     return o
 end
 
@@ -50,6 +50,21 @@ function CWorldMgr:Release()
     self.m_mOfflineROs = {}
     self.m_mOfflineRWs = {}
     super(CWorldMgr).Release(self)
+end
+
+function CWorldMgr:Load(m)
+    m = m or {}
+    self.m_iServerGrade = m.server_grade or 40
+    self.m_iOpenDays = m.open_days or 0
+
+    self:Dirty()
+end
+
+function CWorldMgr:Save()
+    local m = {}
+    m.server_grade = self.m_iServerGrade
+    m.open_days = self.m_iOpenDays
+    return m
 end
 
 function CWorldMgr:GetConnection(iHandle)
@@ -369,26 +384,52 @@ function CWorldMgr:GetRW(pid)
     return oRW
 end
 
-function CWorldMgr:_CheckNewHour()
+function CWorldMgr:Schedule()
+    local f1
+    f1 = function ()
+        self:DelTimeCb("_CheckSaveDb")
+        self:AddTimeCb("_CheckSaveDb", 5*60*1000, f1)
+        self:_CheckSaveDb()
+    end
+    f1()
+
+    local f2
+    f2 = function ()
+        self:DelTimeCb("NewHour")
+        self:AddTimeCb("NewHour", 60*60*1000, f2)
+        self:NewHour()
+    end
     local tbl = timeop.get_hourtime({factor=1,hour=1})
     local iSecs = tbl.time - timeop.get_time()
-    self:AddTimeCb("newhour",iSecs,function ()  self:NewHour()  end)
+    if iSecs <= 0 then
+        self:NewHour()
+    else
+        self:AddTimeCb("NewHour", iSecs * 1000, f2)
+    end
+end
+
+function CWorldMgr:_CheckSaveDb()
+    assert(not self:IsRelease(), "_CheckSaveDb fail")
+    self:SaveDb()
+end
+
+function CWorldMgr:SaveDb()
+    if self:IsDirty() then
+        local mData = self:Save()
+        interactive.Send(".gamedb", "worlddb", "SaveWorld", {server_id = MY_SERVER_ID, data = mData})
+        self:UnDirty()
+    end
 end
 
 function CWorldMgr:NewHour()
-    self:DelTimeCb("newhour")
-    self:AddTimeCb("newhour",3600*1000,function()  self:NewHour()  end)
-
     local tbl = timeop.get_hourtime({hour=0})
     local date = tbl.date
     local iDay = date.day
     local iHour = date.hour
     if iHour == 0 then
-        self:NewDay(iDay)
+        self:NewDay()
     end
 end
 
-function CWorldMgr:NewDay(iDay)
-    -- body
+function CWorldMgr:NewDay()
 end
-

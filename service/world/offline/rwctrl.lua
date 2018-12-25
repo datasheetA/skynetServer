@@ -73,6 +73,8 @@ function CRWCtrl:Load(data)
     self.m_GoldCoin = data["GoldCoin"] or 0
     self.m_RplGoldCoin = data["RplGoldCoin"] or 0
     self.m_FuncList = data["FuncList"] or {}
+
+    self:Dirty()
 end
 
 function CRWCtrl:ChargeGold(iGold,sReason)

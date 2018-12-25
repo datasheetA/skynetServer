@@ -45,6 +45,8 @@ function CTaskCtrl:Load(mData)
             --
         end
     end
+
+    self:Dirty()
 end
 
 function CTaskCtrl:ValidAddTask(oTask)

@@ -13,6 +13,7 @@ servicetimer.Init()
 
 MY_ADDR = skynet.self()
 MY_NODE = skynet.getenv("cluster_name")
+MY_SERVER_ID = skynet.getenv("server_id")
 MY_SERVICE_NAME = ...
 
 print = function ( ... )

@@ -26,43 +26,48 @@ skynet.start(function()
     global.oGlobalTimer = servicetimer.NewTimer()
     global.oGMMgr = gmobj.NewGMMgr()
 
-    global.oWorldMgr = worldobj.NewWorldMgr()
+    interactive.Request(".gamedb", "worlddb", "LoadWorld", {server_id = MY_SERVER_ID}, function (mRecord, mData)
+            global.oWorldMgr = worldobj.NewWorldMgr()
+            global.oWorldMgr:Load(mData.data)
+            global.oWorldMgr:Schedule()
 
-    local iCount
-    iCount = skynet.getenv("SCENE_SERVICE_COUNT")
-    local lSceneRemote = {}
-    for i = 1, iCount do
-        local iAddr = skynet.newservice("scene")
-        table.insert(lSceneRemote, iAddr)
-    end
-    global.oSceneMgr = sceneobj.NewSceneMgr(lSceneRemote)
+            local iCount
+            iCount = skynet.getenv("SCENE_SERVICE_COUNT")
+            local lSceneRemote = {}
+            for i = 1, iCount do
+                local iAddr = skynet.newservice("scene")
+                table.insert(lSceneRemote, iAddr)
+            end
+            global.oSceneMgr = sceneobj.NewSceneMgr(lSceneRemote)
 
-    iCount = skynet.getenv("WAR_SERVICE_COUNT")
-    local lWarRemote = {}
-    for i = 1, iCount do
-        local iAddr = skynet.newservice("war")
-        table.insert(lWarRemote, iAddr)
-    end
-    global.oWarMgr = warobj.NewWarMgr(lWarRemote)
+            iCount = skynet.getenv("WAR_SERVICE_COUNT")
+            local lWarRemote = {}
+            for i = 1, iCount do
+                local iAddr = skynet.newservice("war")
+                table.insert(lWarRemote, iAddr)
+            end
+            global.oWarMgr = warobj.NewWarMgr(lWarRemote)
 
-    --lxldebug add some temp scene
-    local mScene = res["daobiao"]["scene"]
-    for k, v in pairs(mScene) do
-        local iCnt = v.line_count
-        for i = 1, iCnt do
-            global.oSceneMgr:CreateScene({
-                map_id = v.map_id,
-                res_data = v,
-                is_durable = true,
-            })
-        end
-    end
+            --lxldebug add some temp scene
+            local mScene = res["daobiao"]["scene"]
+            for k, v in pairs(mScene) do
+                local iCnt = v.line_count
+                for i = 1, iCnt do
+                    global.oSceneMgr:CreateScene({
+                        map_id = v.map_id,
+                        res_data = v,
+                        is_durable = true,
+                    })
+                end
+            end
 
-    global.oPubMgr = publicobj.NewPubMgr()
-    global.oNpcMgr = npcobj.NewNpcMgr()
-    local oNpcMgr = global.oNpcMgr
-    oNpcMgr:LoadInit()
-    global.oCbMgr = cbobj.NewCBMgr()
+            global.oPubMgr = publicobj.NewPubMgr()
+            global.oNpcMgr = npcobj.NewNpcMgr()
+            local oNpcMgr = global.oNpcMgr
+            oNpcMgr:LoadInit()
+            global.oCbMgr = cbobj.NewCBMgr()
+
+    end)
 
     skynet.register ".world"
 

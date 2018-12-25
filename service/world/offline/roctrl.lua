@@ -71,6 +71,8 @@ function CROCtrl:Load(data)
     self.m_Grade = data["iGrade"]
     self.m_Name = data["sName"]
     self.m_Shape = data["iShape"]
+
+    self:Dirty()
 end
 
 function CROCtrl:OnLogin(mArgs)

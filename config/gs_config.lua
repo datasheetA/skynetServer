@@ -5,6 +5,7 @@ logger = nil
 harbor = 0
 start = "gs_launcher"
 cluster_name = "gs"
+server_id = 1
 proto_file = "cs_common/proto/proto.pb"
 proto_define = "cs_common/proto/netdefines.lua"
 db_file = config_file.."db.lua"

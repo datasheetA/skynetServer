@@ -100,6 +100,8 @@ function CItem:Load(mData)
     self.m_Data = mData["Data"]
     self.m_iItemLevel = mData["ItemLevel"]
     self.m_iCreateTime = mData["CreateTime"]
+
+    self:Dirty()
 end
 
 function CItem:Save()

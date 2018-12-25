@@ -23,6 +23,8 @@ function CToday:Load(data)
     end
     self.m_mData = data["Data"]
     self.m_mKeepList = data["KeepList"]
+
+    self:Dirty()
 end
 
 function CToday:Save()
@@ -124,6 +126,8 @@ function CThisTemp:Load(data)
     end
     self.m_mData = data["Data"] or self.m_mData
     self.m_mKeepList = data["KeepList"] or self.m_mKeepList
+
+    self:Dirty()
 end
 
 function CThisTemp:Save()
@@ -214,6 +218,8 @@ function CSeveralDay:Load(data)
     end
     self.m_mData = data["Data"] or self.m_mData
     self.m_mDayList = data["DayList"] or self.m_mDayList
+
+    self:Dirty()
 end
 
 function CSeveralDay:Add(key,value,iKeepDay)
@@ -340,6 +346,8 @@ function CTimeCtrl:Load(mData)
             oTimeObj:Load(mSaveData)
         end
     end
+
+    self:Dirty()
 end
 
 function CTimeCtrl:IsDirty()

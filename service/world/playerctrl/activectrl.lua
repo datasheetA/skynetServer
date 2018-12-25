@@ -27,6 +27,8 @@ function CPlayerActiveCtrl:Load(mData)
     self:SetData("exp",mData.exp or 0)
     self:SetData("chubeiexp",mData.chubeiexp or 0)
     self:SetData("enegy", mData.enegy or 0)
+
+    self:Dirty()
 end
 
 function CPlayerActiveCtrl:Save()

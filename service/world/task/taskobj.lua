@@ -243,6 +243,8 @@ function CTask:Load(mData)
     self.m_mData = mData["data"] or {}
     self.m_mEvent = mData["event"] or {}
     self.m_mTaskItem = mData["taskitem"] or {}
+
+    self:Dirty()
 end
 
 function CTask:Remove()
