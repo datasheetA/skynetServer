@@ -48,7 +48,10 @@ C2GS_DEFINES.item = {
 }
 
 C2GS_DEFINES.player = {
-    
+    C2GSSelectPointPlan = 6001,
+    C2GSAddPoint = 6002,
+    C2GSWashPoint = 6003,
+    C2GSWashAllPoint = 6004,
 }
 
 C2GS_DEFINES.task = {
@@ -132,6 +135,10 @@ GS2C_DEFINES.item = {
 GS2C_DEFINES.player = {
     GS2CPropChange = 6001,
     GS2CServerGradeInfo = 6002,
+    GS2CSelectPointPlan = 6003,
+    GS2CAddPoint = 6004,
+    GS2CWashPoint = 6005,
+    GS2CWashAllPoint = 6006,
 }
 
 GS2C_DEFINES.task = {

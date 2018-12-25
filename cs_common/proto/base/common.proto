@@ -118,3 +118,11 @@ message ItemInfo {
     repeated ApplyInfo apply_info = 9;                              //应用信息
     optional string desc           = 10;                                //描述信息
 }
+
+message BasePointProp {
+    optional uint32 agility = 1;
+    optional uint32 strength = 2;
+    optional uint32 magic = 3;
+    optional uint32 physique = 4;
+    optional uint32 endurance = 5;
+}

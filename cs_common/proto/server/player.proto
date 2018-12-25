@@ -9,3 +9,21 @@ message GS2CServerGradeInfo {
     optional uint32 server_grade = 1;
     optional uint32 days = 2;
 }
+
+// 角色加点/洗点
+message GS2CSelectPointPlan {
+    optional uint32 remain_point = 1;
+    optional base.BasePointProp prop = 2;
+}
+
+message GS2CAddPoint {
+    optional base.BasePointProp prop = 1;
+}
+
+message GS2CWashPoint {
+    optional uint32 prop_val = 1;
+}
+
+message GS2CWashAllPoint {
+    optional base.BasePointProp prop = 1;
+}

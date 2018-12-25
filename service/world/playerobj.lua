@@ -555,12 +555,8 @@ function CPlayer:UpGrade()
     if iAdd > 0 then
         self.m_oBaseCtrl:SetData("physique", self.m_oBaseCtrl:GetData("physique") + iAdd)
     end
-    iAdd = mPoint["left"]
-    if iAdd > 0 then
-        self.m_oBaseCtrl:SetData("point", self.m_oBaseCtrl:GetData("point") + iAdd)
-    end
 
-    self:PropChange("grade", "agility", "strength", "magic", "endurance", "physique", "point")
+    self:PropChange("grade", "agility", "strength", "magic", "endurance", "physique")
 
     self:OnUpGrade(iNextGrade)
 end
