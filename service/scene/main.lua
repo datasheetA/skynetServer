@@ -14,6 +14,10 @@ skynet.start(function()
     net.Init()
 
     global.oSceneMgr = scenemgrobj.NewSceneMgr()
+    skynet.dispatch_finish_hook(function ()
+        local oSceneMgr = global.oSceneMgr
+        oSceneMgr:SceneDispatchFinishHook()
+    end)
 
     print("scene service booted")
 end)

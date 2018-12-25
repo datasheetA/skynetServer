@@ -221,3 +221,6 @@ end
 
 function CEntity:BlockChange(...)
 end
+
+function CEntity:ClientBlockChange(m)
+end

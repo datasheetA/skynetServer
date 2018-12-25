@@ -27,6 +27,19 @@ function Commands.setgrade(oMaster, i)
     oMaster.m_oBaseCtrl:SetData("grade", i)
 end
 
+Helpers.setname = {
+    "设置名字",
+    "setname 名字",
+    "示例: setname '小强'",
+}
+function Commands.setname(oMaster, s)
+    oMaster.m_oBaseCtrl:SetData("name", s)
+    oMaster:SyncSceneInfo({
+        name = oMaster:GetName(),
+    })
+    oMaster:PropChange("name")
+end
+
 Helpers.testwar = {
     "测试多人PVP",
     "testwar {玩家ID1,玩家ID2,...}",

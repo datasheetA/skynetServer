@@ -18,6 +18,7 @@ inherit(CSceneMgr, logic_base_cls())
 function CSceneMgr:New()
     local o = super(CSceneMgr).New(self)
     o.m_mScenes = {}
+    o.m_mEntityAoiChange = {}
     return o
 end
 
@@ -46,4 +47,37 @@ function CSceneMgr:RemoveScene(iScene)
         self.m_mScenes[iScene] = nil
         oScene:Release()
     end
+end
+
+function CSceneMgr:SetEntityAoiChange(iScene, iEid, l)
+    local m1 = self.m_mEntityAoiChange[iScene]
+    if not m1 then
+        m1 = {}
+        self.m_mEntityAoiChange[iScene] = m1
+    end
+    local m2 = m1[iEid]
+    if not m2 then
+        m2 = {}
+        m1[iEid] = m2
+    end
+
+    for _, v in ipairs(l) do
+        m2[v] = true
+    end
+end
+
+function CSceneMgr:SceneDispatchFinishHook()
+    local m1 = self.m_mEntityAoiChange
+    for k, v in pairs(m1) do
+        local oScene = self:GetScene(k)
+        if oScene then
+            for k2, v2 in pairs(v) do
+                local o = oScene:GetEntity(k2)
+                if o and next(v2) then
+                    o:ClientBlockChange(v2)
+                end
+            end
+        end
+    end
+    self.m_mEntityAoiChange = {}
 end

@@ -74,10 +74,11 @@ end
 
 function CNpcEntity:BlockChange(...)
     local l = table.pack(...)
-    local m = {}
-    for _, v in ipairs(l) do
-        m[v] = true
-    end
+    local oSceneMgr = global.oSceneMgr
+    oSceneMgr:SetEntityAoiChange(self:GetSceneId(), self:GetEid(), l)
+end
+
+function CNpcEntity:ClientBlockChange(m)
     local mBlock = self:BlockInfo(m)
     self:SendAoi("GS2CSyncAoi", {
         scene_id = self:GetSceneId(),
