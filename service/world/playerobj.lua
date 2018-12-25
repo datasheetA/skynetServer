@@ -36,7 +36,7 @@ end
 
 PropHelperDef.goldcoin = 5
 function PropHelperFunc.goldcoin(oPlayer)
-    return 0
+    return oPlayer:GetRW():GoldCoin()
 end
 
 PropHelperDef.gold = 6
@@ -304,11 +304,16 @@ function CPlayer:OnLogin(bReEnter)
     if not bReEnter then
         self:PreCheck()
     end
-
-    oWorldMgr:LoadRW(self.m_iPid,function (oRW)
-        self.m_oBaseCtrl:SetData("goldcoin",oRW:GoldCoin())
-        self:GS2CLoginRole()
-    end)
+    local mArgs = {
+        sName = self.m_oBaseCtrl:GetData("name"),
+        iGrade = self.m_oBaseCtrl:GetData("grade")
+    }
+    local oRO = self:GetRO()
+    local oRW = self:GetRW()
+    oRO:OnLogin(mArgs)
+    oRW:OnLogin()
+    
+    self:GS2CLoginRole()
     self.m_fHeartBeatTime = get_time()
 
     local oWar = self.m_oActiveCtrl:GetNowWar()
@@ -326,17 +331,6 @@ function CPlayer:OnLogin(bReEnter)
     if not bReEnter then
         self:Schedule()
     end
-    local mArgs = {
-        sName = self.m_oBaseCtrl:GetData("name"),
-        iGrade = self.m_oBaseCtrl:GetData("grade")
-    }
-    local oWorldMgr = global.oWorldMgr
-    oWorldMgr:LoadRO(self.m_iPid,function (oRO)
-        oRO:OnLogin(mArgs)
-    end)
-    oWorldMgr:LoadRW(self.m_iPid,function(oRW)
-        oRW:OnLogin()
-    end)
 end
 
 function CPlayer:OnDisconnected()
@@ -730,6 +724,16 @@ end
 
 function CPlayer:GetHitResRatio()
     return self.m_oBaseCtrl:GetData("hit_res_ratio")
+end
+
+function CPlayer:GetRO()
+    local oWorldMgr = global.oWorldMgr
+    return oWorldMgr:GetRO(self.m_iPid)
+end
+
+function CPlayer:GetRW()
+    local oWorldMgr = global.oWorldMgr
+    return oWorldMgr:GetRW(self.m_iPid)
 end
 
 function CPlayer:GS2CLoginRole()

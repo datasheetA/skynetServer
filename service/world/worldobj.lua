@@ -356,3 +356,13 @@ function CWorldMgr:CleanRW(pid)
     self.m_mOfflineRWs[pid] = nil
 end
 
+function CWorldMgr:GetRO(pid)
+    local oRO = self.m_mOfflineROs[pid]
+    return oRO
+end
+
+function CWorldMgr:GetRW(pid)
+    local oRW = self.m_mOfflineRWs[pid]
+    return oRW
+end
+
