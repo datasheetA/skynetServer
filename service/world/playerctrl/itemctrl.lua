@@ -1,6 +1,8 @@
 local skynet = require "skynet"
 local global = require "global"
 
+local tableop = require "base.tableop"
+
 local datactrl = import(lualib_path("public.datactrl"))
 local loaditem = import(service_path("item.loaditem"))
 local itemnet = import(service_path("netcmd.item"))
@@ -182,16 +184,11 @@ function CItemCtrl:GetItem(iPos)
     return self.m_Item[iPos]
 end
 
-function CItemCtrl:AddItem(itemobj)
-    local ret = self:ValidAddToPos(itemobj)
-    return ret
-end
-
-function CItemCtrl:ValidAddToPos(srcobj)
+function CItemCtrl:AddItem(srcobj)
     self:Dirty()
-     local iLast = srcobj:GetAmount()
-     local iMaxAmount = srcobj:GetMaxAmount()
-     for _,itemobj in pairs(self.m_Item) do
+    local iLast = srcobj:GetAmount()
+    local iMaxAmount = srcobj:GetMaxAmount()
+    for _,itemobj in pairs(self.m_Item) do
         if srcobj:SID() == itemobj:SID() then
              local iHave = itemobj:GetAmount()
              local iAdd = max(iMaxAmount - iHave,0)
@@ -213,14 +210,34 @@ function CItemCtrl:ValidAddToPos(srcobj)
     self:AddToPos(srcobj,iPos)
 end
 
+--能否移入
+function CItemCtrl:ValidStorePos(srcobj)
+    local iPos = self:GetValidPos()
+    if iPos then
+        return true
+    end
+    local iMaxAmount = srcobj:GetMaxAmount()
+    local iCanAddAmount = 0
+    for _,itemobj in pairs(self.m_Item) do
+        if srcobj:SID() == itemobj:SID() then
+            local iHaveAmount = itemobj:GetAmount()
+            iCanAddAmount = iCanAddAmount + max(iMaxAmount-iHaveAmount,0)
+        end
+    end
+    if srcobj:GetAmount() <= iCanAddAmount then
+        return true
+    end
+    return false
+end
+
 function CItemCtrl:AddToPos(itemobj,iPos)
     self.m_Item[iPos] = itemobj
     self.m_ItemID[itemobj.m_ID] = itemobj
     itemobj.m_Pos = iPos
     itemobj.m_Container = self
-    if not self:GetData("TraceNo") then
+    if not itemobj:GetData("TraceNo") then
         local iTraceNo = self:DispatchTraceNo()
-        self:SetData("TraceNo",{self.m_Owner,iTraceNo})
+        itemobj:SetData("TraceNo",{self.m_Owner,iTraceNo})
     end
     self:GS2CAddItem(itemobj)
     itemobj:OnAddToPos(iPos)
@@ -386,11 +403,11 @@ function CItemCtrl:GS2CDelItem(itemobj)
     end
 end
 
-function CItemCtrl:GS2CMoveItem(itemobj,descpos)
+function CItemCtrl:GS2CMoveItem(itemobj,destpos)
     local mNet = {}
     mNet["id"] = itemobj.m_ID
     mNet["destpos"] = destpos
-     local oWorldMgr = global.oWorldMgr
+    local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
     if oPlayer then
         oPlayer:Send("GS2CMoveItem",mNet)

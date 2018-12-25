@@ -1,6 +1,8 @@
 local global = require "global"
 local skynet = require "skynet"
 
+local tableop = import(lualib_path("base.tableop"))
+
 local max = math.max
 local min = math.min
 
@@ -25,27 +27,6 @@ end
 
 function Arrange(oContainer)
     local ItemList = {}
-    --先叠加
-    for _,srcobj in pairs(oContainer.m_Item) do
-        local sid = srcobj:SID()
-        local iLast = srcobj:GetAmount()
-        for _,destobj in pairs(oContainer.m_Item) do
-            if sid == destobj:SID() and srcobj.m_ID ~= destobj.m_ID then
-                local iHave = destobj:GetAmount()
-                local iMaxAmount = destobj:GetMaxAmount()
-                local iAdd = max(iMaxAmount-iHave,0)
-                iAdd = min(iAdd,iLast)
-                if iAdd > 0 then
-                     iLast = iLast - iAdd
-                     srcobj:AddAmount(-iAdd,"arrange")
-                     destobj:AddAmount(iAdd,"arrange")
-                end
-            end
-            if iLast <= 0 then
-                break
-            end
-        end
-    end
 
     for _,itemobj in pairs(oContainer.m_Item) do
         table.insert(ItemList,itemobj)
