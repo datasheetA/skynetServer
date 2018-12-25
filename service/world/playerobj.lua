@@ -174,6 +174,11 @@ function PropHelperFunc.model_info(oPlayer)
     return oPlayer:GetModelInfo()
 end
 
+PropHelperDef.school = 33
+function PropHelperFunc.school(oPlayer)
+    return oPlayer:GetSchool()
+end
+
 
 
 CPlayer = {}
@@ -346,6 +351,12 @@ function CPlayer:PreCheck()
         }
         self.m_oBaseCtrl:SetData("model_info", mModelInfo)
     end
+    if not self.m_oBaseCtrl:GetData("school") then
+        local mSchool = res["daobiao"]["school"]
+        local lSchool = table_value_list(mSchool)
+        local o = lSchool[math.random(#lSchool)]
+        self.m_oBaseCtrl:SetData("school", o.id)
+    end
 
     if not self.m_oActiveCtrl:GetData("scene_info") then
         local mSceneInfo = {
@@ -472,6 +483,29 @@ function CPlayer:GetItemAmount(sid)
     return iAmount
 end
 
+function CPlayer:CheckUpGrade()
+    local mUpGrade = res["daobiao"]["upgrade"]
+    local iGrade = self:GetGrade()
+    local i = iGrade + 1
+    while true do
+        local m = mUpGrade[i]
+        if not m then
+            break
+        end
+        if self:GetExp() < m.player_exp then
+            break
+        end
+        self:UpGrade()
+        i = i + 1
+    end
+end
+
+function CPlayer:UpGrade()
+    local iNextGrade = self:GetGrade() + 1
+    self.m_oBaseCtrl:SetData("grade", iNextGrade)
+    self:PropChange("grade")
+end
+
 function CPlayer:RewardGold(iVal,sReason,mArgs)
     self.m_oActiveCtrl:RewardGold(iVal,sReason,mArgs)
 end
@@ -493,8 +527,16 @@ function CPlayer:GetGrade()
     return self.m_oBaseCtrl:GetData("grade")
 end
 
+function CPlayer:GetExp()
+    return self.m_oActiveCtrl:GetData("exp")
+end
+
 function CPlayer:GetName()
     return self.m_oBaseCtrl:GetData("name")
+end
+
+function CPlayer:GetSchool()
+    return self.m_oBaseCtrl:GetData("school")
 end
 
 function CPlayer:GetModelInfo()

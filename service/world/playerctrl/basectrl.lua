@@ -34,6 +34,7 @@ function CPlayerBaseCtrl:Load(mData)
     self:SetData("endurance", mData.endurance or 10)
     self:SetData("agility", mData.agility or 10)
     self:SetData("model_info", mData.model_info)
+    self:SetData("school", mData.school)
 end
 
 function CPlayerBaseCtrl:Save()
@@ -56,5 +57,6 @@ function CPlayerBaseCtrl:Save()
     mData.endurance = self:GetData("endurance")
     mData.agility = self:GetData("agility")
     mData.model_info = self:GetData("model_info")
+    mData.school = self:GetData("school")
     return mData
 end

@@ -114,6 +114,15 @@ function Commands.rewardsilver(oMaster,iVal)
     oMaster:RewardSilver(iVal,"gm")
 end
 
+Helpers.rewardexp = {
+    "奖励经验",
+    "rewardexp 经验数量",
+    "rewardexp 200",
+}
+function Commands.rewardexp(oMaster,iVal)
+    oMaster:RewardExp(iVal,"gm")
+end
+
 Helpers.clearall = {
     "清空背包",
     "clearall",

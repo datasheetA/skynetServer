@@ -47,7 +47,7 @@ end
 function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
     local iGold = self:GetData("gold",0)
     assert(iGold>=0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo))
+    assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo("pid")))
     if iGold< iVal then
         local sTip = mArgs.tip
         if not sTip then
@@ -65,9 +65,7 @@ function CPlayerActiveCtrl:RewardGold(iVal,sReason)
     self:SetData("gold",iGold)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:PropChange("gold")
-    end
+    oPlayer:PropChange("gold")
 end
 
 function CPlayerActiveCtrl:ResumeGold(iVal,sReason,mArgs)
@@ -78,9 +76,7 @@ function CPlayerActiveCtrl:ResumeGold(iVal,sReason,mArgs)
     self:SetData("gold",iGold)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:PropChange("gold")
-    end
+    oPlayer:PropChange("gold")
 end
 
 function CPlayerActiveCtrl:ValidSilver(iVal,mArgs)
@@ -104,9 +100,7 @@ function CPlayerActiveCtrl:RewardSilver(iVal,sReason,mArgs)
     self:SetData("silver",iSilver)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:PropChange("silver")
-    end
+    oPlayer:PropChange("silver")
 end
 
 function CPlayerActiveCtrl:ResumeSilver(iVal,sReason,mArgs)
@@ -117,30 +111,30 @@ function CPlayerActiveCtrl:ResumeSilver(iVal,sReason,mArgs)
     self:SetData("silver",iSilver)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:PropChange("silver")
-    end
+    oPlayer:PropChange("silver")
 end
 
 function CPlayerActiveCtrl:RewardExp(iVal,sReason,mArgs)
     local iExp = self:GetData("exp",0)
-    assert(iExp>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
+    assert(iVal>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
 
     iExp = iExp + iVal
     self:SetData("exp",iExp)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    if oPlayer then
-        oPlayer:PropChange("exp")
-    end
+    oPlayer:PropChange("exp")
+    oPlayer:CheckUpGrade()
 end
 
 function CPlayerActiveCtrl:AddChubeiExp(iVal,sReason)
     local iChubeiExp = self:GetData("chubeiexp",0)
-    assert(iChubeiExp,string.format("%d exp err %d %d",self:GetInfo("pid"),iChubeiExp,iVal))
+    assert(iVal,string.format("%d exp err %d %d",self:GetInfo("pid"),iChubeiExp,iVal))
 
     local iChubeiExp = iChubeiExp + iVal
     self:SetData("chubeiexp",iChubeiExp)
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
+    oPlayer:PropChange("chubei_exp")
 end
 
 

@@ -1,5 +1,5 @@
 
-×
+ç
 base/common.protobase"e
 PosInfo	
 v (	
@@ -18,7 +18,7 @@
 adorn ("
 
 SimpleRole
-pid ("ò
+pid ("‚
 Role
 mask (
 grade (
@@ -61,7 +61,8 @@ seal_ratio (
 mag_critical_ratio (
 res_mag_critical_ratio (#
 
-model_info  (2.base.ModelInfo"^
+model_info  (2.base.ModelInfo
+school! ("^
 	PlayerAoi#
 block (2.base.PlayerAoiBlock
 pos_info (2.base.PosInfo
