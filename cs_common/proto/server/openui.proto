@@ -6,3 +6,7 @@ message GS2CLoadUI {
 	optional uint32 tip		= 3;	//提示
 	optional uint32 time		= 4;	//时间
 }
+
+message GS2CPopTaskItem {
+	optional uint32 taskid		= 1;	//任务id
+}

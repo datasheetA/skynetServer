@@ -8,7 +8,7 @@ message C2GSTaskEvent{
 	optional uint32 npcid		= 2;
 }
 
-message C2GSUseTaskItem{
+//采集和使用物品使用提交
+message C2GSCommitTask {
 	optional uint32 taskid		= 1;
-	optional uint32 itemid		= 2;
 }

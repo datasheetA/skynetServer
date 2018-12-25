@@ -7,7 +7,15 @@ message NeedItem {
 
 message NeedSum {
     optional uint32 sumid           =1;                                   //宠物id
-    optional uint32 amount         =2;                                  //宠物数目
+    optional uint32 amount        =2;                                  //宠物数目
+}
+
+message TaskItem {
+    optional uint32 itemid          = 1;                                //任务道具id
+    optional uint32 map_id        = 2;
+    optional uint32 pos_x           = 3;
+    optional uint32 pos_z           = 4;
+    optional uint32 radius          = 5;
 }
 
 message ClientNpc {
@@ -34,6 +42,8 @@ message TaskInfo {
     optional uint32 isdone                           = 11;                               //是否完成
     optional uint32 time                               = 12;                               //剩余时间
     optional uint32 rewardinfo                    = 13;                               //奖励信息
+    repeated TaskItem taskitem                  = 14;                               //任务道具信息
+    
 }
 
 //登录发送

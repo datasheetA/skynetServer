@@ -355,14 +355,20 @@ apply_info	 (2
 id ("%
 GS2CItemExtendSize
 extsize (
-ò
+é
 server/task.protobase/common.proto"*
 NeedItem
 itemid (
 amount ("(
 NeedSum
 sumid (
-amount ("ž
+amount ("X
+TaskItem
+itemid (
+map_id (
+pos_x (
+pos_z (
+radius ("ž
 	ClientNpc
 npctype (
 npcid (
@@ -371,7 +377,7 @@ apply_info	 (2
 map_id (
 pos_info (2.base.PosInfo#
 
-model_info (2.base.ModelInfo"Ž
+model_info (2.base.ModelInfo"«
 TaskInfo
 taskid (
 tasktype (
@@ -390,7 +396,8 @@ detaildesc (	
 isdone (
 time (
 
-rewardinfo (",
+rewardinfo (
+taskitem (2	.TaskItem",
 GS2CLoginTask
 taskdata (2	.TaskInfo"*
 GS2CAddTask
