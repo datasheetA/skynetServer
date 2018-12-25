@@ -119,10 +119,11 @@ message ItemInfo {
     optional string desc           = 10;                                //描述信息
 }
 
-message BasePointProp {
+message WashPointInfo {
     optional uint32 agility = 1;
     optional uint32 strength = 2;
     optional uint32 magic = 3;
     optional uint32 physique = 4;
     optional uint32 endurance = 5;
+    optional uint32 remain_point = 6;                   //剩余潜力点
 }

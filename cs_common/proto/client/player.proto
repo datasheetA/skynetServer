@@ -1,11 +1,15 @@
 import "base/common.proto";
 
+message C2GSGetPointPlanInfo {
+
+}
+
 message C2GSSelectPointPlan {
     optional uint32 plan_id = 1;      //对应washpoint配置表的key
 }
 
 message C2GSAddPoint {
-    optional base.BasePointProp prop = 1;
+    optional base.WashPointInfo prop = 1;
 }
 
 message C2GSWashPoint {

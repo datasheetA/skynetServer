@@ -52,6 +52,7 @@ C2GS_DEFINES.player = {
     C2GSAddPoint = 6002,
     C2GSWashPoint = 6003,
     C2GSWashAllPoint = 6004,
+    GS2CGetPointPlanList = 6005,
 }
 
 C2GS_DEFINES.task = {
@@ -139,6 +140,7 @@ GS2C_DEFINES.player = {
     GS2CAddPoint = 6004,
     GS2CWashPoint = 6005,
     GS2CWashAllPoint = 6006,
+    GS2CGetPointPlanList = 6007,
 }
 
 GS2C_DEFINES.task = {
