@@ -16,6 +16,7 @@ local warobj = import(service_path("warobj"))
 local gmobj = import(service_path("gmobj"))
 local publicobj = import(service_path("publicobj"))
 local npcobj = import(service_path("npcobj"))
+local cbobj = import(service_path("cbobj"))
 
 skynet.start(function()
     net.Init(netcmd)
@@ -61,6 +62,7 @@ skynet.start(function()
     global.oNpcMgr = npcobj.NewNpcMgr()
     local oNpcMgr = global.oNpcMgr
     oNpcMgr:LoadInit()
+    global.oCbMgr = cbobj.NewCBMgr()
 
     skynet.register ".world"
 

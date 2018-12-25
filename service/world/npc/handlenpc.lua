@@ -29,11 +29,6 @@ function Respond(pid,npcid,iAnswer)
     if npcid ~= id then
         return
     end
-    local oNpcMgr = global.oNpcMgr
-    local oNpc = oNpcMgr:GetObject(npcid)
-    if not oNpc then
-        return
-    end
     if resfunc then
         if not resfunc() then
             return

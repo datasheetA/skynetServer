@@ -33,6 +33,8 @@ function GetItemPath(sid)
 end
 
 function Create(sid,...)
+    sid = tonumber(sid)
+    assert(sid,string.format("loaditem Create err:%s",sid))
     local sPath = GetItemPath(sid)
     local oModule = import(service_path(sPath))
     assert(oModule,string.format("loaditem err:%d",sid))

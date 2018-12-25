@@ -54,8 +54,6 @@ function Arrange(oContainer)
     table.sort(ItemList,SortFunc)
 
     for iPos,srcobj in ipairs(ItemList) do
-        if iPos ~= srcobj.m_Pos then
-            oContainer:ArrangeChange(srcobj,iPos)
-        end
+        oContainer:ArrangeChange(srcobj,iPos)
     end
 end

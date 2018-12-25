@@ -212,6 +212,7 @@ function CPlayer:New(mConn, mRole)
         ["ThisTemp"] = o.m_oThisTemp,
         ["SeveralDay"] = o.m_oSeveralDay,
         })
+    o.m_oTaskCtrl = playerctrl.NewTaskCtrl(o.m_iPid)
     return o
 end
 
@@ -320,6 +321,7 @@ function CPlayer:OnLogin(bReEnter)
     end
     
     self.m_oItemCtrl:OnLogin()
+    self.m_oTaskCtrl:OnLogin()
 
     if not bReEnter then
         self:Schedule()
@@ -429,6 +431,10 @@ function CPlayer:SaveDb()
         interactive.Send(".gamedb","playerdb","SavePlayerTimeInfo",{pid=self:GetPid(),data=mData})
         self.m_oTimeCtrl:UnDirty()
     end
+    if self.m_oTaskCtrl:IsDirty() then
+        interactive.Send(".gamedb","playerdb","SavePlayerTaskInfo",{pid=self:GetPid(),data=mData})
+        self.m_oTaskCtrl:UnDirty()
+    end
 end
 
 function CPlayer:ClientHeartBeat()
@@ -468,13 +474,13 @@ function CPlayer:RewardItem(itemobj,sReason,iKey,mArgs)
     end
 end
 
-function CPlayer:GiveItem(ItemList,sReason)
-    self.m_oItemCtrl:GiveItem(ItemList)
+function CPlayer:GiveItem(sidlist,sReason)
+    self.m_oItemCtrl:GiveItem(sidlist,sReason)
 end
 
 --ItemList:{sid:amount}
-function CPlayer:ValidGive(ItemList)
-    local bSuc = self.m_oItemCtrl:ValidGive(ItemList)
+function CPlayer:ValidGive(sidlist)
+    local bSuc = self.m_oItemCtrl:ValidGive(sidlist)
     return bSuc
 end
 
@@ -761,4 +767,8 @@ function CPlayer:PropChange(...)
     self:Send("GS2CPropChange", {
         role = mRole,
     })
+end
+
+function CPlayer:AddTask(taskid,npcobj)
+    self.m_oTaskCtrl:AddTask(taskid,npcobj)
 end

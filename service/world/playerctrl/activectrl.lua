@@ -47,7 +47,7 @@ end
 function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
     local iGold = self:GetData("gold",0)
     assert(iGold>=0,string.format("%d gold err %d",self:GetInfo("pid"),iGold))
-    assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo("pid")))
+    assert(iVal>0,string.format("%d  validgold err %d",self:GetInfo("pid"),iVal))
     if iGold< iVal then
         local sTip = mArgs.tip
         if not sTip then

@@ -9,7 +9,7 @@ inherit(CNpc,logic_base_cls())
 
 function CNpc:New(type)
     local o = super(CNpc).New(self)
-    o.m_NpcType = type
+    o.m_iType = type
     o:Init()
     return o
 end
@@ -26,6 +26,7 @@ function CNpc:Init()
     self.m_iAdorn = mData["ornamentId"]
     self.m_iMapid = mData["sceneId"]
     self.m_mColor = mData["mutateColor"]
+    self.m_iScale = mData["scale"]
     local mPosInfo = {
             x = mData["x"],
             y = mData["y"],
@@ -43,13 +44,17 @@ function CNpc:InitObject()
     self.m_ID = id
 end
 
+function CNpc:Release( ... )
+    -- body
+end
+
 function CNpc:SetScene(iScene)
     self.m_Scene = iScene
 end
 
 function CNpc:GetData()
     local res = require "base.res"
-    return res["daobiao"]["global_npc"][self.m_NpcType]
+    return res["daobiao"]["global_npc"][self.m_iType]
 end
 
 function CNpc:do_look(oPlayer)
@@ -63,11 +68,15 @@ function CNpc:Say(pid,sText)
 end
 
 function CNpc:Name()
-    return self.m_Name
+    return self.m_sName
 end
 
 function CNpc:Model()
-    return self.m_Model
+    return self.m_iModel
+end
+
+function CNpc:Type()
+    return self.m_iType
 end
 
 function CNpc:Dialog()
@@ -81,7 +90,7 @@ end
 
 function CNpc:PackSceneInfo()
     local mInfo = {
-        npctype  = self.m_NpcType,
+        npctype  = self.m_iType,
         npcid = self.m_ID,
         model_info = {
             shape = self.m_iModel,
@@ -91,6 +100,7 @@ function CNpc:PackSceneInfo()
             weapon = self.m_iWeapon,
             adorn = self.m_iAdorn,
         },
+        scale = self.m_iScale
     }
     return mInfo
 end

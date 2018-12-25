@@ -14,7 +14,12 @@ function CNpc:New(npcid)
 end
 
 function CNpc:do_look(oPlayer)
-    --
+    self:Say(oPlayer.m_iPid,"你好，这是测试#Q测试1#Q测试2#Q测试3")
+    local func = function (pid,iAnswer)
+    	local sText = string.format("这是测试%d",iAnswer)
+   	self:Say(oPlayer.m_iPid,sText)
+    end
+    handlenpc.SetRespond(oPlayer.m_iPid,self.m_ID,nil,func)
 end
 
 function NewNpc(npctype,npcid)

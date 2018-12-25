@@ -103,6 +103,14 @@ function CSceneMgr:GetSceneListByMap(iMapId)
     return mSceneObj
 end
 
+function CSceneMgr:GetSceneName(iMapId)
+    local mScene = self.m_mDurableScenes[iMapId] or {}
+    for _,iScene in pairs(mScene) do
+        local oScene = self:GetScene(iScene)
+        return oScene:GetName()
+    end
+end
+
 function CSceneMgr:OnEnterWar(oPlayer)
     local oNowScene = oPlayer.m_oActiveCtrl:GetNowScene()
     if oNowScene then

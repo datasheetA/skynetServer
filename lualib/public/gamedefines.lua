@@ -48,3 +48,12 @@ WAR_RECV_DAMAGE_FLAG = {
     DEFENSE = 2,
     CRIT = 3,
 }
+
+TASK_TYPE = {
+    TASK_FIND_NPC    = 1,
+    TASK_FIND_ITEM   = 2,
+    TASK_FIND_SUMMON = 3,
+    TASK_NPC_FIGHT  = 4,
+    TASK_ANLEI  = 5,
+    TASK_PICK   = 6,
+}
