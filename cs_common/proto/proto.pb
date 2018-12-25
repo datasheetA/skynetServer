@@ -149,7 +149,7 @@ action_wid ("4
 war_id (
 
 action_wid (
-¬
+¼
 client/other.proto"
 C2GSHeartBeat"
 	C2GSGMCmd
@@ -158,11 +158,12 @@ action_wid (
 CommitItem
 
 id (
-amount ("A
+amount ("Q
 C2GSCallback
 
-sessionidx (
-itemlist (2.CommitItem
+sessionidx (
+answer (
+itemlist (2.CommitItem
 ¨
 client/item.proto"-
 C2GSItemUse
@@ -243,11 +244,12 @@ aoi_player (2.base.PlayerAoi
 scene_id (
 eid (
 pos_info (2.base.PosInfo
-Z
-server/npc.proto"F
+_
+server/npc.proto"K
 
-GS2CNpcSay
-npcid (
+GS2CNpcSay
+
+sessionidx (
 shape (
 name (	
 text (	

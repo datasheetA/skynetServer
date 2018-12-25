@@ -10,102 +10,6 @@ local loaditem = import(service_path("item.loaditem"))
 local max = math.max
 local min = math.min
 
------------------------------------------GS2C------------------------------------------
-local function PackItemInfo(itemobj)
-    local mNet = {}
-    mNet["id"] = itemobj.m_ID
-    mNet["sid"] = itemobj:SID()
-    mNet["pos"] = itemobj.m_Pos
-    mNet["name"] = itemobj:Name()
-    mNet["itemlevel"] = itemobj:ItemLevel()
-    mNet["amount"] = itemobj:GetAmount()
-    mNet["key"] = itemobj:Key()
-    if itemobj:IsTimeItem() then
-        mNet["time"] = itemobj:Query("Time") - timeop.get_second()
-    end
-    mNet["apply_info"] = itemobj:ApplyInfo()
-    mNet["desc"] = itemobj:Desc()
-    return mNet
-end
-
-function GS2CLoginItem(iOwner,oContainer)
-    local mNet = {}
-    local itemdata = {}
-    for iPos,itemobj in pairs(oContainer.m_Item) do
-        table.insert(itemdata,PackItemInfo(itemobj))
-    end
-    mNet["itemdata"] = itemdata
-    mNet["extsize"] = oContainer:GetExtendSize()
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CLoginItem",mNet)
-    end
-end
-
-function GS2CAddItem(iOwner,itemobj)
-    local mNet = {}
-    local itemdata = PackItemInfo(itemobj)
-    mNet["itemdata"] = itemdata
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CAddItem",mNet)
-    end
-end
-
-function GS2CDelItem(iOwner,itemobj)
-    local mNet = {}
-    mNet["id"] = itemobj.m_ID
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CDelItem",mNet)
-    end
-end
-
-function GS2CMoveItem(iOwner,itemobj,destpos)
-    local mNet = {}
-    mNet["id"] = itemobj.m_ID
-    mNet["destpos"] = destpos
-     local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CMoveItem",mNet)
-    end
-end
-
-function GS2CItemAmount(iOwner,itemid,iAmount)
-    local mNet = {}
-    mNet["id"] = itemid
-    mNet["amount"] = iAmount
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CItemAmount",mNet)
-    end
-end
-
-function GS2CItemQuickUse(iOwner,itemid)
-    local mNet = {}
-    mNet["id"] = itemid
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CItemQuickUse",mNet)
-    end
-end
-
-function GS2CItemExtendSize(iOwner,iExtSize)
-    local mNet = {}
-    mNet["extsize"] = iExtSize
-    local oWorldMgr = global.oWorldMgr
-    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(iOwner)
-    if oPlayer then
-        oPlayer:Send("GS2CItemExtendSize",mNet)
-    end
-end
-
 -----------------------------------------------C2GS--------------------------------------------
 function C2GSItemUse(oPlayer, mData)
     local itemid = mData["itemid"]
@@ -146,8 +50,8 @@ function C2GSItemArrage(oPlayer,mData)
 end
 
 function C2GSAddItemExtendSize(oPlayer,mData)
-    local iSize = mData["iSize"]
-    if not InList(iSize,{5,10}) then
+    local iSize = mData["size"]
+    if not extend.Table.find({5,10},iSize) then
         return
     end
     local oContainer = oPlayer.m_oItemCtrl

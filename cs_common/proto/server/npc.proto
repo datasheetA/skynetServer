@@ -1,6 +1,6 @@
 
 message GS2CNpcSay{
-    optional uint32 npcid = 1;
+    optional uint32 sessionidx = 1;
     optional uint32 shape = 2;
     optional string  name = 3;
     optional string  text = 4;

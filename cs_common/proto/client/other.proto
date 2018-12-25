@@ -14,5 +14,6 @@ message CommitItem {
 
 message C2GSCallback{
     optional uint32 sessionidx	= 1;
-    repeated CommitItem itemlist = 2;                               //提交寻物任务道具
+    optional uint32 answer  = 2;                                           //点击npc回应
+    repeated CommitItem itemlist = 3;                               //提交寻物任务道具
 }

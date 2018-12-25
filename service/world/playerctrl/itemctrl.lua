@@ -99,10 +99,6 @@ function CItemCtrl:IsDirty()
     return false
 end
 
-function CItemCtrl:OnLogin()
-    itemnet.GS2CLoginItem(self.m_Owner,self)
-end
-
 function CItemCtrl:GetSize()
     return self.m_Size + self.m_ExtendSize
 end
@@ -119,7 +115,13 @@ function CItemCtrl:AddExtendSize(iSize)
     self:Dirty()
     iSize = iSize or 5
     self.m_ExtendSize = self.m_ExtendSize + iSize
-    itemnet.GS2CItemExtendSize(self.m_ExtendSize)
+    local mNet = {}
+    mNet["extsize"] = self.m_ExtendSize
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if oPlayer then
+        oPlayer:Send("GS2CItemExtendSize",mNet)
+    end
 end
 
 function CItemCtrl:CanAddExtendSize( )
@@ -348,14 +350,49 @@ function CItemCtrl:GiveItem(ItemList,sReason)
     end
 end
 
+function CItemCtrl:OnLogin()
+    local mNet = {}
+    local itemdata = {}
+    for iPos,itemobj in pairs(self.m_Item) do
+        table.insert(itemdata,itemobj:PackItemInfo())
+    end
+    mNet["itemdata"] = itemdata
+    mNet["extsize"] = self:GetExtendSize()
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if oPlayer then
+        oPlayer:Send("GS2CLoginItem",mNet)
+    end
+end
+
 function CItemCtrl:GS2CAddItem(itemobj)
-    itemnet.GS2CAddItem(self.m_Owner,itemobj)
+    local mNet = {}
+    local itemdata = itemobj:PackItemInfo()
+    mNet["itemdata"] = itemdata
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if oPlayer then
+        oPlayer:Send("GS2CAddItem",mNet)
+    end
 end
 
 function CItemCtrl:GS2CDelItem(itemobj)
-    itemnet.GS2CDelItem(self.m_Owner,itemobj)
+    local mNet = {}
+    mNet["id"] = itemobj.m_ID
+    local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if oPlayer then
+        oPlayer:Send("GS2CDelItem",mNet)
+    end
 end
 
-function CItemCtrl:GS2CMoveItem(itemobj,iPos)
-    itemnet.GS2CMoveItem(self.m_Owner,itemobj,iPos)
+function CItemCtrl:GS2CMoveItem(itemobj,descpos)
+    local mNet = {}
+    mNet["id"] = itemobj.m_ID
+    mNet["destpos"] = destpos
+     local oWorldMgr = global.oWorldMgr
+    local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self.m_Owner)
+    if oPlayer then
+        oPlayer:Send("GS2CMoveItem",mNet)
+    end
 end

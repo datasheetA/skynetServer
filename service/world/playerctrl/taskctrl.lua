@@ -31,12 +31,11 @@ function CTaskCtrl:Save()
 end
 
 function CTaskCtrl:Load(mData)
-    if not mData then
-        return
-    end
-    self.m_mData = mData["Data"]
-    local mTaskData = mData["TaskData"]
+    mData = mData or {}
+    self.m_mData = mData["Data"] or {}
+    local mTaskData = mData["TaskData"] or {}
     for taskid,mArgs in pairs(mTaskData) do
+        taskid = tonumber(taskid)
         local oTask = loadtask.LoadTask(taskid,mArgs)
         if not oTask:IsTimeOut() then
             oTask:SetOwner(self.m_Owner)
@@ -153,7 +152,7 @@ function CTaskCtrl:OnLogin()
      local mNet = {}
     local mData = {}
     for _,oTask in pairs(self.m_List) do
-        table.insert(mData,PackTaskInfo(oTask))
+        table.insert(mData,oTask:PackTaskInfo())
     end
     mNet["taskdata"] = mData
     local oWorldMgr = global.oWorldMgr

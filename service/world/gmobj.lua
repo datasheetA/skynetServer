@@ -162,6 +162,7 @@ function Commands.addtask(oMaster,taskid)
     if not taskid then
         return
     end
+    taskid = tonumber(taskid)
     oMaster:AddTask(taskid)
 end
 

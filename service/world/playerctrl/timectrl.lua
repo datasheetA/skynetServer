@@ -18,9 +18,7 @@ function CToday:New(pid)
 end
 
 function CToday:Load(data)
-    if not data then
-        return
-    end
+   data = data or {}
     self.m_mData = data["Data"]
     self.m_mKeepList = data["KeepList"]
 
@@ -121,9 +119,7 @@ function CThisTemp:New(pid)
 end
 
 function CThisTemp:Load(data)
-    if not data then
-        return
-    end
+    data = data or {}
     self.m_mData = data["Data"] or self.m_mData
     self.m_mKeepList = data["KeepList"] or self.m_mKeepList
 
@@ -213,9 +209,7 @@ function CSeveralDay:Save()
 end
 
 function CSeveralDay:Load(data)
-    if not data then
-        return
-    end
+    data = data or {}
     self.m_mData = data["Data"] or self.m_mData
     self.m_mDayList = data["DayList"] or self.m_mDayList
 
@@ -336,9 +330,7 @@ function CTimeCtrl:Save()
 end
 
 function CTimeCtrl:Load(mData)
-    if not mData then
-        return
-    end
+   mData = mData or {}
     local data = mData["Data"] or {}
     for sKey,mSaveData in pairs(data) do
         local oTimeObj = self.m_List[sKey]

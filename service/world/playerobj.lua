@@ -426,6 +426,7 @@ function CPlayer:SaveDb()
         self.m_oTimeCtrl:UnDirty()
     end
     if self.m_oTaskCtrl:IsDirty() then
+        local mData = self.m_oTaskCtrl:Save()
         interactive.Send(".gamedb","playerdb","SavePlayerTaskInfo",{pid=self:GetPid(),data=mData})
         self.m_oTaskCtrl:UnDirty()
     end

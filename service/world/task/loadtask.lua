@@ -35,7 +35,7 @@ end
 
 function LoadTask(taskid,mArgs)
    local sDir = GetDir(taskid)
-    local sPath = string.format("task/%s/t%d",sDir,taskid)
+    local sPath = string.format("task/%s/%sbase",sDir,sDir)
     local oModule = import(service_path(sPath))
     assert(oModule,string.format("Create Task err:%d %s",taskid,sPath))
     local oTask = oModule.NewTask(taskid)
