@@ -310,7 +310,7 @@ function CTask:CreateClientNpc(iTempNpc)
         adorn = mData["ornamentId"],
         weapon = mData["wpmodel"],
         color = mData["mutateColor"],
-        mutateTexture = mData["mutateTexture"],
+        mutate_texture = mData["mutateTexture"],
     }
     local mPosInfo = {
         x = mData["x"],

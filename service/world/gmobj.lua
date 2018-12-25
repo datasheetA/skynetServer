@@ -152,6 +152,19 @@ function Commands.map(oMaster, m)
     oSceneMgr:EnterScene(oMaster, oScene:GetSceneId(), {pos = {x = m.x or mNowPos.x, y = m.y or mNowPos.y, z = mNowPos.z, face_x = mNowPos.face_x, face_y = mNowPos.face_y, face_z = mNowPos.face_z}}, true)
 end
 
+Helpers.task={
+    "增加任务",
+    "addtask 任务编号",
+    "addtask 101"
+}
+
+function Commands.addtask(oMaster,taskid)
+    if not taskid then
+        return
+    end
+    oMaster:AddTask(taskid)
+end
+
 Helpers.help = {
     "GM指令帮助",
     "help 指令名",

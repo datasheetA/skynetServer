@@ -5,10 +5,9 @@ local floor = math.floor
 local max = math.max
 local min = math.min
 
-function get_time(bRound)
-    bRound = bRound or true                                 --默认取整
+function get_time(bFloat)
     local fTime = skynet.time()
-    if bRound then
+    if not bFloat then
         return floor(fTime)
     end
     return fTime
@@ -62,30 +61,31 @@ function get_hourno()
     return iHourNo
 end
 
-function chinadate()
-    local iTime = get_time()
-    local mDate = os.date("*t",iTime)
-    local iWeekDay = mDate.wday
-    if mDate.wday == 0 then
-        iWeekDay = 7
-    end
-    return iWeekDay,mDate.hour
+function get_daytime(tab)
+    local iFactor = tab.factor  or 1                                        --正负因子
+    local iDay = tab.day or 1                                                  --距离天数
+    local iAnchor = tab.anchor or 0                                     --锚点
+    iDay = iDay * iFactor                                                             
+    local iCurTime = get_time()
+    local iTime = iCurTime + iDay * 3600 * 24
+    local date = os.date("*t",iTime)
+    iTime = os.time({year=date.year,month=date.month,day=date.day,hour=iAnchor,min=0,sec=0})
+    local retbl = {}
+    retbl.time = iTime
+    retbl.date = os.date("*t",iTime)
+    return retbl
 end
 
-function get_daytime(iDay)
-    iDay = iDay or 1
-    local iTime = get_time()
-    local iNextTime = iTime + iDay * 3600 * 24
-    local date = os.date("*t",iNextTime)
-    iNextTime = os.time({year=date.year,month=date.month,day=date.day,hour=0,min=0,sec=0})
-    return iNextTime - iTime
-end
-
-function get_hourtime(iHour)
-    iHour = iHour or 1
-    local iTime = get_time()
-    local iNextTime = iTime + iHour * 3600
-    local date = os.date("*t",iNextTime)
-    iNextTime = os.time({year=date.year,month=date.month,day=date.day,hour=date.hour,min=0,sec=0})
-    return iNextTime - iTime
+function get_hourtime(tab)
+    local iFactor = tab.factor or 1                                                --正负因子
+    local iHour = tab.hour or 1                                                     --距离小时
+    iHour = iHour * iFactor
+    local iCurTime = get_time()
+    local iTime = iCurTime + iHour * 3600
+    local date = os.date("*t",iTime)
+    iTime = os.time({year=date.year,month=date.month,day=date.day,hour=date.hour,min=0,sec=0})
+    local retbl = {}
+    retbl.time = iTime
+    retbl.date = os.date("*t",iTime)
+    return retbl
 end

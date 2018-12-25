@@ -370,15 +370,19 @@ function CWorldMgr:GetRW(pid)
 end
 
 function CWorldMgr:_CheckNewHour()
-    local iSecs = timeop.get_hourtime()
+    local tbl = timeop.get_hourtime({factor=1,hour=1})
+    local iSecs = tbl.time - timeop.get_time()
     self:AddTimeCb("newhour",iSecs,function ()  self:NewHour()  end)
 end
 
 function CWorldMgr:NewHour()
     self:DelTimeCb("newhour")
-    self:AddTimeCb("newhour",3600,function()  self:NewHour()  end)
+    self:AddTimeCb("newhour",3600*1000,function()  self:NewHour()  end)
 
-    local iDay,iHour = timeop.chinadate()
+    local tbl = timeop.get_hourtime({hour=0})
+    local date = tbl.date
+    local iDay = date.day
+    local iHour = date.hour
     if iHour == 0 then
         self:NewDay(iDay)
     end
