@@ -27,6 +27,7 @@ function CPlayerActiveCtrl:Load(mData)
     self:SetData("exp",mData.exp or 0)
     self:SetData("chubeiexp",mData.chubeiexp or 0)
     self:SetData("enegy", mData.enegy or 0)
+    self:SetData("disconnect_time", mData.disconnect_time or get_time())
 
     self:Dirty()
 end
@@ -43,7 +44,17 @@ function CPlayerActiveCtrl:Save()
     mData.exp = self:GetData("exp")
     mData.chubeiexp = self:GetData("chubeiexp")
     mData.enegy = self:GetData("enegy")
+    mData.disconnect_time = self:GetData("disconnect_time")
     return mData
+end
+
+function CPlayerActiveCtrl:GetDisconnectTime()
+    return self:GetData("disconnect_time")
+end
+
+function CPlayerActiveCtrl:SetDisconnectTime(iTime)
+    iTime = iTime or get_time()
+    self:SetData("disconnect_time", iTime)
 end
 
 function CPlayerActiveCtrl:ValidGold(iVal,mArgs)
@@ -120,6 +131,7 @@ function CPlayerActiveCtrl:RewardExp(iVal,sReason,mArgs)
     local iExp = self:GetData("exp",0)
     assert(iVal>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
 
+    local oNotifyMgr = global.oNotifyMgr
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
     local iPlayerGrade = oPlayer:GetGrade()
@@ -142,14 +154,31 @@ function CPlayerActiveCtrl:RewardExp(iVal,sReason,mArgs)
         end
     end
 
+    local lMsgs = {}
     if iVal > 0 then
-        self:SetData("exp", iExp + iVal)
+        local sMsg = string.format("你获得了%dEXP", iVal)
+        local iSubChuBei = math.min(self:GetData("chubeiexp"), iVal)
+        if iSubChuBei > 0 then
+            sMsg = sMsg .. string.format("储备经验加成%dEXP", iSubChuBei)
+            self:SetData("chubeiexp", self:GetData("chubeiexp") - iSubChuBei)
+            oPlayer:PropChange("chubeiexp")
+        end
+        self:SetData("exp", iExp + iVal + iSubChuBei)
+        oPlayer:PropChange("exp")
+        table.insert(lMsgs, sMsg)
     end
     if iSilver > 0 then
+        local sMsg = string.format("%d银币", iSilver)
         self:SetData("silver", self:GetData("silver") + iSilver)
+        oPlayer:PropChange("silver")
+        table.insert(lMsgs, sMsg)
     end
 
-    oPlayer:PropChange("exp", "silver")
+    local sMsg = table.concat(lMsgs, "，")
+    if #sMsg > 0 then
+        oNotifyMgr:Notify(oPlayer:GetPid(), sMsg)
+    end
+
     oPlayer:CheckUpGrade()
 end
 
@@ -161,7 +190,7 @@ function CPlayerActiveCtrl:AddChubeiExp(iVal,sReason)
     self:SetData("chubeiexp",iChubeiExp)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    oPlayer:PropChange("chubei_exp")
+    oPlayer:PropChange("chubeiexp")
 end
 
 

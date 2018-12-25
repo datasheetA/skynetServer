@@ -17,6 +17,7 @@ local gmobj = import(service_path("gmobj"))
 local publicobj = import(service_path("publicobj"))
 local npcobj = import(service_path("npcobj"))
 local cbobj = import(service_path("cbobj"))
+local notify = import(service_path("notify"))
 
 skynet.start(function()
     net.Init(netcmd)
@@ -25,6 +26,7 @@ skynet.start(function()
 
     global.oGlobalTimer = servicetimer.NewTimer()
     global.oGMMgr = gmobj.NewGMMgr()
+    global.oNotifyMgr = notify.NewNotifyMgr()
 
     interactive.Request(".gamedb", "worlddb", "LoadWorld", {server_id = MY_SERVER_ID}, function (mRecord, mData)
             global.oWorldMgr = worldobj.NewWorldMgr()

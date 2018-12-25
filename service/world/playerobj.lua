@@ -54,9 +54,9 @@ function PropHelperFunc.exp(oPlayer)
     return oPlayer.m_oActiveCtrl:GetData("exp")
 end
 
-PropHelperDef.chubei_exp = 9
-function PropHelperFunc.chubei_exp(oPlayer)
-    return oPlayer.m_oActiveCtrl:GetData("chubei_exp")
+PropHelperDef.chubeiexp = 9
+function PropHelperFunc.chubeiexp(oPlayer)
+    return oPlayer.m_oActiveCtrl:GetData("chubeiexp")
 end
 
 PropHelperDef.max_hp = 10
@@ -301,12 +301,15 @@ function CPlayer:OnLogout()
     if oConn then
         oWorldMgr:KickConnection(oConn.m_iHandle)
     end
+    self.m_oActiveCtrl:SetDisconnectTime()
     --save db
     self:SaveDb()
 end
 
 function CPlayer:OnLogin(bReEnter)
+    local iNowTime = get_time()
     local oWorldMgr = global.oWorldMgr
+    local oNotifyMgr = global.oNotifyMgr
 
     if not bReEnter then
         self:PreCheck()
@@ -337,6 +340,16 @@ function CPlayer:OnLogin(bReEnter)
     self.m_oTaskCtrl:OnLogin()
 
     if not bReEnter then
+        local iDiffDisconnect = iNowTime - self.m_oActiveCtrl:GetDisconnectTime()
+        if self:GetGrade() >= 20 and iDiffDisconnect >= 30*60 then
+            local iAdd = math.floor((self:GetGrade()*200+1000)/60*math.min(72*60, iDiffDisconnect/60))
+            if self.m_oActiveCtrl:GetData("chubeiexp") < 2100000000 then
+                self:AddChubeiExp(iAdd, "OnLogin")
+                self:PropChange("chubeiexp")
+                oNotifyMgr:Notify(self:GetPid(), string.format("距上次离线时间%d分钟，共获得%d储备经验。详情打开人物属性界面点击经验条查询", math.floor(iDiffDisconnect/60), iAdd))
+            end
+        end
+
         self:Schedule()
     end
 end
@@ -612,15 +625,7 @@ function CPlayer:GetMaxHp()
 end
 
 function CPlayer:GetMaxMp()
-    local m = res["daobiao"]["point"]
-    local iRet = 0
-    for k, v in pairs(m) do
-        local i = self.m_oBaseCtrl:GetData(v.macro) * v.mp_max_add
-        if i then
-            iRet = iRet + i
-        end
-    end
-    return iRet
+    return self:GetGrade()*20 + 30
 end
 
 function CPlayer:GetHp()

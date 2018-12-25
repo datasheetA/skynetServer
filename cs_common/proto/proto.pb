@@ -1,5 +1,5 @@
 
-ˆ
+ı
 base/common.protobase"e
 PosInfo	
 v (	
@@ -18,7 +18,7 @@
 adorn ("
 
 SimpleRole
-pid ("ë
+pid ("ê
 Role
 mask (
 grade (
@@ -28,9 +28,8 @@ title_list (	
 goldcoin (
 gold (
 silver (
-exp (
-
-chubei_exp	 (
+exp (
+	chubeiexp	 (
 max_hp
  (
 max_mp (

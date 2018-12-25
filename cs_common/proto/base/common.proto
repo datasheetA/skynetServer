@@ -32,7 +32,7 @@ message Role {
     optional uint32 gold    = 6;
     optional uint32 silver= 7;
     optional uint32 exp = 8;
-    optional uint32 chubei_exp = 9;
+    optional uint32 chubeiexp = 9;
     optional uint32 max_hp = 10;
     optional uint32 max_mp = 11;
     optional uint32 hp = 12;
