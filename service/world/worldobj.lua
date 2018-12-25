@@ -33,6 +33,8 @@ function CWorldMgr:New()
     o.m_mOfflineRWs = {}
 
     o.m_mConnections = {}
+
+    o.m_mPlayerPropChange = {}
     return o
 end
 
@@ -506,4 +508,26 @@ function CWorldMgr:NewHour()
 end
 
 function CWorldMgr:NewDay()
+end
+
+function CWorldMgr:SetPlayerPropChange(iPid, l)
+    local mNow = self.m_mPlayerPropChange[iPid]
+    if not mNow then
+        mNow = {}
+        self.m_mPlayerPropChange[iPid] = mNow
+    end
+    for _, v in ipairs(l) do
+        mNow[v] = true
+    end
+end
+
+function CWorldMgr:WorldDispatchFinishHook()
+    local mPlayerPropChange = self.m_mPlayerPropChange
+    for k, v in pairs(mPlayerPropChange) do
+        local oPlayer = self:GetOnlinePlayerByPid(k)
+        if oPlayer and next(v) then
+            oPlayer:ClientPropChange(v)
+        end
+    end
+    self.m_mPlayerPropChange = {}
 end

@@ -69,7 +69,13 @@ skynet.start(function()
             oNpcMgr:LoadInit()
             global.oCbMgr = cbobj.NewCBMgr()
 
+            skynet.dispatch_finish_hook(function ()
+                local oWorldMgr = global.oWorldMgr
+                oWorldMgr:WorldDispatchFinishHook()
+            end)
+
     end)
+
 
     skynet.register ".world"
 

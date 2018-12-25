@@ -446,6 +446,14 @@ function skynet.dispatch_unknown_response(unknown)
 	return prev
 end
 
+local finish_hook
+
+function skynet.dispatch_finish_hook(f)
+	local prev = finish_hook
+	finish_hook = f
+	return prev
+end
+
 function skynet.fork(func,...)
 	local args = table.pack(...)
 	local co = co_create(function()
@@ -513,6 +521,19 @@ function skynet.dispatch_message(...)
 			end
 		end
 	end
+
+	if finish_hook then
+		local hook_succ, hook_err = pcall(finish_hook)
+		if not hook_succ then
+			if succ then
+				succ = false
+				err = tostring(hook_err)
+			else
+				err = tostring(err) .. "\n" .. tostring(hook_err)
+			end
+		end
+	end
+
 	assert(succ, tostring(err))
 end
 

@@ -788,10 +788,11 @@ end
 
 function CPlayer:PropChange(...)
     local l = table.pack(...)
-    local m = {}
-    for _, v in ipairs(l) do
-        m[v] = true
-    end
+    local oWorldMgr = global.oWorldMgr
+    oWorldMgr:SetPlayerPropChange(self:GetPid(), l)
+end
+
+function CPlayer:ClientPropChange(m)
     local mRole = self:RoleInfo(m)
     self:Send("GS2CPropChange", {
         role = mRole,
