@@ -19,14 +19,19 @@ function CNpc:Init()
     local mData = self:GetData()
     self.m_sName = mData["name"]
     self.m_sTitle = mData["title"]
-    self.m_iModel = mData["modelId"]
-    self.m_iDialog = mData["dialogId"]
-    self.m_iWeapon = mData["wpmodel"]
-    self.m_imutateTexture = mData["mutateTexture"]
-    self.m_iAdorn = mData["ornamentId"]
     self.m_iMapid = mData["sceneId"]
-    self.m_mColor = mData["mutateColor"]
-    self.m_iScale = mData["scale"]
+
+    local mModel = {
+        shape = mData["modelId"],
+        adorn = mData["ornamentId"],
+        weapon = mData["wpmodel"],
+        color = mData["mutateColor"],
+        mutate_texture = mData["mutateTexture"],
+        scale = mData["scale"]
+    }
+    self.m_mModel = mModel
+
+    self.m_iDialog = mData["dialogId"]
     local mPosInfo = {
             x = mData["x"],
             y = mData["y"],
@@ -92,14 +97,7 @@ function CNpc:PackSceneInfo()
     local mInfo = {
         npctype  = self.m_iType,
         npcid = self.m_ID,
-        model_info = {
-            shape = self.m_iModel,
-            name = self.m_Name,
-            color = self.m_mColor,
-            mutate_texture = self.m_imutateTexture,
-            weapon = self.m_iWeapon,
-            adorn = self.m_iAdorn,
-        },
+        model_info = self.m_mModel,
         scale = self.m_iScale
     }
     return mInfo

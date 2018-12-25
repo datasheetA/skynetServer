@@ -304,25 +304,31 @@ function CTask:CreateClientNpc(iTempNpc)
     else
         sName = mData["name"]
     end
-    local mArgs = {
-        type = iTempNpc,
-        functype = mData["type"],
-        name = sName,
-        model = mData["modelId"],
-        title = mData["title"],
-        wpmodel = mData["wpmodel"],
-        mutateTexture = mData["mutateTexture"],
-        ornamentId = mData["ornamentId"],
-        mutateColor = mData["mutateColor"],
+    local mModel = {
+        shape = mData["modelId"],
         scale = mData["scale"],
+        adorn = mData["ornamentId"],
+        weapon = mData["wpmodel"],
+        color = mData["mutateColor"],
+        mutateTexture = mData["mutateTexture"],
+    }
+    local mPosInfo = {
         x = mData["x"],
         y = mData["y"],
         z = mData["z"],
         face_x = mData["face_x"] or 0,
-        face_y = mData["face_y"] or 0,
+        face_y = mData["face_y"] or  0,
         face_z = mData["face_z"] or 0,
-        sceneId = mData["sceneId"] or 0,
+    }
+    local mArgs = {
+        npctype = mData["type"],
+        name = sName,
+        title = mData["title"],
+        map_id = mData["sceneId"],
+        model_info = mModel,
+        pos_info = mPosInfo,
         event = mData["event"] or 0,
+        reuse = mData["reuse"] or 0,
     }
     local oClientNpc = clientnpc.NewClientNpc(mArgs)
     table.insert(self.m_mClientNpc,oClientNpc)
@@ -432,31 +438,6 @@ function CTask:SetRanScTaskItem(mArgs)
         radius = radius,
     }
     table.insert(self.m_mTaskItem,mData)
-end
-
-function CTask:UseTaskItem(pid,itemid)
-    local mData = self:GetTaskItemData(itemid)
-    if not mData then
-        return
-    end
-    local sTip = mData["usedTip"]
-    local sFinishTip = mData["finishTip"]
-    local iTime = mData["usetime"]
-    local mData = {
-        type = 1,
-        tip = sTip,
-        time = iTime,
-    }
-    local taskid = self.m_ID
-    local func = function (oPlayer,mData)
-        local oTask = oPlayer.m_oTaskCtrl:GetTask(taskid)
-        if not oTask then
-            return
-        end
-        oTask:MissionDone()
-    end
-    local oCbMgr = global.oCbMgr
-    oCbMgr:SetCallBack(pid,"GS2CLoadUI",mData,nil,func)
 end
 
 function CTask:DoScript(pid,npcobj,s)
