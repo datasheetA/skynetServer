@@ -1,6 +1,7 @@
 --import module
 
 SCENE_AOI_DIS = 20
+SERVER_GRADE_LIMIT = 100
 
 ERRCODE = {
     ok = 0,

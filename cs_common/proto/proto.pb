@@ -427,11 +427,14 @@ sessionidx (
 mask (
 taskid (
 target (
-T
+è
 server/player.protobase/common.proto"*
 GS2CPropChange
 role (2
-.base.Role
+.base.Role"9
+GS2CServerGradeInfo
+server_grade (
+days (
 É
 server/openui.proto"I
 

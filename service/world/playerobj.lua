@@ -276,6 +276,13 @@ function CPlayer:Send(sMessage, mData)
     end
 end
 
+function CPlayer:SendRaw(sData)
+    local oConn = self:GetConn()
+    if oConn then
+        oConn:SendRaw(sData)
+    end
+end
+
 function CPlayer:MailAddr()
     local oConn = self:GetConn()
     if oConn then
@@ -316,6 +323,7 @@ function CPlayer:OnLogin(bReEnter)
     self:GS2CLoginRole()
     self.m_fHeartBeatTime = get_time()
 
+    oWorldMgr:OnLogin(self, bReEnter)
     local oWar = self.m_oActiveCtrl:GetNowWar()
     if oWar then
         local oWarMgr = global.oWarMgr

@@ -4,3 +4,8 @@ import "base/common.proto";
 message GS2CPropChange{
     optional base.Role role = 1;
 }
+
+message GS2CServerGradeInfo {
+    optional uint32 server_grade = 1;
+    optional uint32 days = 2;
+}

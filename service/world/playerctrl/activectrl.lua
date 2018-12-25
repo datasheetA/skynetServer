@@ -120,11 +120,36 @@ function CPlayerActiveCtrl:RewardExp(iVal,sReason,mArgs)
     local iExp = self:GetData("exp",0)
     assert(iVal>0,string.format("%d exp err %d %d",self:GetInfo("pid"),iExp,iVal))
 
-    iExp = iExp + iVal
-    self:SetData("exp",iExp)
     local oWorldMgr = global.oWorldMgr
     local oPlayer = oWorldMgr:GetOnlinePlayerByPid(self:GetInfo("pid"))
-    oPlayer:PropChange("exp")
+    local iPlayerGrade = oPlayer:GetGrade()
+    local iServerGrade = oWorldMgr:GetServerGrade()
+
+    local iSilver = 0
+    if iPlayerGrade >= iServerGrade then
+        local iDiff = iPlayerGrade - iServerGrade
+        if iDiff >= 8 then
+            iSilver = math.ceil(iVal/3)
+            iVal = 0
+        elseif iDiff >=5 then
+            iVal = math.ceil(iVal*2/3)
+        else
+            iVal = math.ceil(iVal*4/5)
+        end
+    else
+        if iServerGrade >= 60 then
+            iVal = math.ceil(iVal * (1 + (iServerGrade - iPlayerGrade)*2/100))
+        end
+    end
+
+    if iVal > 0 then
+        self:SetData("exp", iExp + iVal)
+    end
+    if iSilver > 0 then
+        self:SetData("silver", self:GetData("silver") + iSilver)
+    end
+
+    oPlayer:PropChange("exp", "silver")
     oPlayer:CheckUpGrade()
 end
 

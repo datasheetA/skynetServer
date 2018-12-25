@@ -120,8 +120,8 @@ GS2C_DEFINES.item = {
 }
 
 GS2C_DEFINES.player = {
-    GS2CPropLogin = 6001,
-    GS2CPropChange = 6002,
+    GS2CPropChange = 6001,
+    GS2CServerGradeInfo = 6002,
 }
 
 GS2C_DEFINES.task = {

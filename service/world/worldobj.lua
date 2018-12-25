@@ -3,6 +3,8 @@
 local global = require "global"
 local skynet = require "skynet"
 local interactive = require "base.interactive"
+local res = require "base.res"
+local net = require "base.net"
 
 local gamedefines = import(lualib_path("public.gamedefines"))
 local playerobj = import(service_path("playerobj"))
@@ -65,6 +67,31 @@ function CWorldMgr:Save()
     m.server_grade = self.m_iServerGrade
     m.open_days = self.m_iOpenDays
     return m
+end
+
+function CWorldMgr:SetServerGrade(i)
+    self.m_iServerGrade = i
+    self:Dirty()
+end
+
+function CWorldMgr:GetServerGrade()
+    return self.m_iServerGrade
+end
+
+function CWorldMgr:SetOpenDays(i)
+    self.m_iOpenDays = i
+    self:Dirty()
+end
+
+function CWorldMgr:GetOpenDays()
+    return self.m_iOpenDays
+end
+
+function CWorldMgr:OnLogin(oPlayer, bReEnter)
+    oPlayer:Send("GS2CServerGradeInfo", {
+        server_grade = self:GetServerGrade(),
+        days = self:GetUpGradeLeftDays(),
+    })
 end
 
 function CWorldMgr:GetConnection(iHandle)
@@ -404,6 +431,7 @@ function CWorldMgr:Schedule()
     if iSecs <= 0 then
         self:NewHour()
     else
+        self:DelTimeCb("NewHour")
         self:AddTimeCb("NewHour", iSecs * 1000, f2)
     end
 end
@@ -421,12 +449,58 @@ function CWorldMgr:SaveDb()
     end
 end
 
+function CWorldMgr:CheckUpGrade()
+    local lServerGrade = res["daobiao"]["servergrade"]
+
+    local iTargetGrade = self:GetServerGrade()
+    if iTargetGrade >= gamedefines.SERVER_GRADE_LIMIT then
+        return
+    end
+
+    for _, v in ipairs(lServerGrade) do
+        if self:GetOpenDays() < v.days then
+            break
+        end
+        if v.server_grade > iTargetGrade then
+            iTargetGrade = v.server_grade
+        end
+    end
+    if iTargetGrade ~= self:GetServerGrade() then
+        self:SetServerGrade(iTargetGrade)
+        local iLeftDays = self:GetUpGradeLeftDays()
+
+        local sNetData = net.PackData("GS2CServerGradeInfo", {
+            server_grade = iTargetGrade,
+            days = iLeftDays,
+        })
+        for _, o in pairs(self.m_mOnlinePlayers) do
+            o:SendRaw(sNetData)
+        end
+    end
+end
+
+function CWorldMgr:GetUpGradeLeftDays()
+    local lServerGrade = res["daobiao"]["servergrade"]
+    local iRet = 0
+    local iOpenDays = self.m_iOpenDays
+    for _, v in ipairs(lServerGrade) do
+        if v.days > iOpenDays then
+            iRet = v.days - iOpenDays
+            break
+        end
+    end
+    return iRet
+end
+
 function CWorldMgr:NewHour()
     local tbl = timeop.get_hourtime({hour=0})
     local date = tbl.date
     local iDay = date.day
     local iHour = date.hour
+
     if iHour == 0 then
+        self:SetOpenDays(self:GetOpenDays() + 1)
+        self:CheckUpGrade()
         self:NewDay()
     end
 end

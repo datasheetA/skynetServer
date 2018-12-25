@@ -42,3 +42,36 @@ function table_value_list(t)
     end
     return l
 end
+
+function table_copy(t)
+    local m = {}
+    for k, v in pairs(t) do
+        m[k] = v
+    end
+    return m
+end
+
+function table_deep_copy(t)
+    local r = {}
+    local f
+    f = function (ot)
+        if r[ot] then
+            return r[ot]
+        end
+        local m = {}
+        r[ot] = m
+        for k, v in pairs(ot) do
+            local ok, ov = k, v
+            if type(k) == "table" then
+                ok = f(k)
+            end
+            if type(v) == "table" then
+                ov = f(v)
+            end
+            m[ok] = ov
+        end
+        return m
+    end
+
+    return f(t)
+end

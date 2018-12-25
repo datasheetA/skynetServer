@@ -39,6 +39,10 @@ function CConnection:Send(sMessage, mData)
     net.Send({gate = self.m_iGateAddr, fd = self.m_iHandle}, sMessage, mData)
 end
 
+function CConnection:SendRaw(sData)
+    net.SendRaw({gate = self.m_iGateAddr, fd = self.m_iHandle}, sData)
+end
+
 function CConnection:MailAddr()
     return {gate = self.m_iGateAddr, fd = self.m_iHandle}
 end

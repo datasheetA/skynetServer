@@ -198,6 +198,7 @@ end
 function CTask:Setup()
     local iTime = self:Timer()
     if iTime > 0 then
+        self:DelTimeCb("timeout")
        self:AddTimeCb("timeout",iTime * 60, function()  self:TimeOut()  end)
     end
 end

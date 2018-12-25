@@ -45,6 +45,7 @@ function CItem:Setup()
     if self:GetData("Time") then
         local iTime = self:GetData("Time",0) - timeop.get_time()
         if iTime > 0 then
+            self:DelTimeCb("timeout")
             self:AddTimeCb("timeout",iTime*1000,function () self:TimeOut() end)
         else
             self:TimeOut()
@@ -62,6 +63,7 @@ function CItem:SetTimer(iSec)
     local iEndTime = timeop.get_time() + iSec
     self:SetData("Time",iEndTime)
     if iSec > 0 then
+        self:DelTimeCb("timeout")
         self:AddTimeCb("timeout",iSec*1000,function () self:TimeOut() end)
     else
         self:TimeOut()
